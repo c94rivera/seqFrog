@@ -1,3 +1,8 @@
+######have this windows use yad instead of zennity
+######have only 1 yad window for all user input
+
+
+
 ###this is to run it in verbose mode for debugging
 set -x
 #select working directory so folders already present can be used for only partial script
