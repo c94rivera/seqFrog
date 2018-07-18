@@ -1,0 +1,1 @@
+awk '{ print length, $0 }' final.txt | sort -n | cut -d' ' -f2-

@@ -65,7 +65,7 @@ if [ "$megahitdecision" == "Megahit Assembly" ]; then
 				fi
 			fi
 		fi
-	mv -v "$PWD$megahitfolder" $PWD 
+	mv -v "$PWD$megahitfolder" $foldername 
 fi
 ###add interface for selecting blast library or using standard one
 ###add automatic blast annotation if library is not selected
