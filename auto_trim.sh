@@ -1,3 +1,4 @@
+set -x
 #ask user for inputs
 input=$(yad --title="Trimmomatic" --text="Select input files:" \
 	--form \
@@ -23,11 +24,11 @@ revfilename=$(echo "$revinput" | cut -d '.' -f 1)
 #run trimmomatic with default settings and input files from above
 cd $wdinput
 java -jar "$trimmo" \
-	-threads 10 -phred33 \
+	PE -threads 10 -phred33 \
 	$forwinput \
 	$revinput \
 	"$forwfilename"_paired.fastq \
 	"$forwfilename"_unpaired.fastq \
 	"$revfilename"_paired.fastq \
-	"$revfilename"_unpaired.fastq I \
-	LLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+	"$revfilename"_unpaired.fastq \
+	ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
