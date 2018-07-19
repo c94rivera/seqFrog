@@ -16,7 +16,7 @@ trimmo="$(echo "$input" | cut -d '|' -f 4)"
 forwinput=$( echo "${forwreads##*/}")
 revinput=$( echo "${revreads##*/}")
 
-#extraxt filenames w/o extensions
+#extract filenames w/o extensions
 forwfilename=$(echo "$forwinput" | cut -d '.' -f 1)
 revfilename=$(echo "$revinput" | cut -d '.' -f 1)
 
@@ -26,8 +26,8 @@ java -jar "$trimmo" \
 	-threads 10 -phred33 \
 	$forwinput \
 	$revinput \
-	"$filename1"_paired.fastq \
-	"$filename1"_unpaired.fastq \
-	"$filename2"_paired.fastq \
-	"$filename2"_unpaired.fastq I\
+	"$forwfilename"_paired.fastq \
+	"$forwfilename"_unpaired.fastq \
+	"$revfilename"_paired.fastq \
+	"$revfilename"_unpaired.fastq I\
 	LLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
