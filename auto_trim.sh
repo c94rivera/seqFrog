@@ -32,3 +32,15 @@ java -jar "$trimmo" \
 	"$revfilename"_paired.fastq \
 	"$revfilename"_unpaired.fastq \
 	ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+
+# if [ -z "$revreads" ] | [ -z "$forwreads" ]; then
+# 		run PE mode
+# 		#pop up message
+# 	else
+# 		if [ -z "$revreads" ] || [ -z "$forwreads" ]
+# 		run SE mode
+# 	#pop up message
+# 		else
+# 			display error message
+# fi
+# fi
