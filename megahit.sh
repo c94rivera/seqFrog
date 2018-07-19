@@ -1,24 +1,26 @@
 ###this is to run it in verbose mode for debugging
 set -x
-#select working directory so folders already present can be used for only partial script
-wd=$(zenity --file-selection --directory --title="Select Working Directory")
-cd $wd
-#input information about species being worked on for folder creation
-	userinput=$(zenity --forms --title="Target Species" --text="Add New Target Species" \
-   --add-entry="Genus" \
-   --add-entry="Species" \
-   --add-entry="SRX (leave blank if data is unpublished)");
-genus="$(echo "$userinput"| cut -d '|' -f 1)"
-species="$(echo "$userinput"| cut -d '|' -f 2)"
-srx="$(echo "$userinput" | cut -d '|' -f 3)"
-		newfolder=$"$genus"_"$species"_unpublished"" 
-if [ ! -d "$newfolder" ]; then
-		datapath_f=$(zenity --file-selection --multiple --title="Select Forward Reads")
-		datapath_r=$(zenity --file-selection --multiple --title="Select Reverse Reads")
-		mkdir $newfolder 
-		cd $newfolder
-		cp $datapath_f "$PWD"
-		cp $datapath_r "$PWD"
+
+#ask user for inputs
+input=$(yad --title="Megahit" --text="Select input files:" \
+	--form \
+	--field="Bulk File":FL \
+	--field="Working Directory":DIR \
+	--field="Forward Reads":FL \
+	--field="Reverse Reads":FL )
+
+#parse $input and seperate different inputs
+bulkfile="$(echo "$input"| cut -d '|' -f 1)"
+wdinput="$(echo "$input"| cut -d '|' -f 2)"
+forwreads="$(echo "$input"| cut -d '|' -f 3)"
+revreads="$(echo "$input" | cut -d '|' -f 4)"
+
+#if there is a bulk file then run megahit automatically
+if [ -z "$bulkfile" ]; then
+	xargs mkdir "$bulkfile"
+
+
+		
 	else
 		cd $newfolder
 		datapath_f=$(zenity --file-selection --multiple --title="Select Forward Reads")
