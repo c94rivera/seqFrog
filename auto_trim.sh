@@ -29,5 +29,5 @@ java -jar "$trimmo" \
 	"$forwfilename"_paired.fastq \
 	"$forwfilename"_unpaired.fastq \
 	"$revfilename"_paired.fastq \
-	"$revfilename"_unpaired.fastq I\
+	"$revfilename"_unpaired.fastq I \
 	LLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
