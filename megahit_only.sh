@@ -20,8 +20,8 @@ revfilename=$(echo "$revinput" | cut -d '.' -f 1)
 #run megahit in appropriate mode
 cd "$wdinput"
 megahitfolder=$".megahit_asm" 
-count=$(ls -R | grep "\.fastq$" | wc -l)
-count2=$(ls -R | grep "\.fastq.gz$" | wc -l)
+count=$(ls | grep "\.fastq$" | wc -l)
+count2=$(ls | grep "\.fastq.gz$" | wc -l)
 	if [ "$count" -eq 2 ] || [ "$count2" -eq 2 ]; then
 	(megahit -1 "$forwinput" -2 "$revinput" -o "$PWD$megahitfolder")
 	mv -v "$PWD$megahitfolder" "$wdinput"
