@@ -1,0 +1,52 @@
+	Methods (tentative)
+ 1. Assess quality of reads with FastQC
+ 2. Clean reads with Trimmomatic if appropriate
+ 3. Assemble contigs
+ 	a. Megahit
+ 	b. Abyss
+ 	c. BinPacker
+ 	d. Spades
+ 4. Assess quality
+ 	a. Transrate
+ 	b. BUSCO
+ 5. Merge transcriptome assemblies
+ 	a. Transfuse
+ 6. Find coding regions
+ 	a. TransDecoder
+ 7. Map reads to assembly
+ 	a. bowtie?
+ 	b. Salmon?
+ 8. Annotate
+ 	a. dammit
+ 	b. Trinotate
+ 	c. Dr. Santos' method
+
+#####################################################################
+
+1. Assess quality of reads with FastQC
+	
+	In a terminal window paste the following code to open an interactive FastQC window and select the transcriptome files (forward and reverse will need their own windows). Assess data for leftover adapters or low quality reads.
+
+	~/Assembly_Tools/FastQC/fastqc
+
+
+2. If necessary, clean reads of Illumina adapters using Trimmomatic. 
+
+	Place symbolic link of reads within the Trimmomatic folder and run. Remove output files and place within your working directory
+
+	ln -s <forward_reads> ~/Assembly_Tools/Trimmomatic-0.38
+	ln -s <reverse_reads> ~/Assembly_Tools/Trimmomatic-0.38
+
+		java -jar <path to trimmomatic.jar> PE [-threads <threads] [-phred33 | -phred64] [-trimlog <logFile>] <input 1> <input 2> <paired output 1> <unpaired output 1> <paired output 2> <unpaired output 2> <step 1> ...
+
+
+3. Assemble contigs
+
+	a. Megahit
+		megahit -1 <forward_reads> -2 <reverse_reads> -o <output_dir>
+
+	b. Abyss
+		abyss-pe k=99 name=test in='c_percarinatus_gonad_forw.fastq.gz c_percarinatus_gonad_rev.fastq.gz'
+
+	c. BinPacker
+		~/Assembly_Tools/BinPacker_binary/BinPacker -s fq -p pair -k 127 -l SRX2012788_1.fastq -r SRX2012788_2.fastq
