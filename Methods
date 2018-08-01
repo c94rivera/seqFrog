@@ -1,3 +1,8 @@
+	This document outlines the methods used in the transcriptome assembly of c_percarinatus_gonad reads. All files are stored in the following working directory
+	/home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad
+	
+
+
 	Methods (tentative)
  1. Assess quality of reads with FastQC
  2. Clean reads with Trimmomatic if appropriate
@@ -25,12 +30,12 @@
 
 1. Assess quality of reads with FastQC
 	
-	In a terminal window paste the following code to open an interactive FastQC window and select the transcriptome files (forward and reverse will need their own windows). Assess data for leftover adapters or low quality reads.
+	In a terminal window paste the following code to open an interactive FastQC window and select the transcriptome files (forward and reverse will need their own windows). Assess data for leftover adapters, low quality reads, and short reads.
 
 	~/Assembly_Tools/FastQC/fastqc
 
 
-2. If necessary, clean reads of Illumina adapters using Trimmomatic. 
+2. If necessary, clean reads of Illumina adapters using Trimmomatic (not necessary for C_percarinatus)
 
 	Place symbolic link of reads within the Trimmomatic folder and run. Remove output files and place within your working directory
 
@@ -50,3 +55,6 @@
 
 	c. BinPacker
 		~/Assembly_Tools/BinPacker_binary/BinPacker -s fq -p pair -k 127 -l SRX2012788_1.fastq -r SRX2012788_2.fastq
+
+	d. Spades
+		~/Assembly_Tools/SPAdes-3.12.0/bin/spades.py -k 127 -1 c_percarinatus_gonad_forw.fastq.gz -2 c_percarinatus_gonad_rev.fastq.gz -o spades_test
