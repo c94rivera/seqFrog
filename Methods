@@ -1,6 +1,6 @@
 	This document outlines the methods used in the transcriptome assembly of c_percarinatus_gonad reads. All files are stored in the following working directory
 	/home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad
-	
+
 
 
 	Methods (tentative)
@@ -13,9 +13,10 @@
  	d. Spades
  4. Assess quality
  	a. Transrate
- 	b. BUSCO
- 5. Merge transcriptome assemblies
- 	a. Transfuse
+ 			b. ***BUSCO
+5. Merge transcriptome assemblies
+	a. Transrate
+ 			b. Transfuse
  6. Find coding regions
  	a. TransDecoder
  7. Map reads to assembly
@@ -29,7 +30,7 @@
 #####################################################################
 
 1. Assess quality of reads with FastQC
-	
+
 	In a terminal window paste the following code to open an interactive FastQC window and select the transcriptome files (forward and reverse will need their own windows). Assess data for leftover adapters, low quality reads, and short reads.
 
 	~/Assembly_Tools/FastQC/fastqc
@@ -58,3 +59,12 @@
 
 	d. Spades
 		~/Assembly_Tools/SPAdes-3.12.0/bin/spades.py -k 127 -1 c_percarinatus_gonad_forw.fastq.gz -2 c_percarinatus_gonad_rev.fastq.gz -o spades_test
+
+
+5.	Merge transcriptome assemblies
+
+a. 	Transrate will merge the transcriptome assemblies into one file for ease of analysis (confirm the exact method of combining and any quality assessing)
+	/home/litoria/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate --assembly final.contigs.fa, test-contigs.fa, contigs.fasta --merge-assemblies mergedassemblies
+
+
+8. Annotate
