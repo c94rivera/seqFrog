@@ -10,12 +10,12 @@ from Bio import SeqIO
 import csv
 import sys
 
-def get_seqs(seqfile, matches, outfile):
+def get_seqs(contig_file_path, blast_file_path, outfile):
     '''Open fasta infile and return iterator of SeqRecords with protein sequences.'''
-    records = SeqIO.parse(seqfile, 'fasta')
+    records = SeqIO.parse(contig_file_path, 'fasta')
     seqlist=[]
     matchlist=[]
-    with open(matches,'rU') as f:
+    with open(blast_file_path,'rU') as f:
         reader = csv.reader(f,delimiter='\t')
         for row in reader:
             matchlist.append(row)
@@ -46,5 +46,15 @@ def main():
     outfile = blast_hits[:blast_hits.index('.')]+'.fasta'
     get_seqs(infile, blast_hits, outfile)
     print ("outfile is", outfile)
+
+
+#User input
+
+contig_file_path = input("Please drag contig file to the terminal and press enter: ")
+print('\n', "The file you selected is ", contig_file_path)
+
+blast_file_path = input("Please drag blast file to the terminal and press enter: ")
+print('\n', "The file you selected is ", blast_file_path)
+
 
 main()
