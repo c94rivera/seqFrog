@@ -28,10 +28,11 @@ def get_seqs(seqfile, matches, outfile):
             if match[0] == rec.id:
                 if match[1] not in proteinid:
                     proteinid.append(match[1])
+                    rec2 = rec[:]
 
-                    rec.description += "\t" + match[1] + "\t" + match[2] + "\t" + match[3] + "\t" + match[10] + "\t" + match[13]
+                    rec2.description += "\t" + match[1] + "\t" + match[2] + "\t" + match[3] + "\t" + match[10] + "\t" + match[13]
 
-                    seqlist.append(rec)
+                    seqlist.append(rec2)
                     continue
                 else:
                     continue
