@@ -15,38 +15,28 @@ def get_seqs(seqfile, matches, outfile):
     records = SeqIO.parse(seqfile, "fasta")
     seqlist=[]
     matchlist=[]
+    number = 0
     with open(matches,"rU") as f:
         reader = csv.reader(f,delimiter="\t")
         for row in reader:
             matchlist.append(row)
         print("Blast file successfully read")
     print("Comparing contigs to Blast file")
+
     for rec in records:
-        for item in matchlist:
-            if item[0] == rec.id:
-                #######
-                #find unique terms in column 1
-                rec.description+="\t"
-                rec.description+=item[1] + "\t" + item[2] + "\t" + item[3] + "\t" + item[10] + "\t" + item[13] + "\t"
+        for match in matchlist:
+            if match[0] == rec.id:
+                rec.description += "\t" + match[1] + "\t" + match[2] + "\t" + match[3] + "\t" + match[10] + "\t" + match[13]
+
                 seqlist.append(rec)
+                continue
             else:
                 continue
+
 
     print("Writing annotated contigs")
     with open(outfile, "w") as f:
         SeqIO.write(seqlist, f, "fasta")
-
-def delete_dupes(outfile):
-    output_dict = SeqIO.to_dict(SeqIO.parse(outfile, "fasta"))
-    final_list = []
-    print("Removing Duplicates")
-    for outputrec in output_dict:
-        if outputrec not in final_list:
-            final_list.append(outputrec)
-
-    print("Writing output file")
-    with open(outfile, "w") as o:
-        SeqIO.write(final_list, o, "fasta")
 
 def main():
     assert len(sys.argv) == 3, "usage: python3 pullseqs_fromtrinity.py <sequences.fasta> <blast_hits.txt>"
@@ -56,7 +46,6 @@ def main():
     print("blast file is", blast_hits)
     outfile = blast_hits[:blast_hits.index(".")]+".fasta"
     get_seqs(infile, blast_hits, outfile)
-    delete_dupes(outfile)
     print ("outfile is", outfile)
 
 main()
