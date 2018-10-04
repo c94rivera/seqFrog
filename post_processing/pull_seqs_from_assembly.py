@@ -15,7 +15,6 @@ def get_seqs(seqfile, matches, outfile):
     records = SeqIO.parse(seqfile, "fasta")
     seqlist=[]
     matchlist=[]
-    number = 0
     with open(matches,"rU") as f:
         reader = csv.reader(f,delimiter="\t")
         for row in reader:
