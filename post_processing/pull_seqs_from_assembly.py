@@ -11,8 +11,12 @@ import csv
 import sys
 from tqdm import tqdm
 
-def get_seqs(seqfile, matches, outfile):
+def get_seqs(seqfile, matches, outfile, comparecolumn = None, keepcolumn = None):
     """Open fasta infile and return iterator of SeqRecords with protein sequences."""
+    if not comparecolumn:
+        comparecolumn = 1
+    if not keepcolumn:
+        keepcolumn = (1, 2, 3, 10, 13)
     records = SeqIO.parse(seqfile, "fasta")
     seqlist=[]
     matchlist=[]
@@ -28,11 +32,12 @@ def get_seqs(seqfile, matches, outfile):
         proteinid.clear()
         for match in matchlist:
             if match[0] == rec.id:
-                if match[1] not in proteinid:
-                    proteinid.append(match[1])
+                if match[comparecolumn] not in proteinid:
+                    proteinid.append(match[comparecolumn])
                     rec2 = rec[:]
 
-                    rec2.description += "\t" + match[1] + "\t" + match[2] + "\t" + match[3] + "\t" + match[10] + "\t" + match[13]
+                    for column in keepcolumn:
+                        rec2.description += "\t" + match[int(column)]
 
                     seqlist.append(rec2)
                     continue
@@ -47,13 +52,21 @@ def get_seqs(seqfile, matches, outfile):
         SeqIO.write(seqlist, f, "fasta")
 
 def main():
-    assert len(sys.argv) == 3, "usage: python3 pullseqs_fromtrinity.py <sequences.fasta> <blast_hits.txt>"
+    #assert len(sys.argv) == 3, "usage: python3 pullseqs_fromtrinity.py <sequences.fasta> <blast_hits.txt>"
     infile = sys.argv[1]
     print("infile is", infile)
     blast_hits = sys.argv[2]
     print("blast file is", blast_hits)
     outfile = blast_hits[:blast_hits.index(".")]+".fasta"
-    get_seqs(infile, blast_hits, outfile)
+    comparecolumn = []
+    keepcolumn = []
+    if len(sys.argv) == 4:
+        comparecolumn = int(sys.argv[3])
+        print("Column used for comparison is", comparecolumn)
+    if len(sys.argv) == 5:
+        keepcolumn = list(sys.argv[4].split(','))
+        print("Columns being kept include:", keepcolumn)
+    get_seqs(infile, blast_hits, outfile, comparecolumn, keepcolumn)
     print ("outfile is", outfile)
 
 main()
