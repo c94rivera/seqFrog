@@ -9,6 +9,7 @@ adapted by: CAR
 from Bio import SeqIO
 import csv
 import sys
+from tqdm import tqdm
 
 def get_seqs(seqfile, matches, outfile):
     """Open fasta infile and return iterator of SeqRecords with protein sequences."""
@@ -23,7 +24,8 @@ def get_seqs(seqfile, matches, outfile):
     print("Comparing contigs to Blast file")
 
     proteinid = []
-    for rec in records:
+    for rec in tqdm(records):
+        proteinid.clear()
         for match in matchlist:
             if match[0] == rec.id:
                 if match[1] not in proteinid:
