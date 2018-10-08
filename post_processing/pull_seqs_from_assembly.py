@@ -60,10 +60,10 @@ def main():
     outfile = blast_hits[:blast_hits.index(".")]+".fasta"
     comparecolumn = []
     keepcolumn = []
-    if len(sys.argv) == 4:
+    if sys.argv[3]:
         comparecolumn = int(sys.argv[3])
         print("Column used for comparison is", comparecolumn)
-    if len(sys.argv) == 5:
+    if sys.argv[4]:
         keepcolumn = list(sys.argv[4].split(','))
         print("Columns being kept include:", keepcolumn)
     get_seqs(infile, blast_hits, outfile, comparecolumn, keepcolumn)
