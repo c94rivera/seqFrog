@@ -12,11 +12,7 @@ import sys
 from tqdm import tqdm
 
 def get_seqs(seqfile, matches, outfile, comparecolumn = None, keepcolumn = None):
-    """Open fasta infile and return iterator of SeqRecords with protein sequences."""
-    if not comparecolumn:
-        comparecolumn = 1
-    if not keepcolumn:
-        keepcolumn = (1, 2, 3, 10, 13)
+    #Open fasta infile and return iterator of SeqRecords with protein sequences.
     records = SeqIO.parse(seqfile, "fasta")
     seqlist=[]
     matchlist=[]
@@ -32,14 +28,15 @@ def get_seqs(seqfile, matches, outfile, comparecolumn = None, keepcolumn = None)
         proteinid.clear()
         for match in matchlist:
             if match[0] == rec.id:
-                if match[comparecolumn] not in proteinid:
-                    proteinid.append(match[comparecolumn])
-                    rec2 = rec[:]
+                for x in comparecolumn:
+                    if match[x] not in proteinid:
+                        proteinid.append(match[x])
+                        rec2 = rec[:]
 
-                    for column in keepcolumn:
-                        rec2.description += "\t" + match[int(column)]
+                        for column in keepcolumn:
+                            rec2.description += "\t" + match[int(column)]
 
-                    seqlist.append(rec2)
+                        seqlist.append(rec2)
                     continue
                 else:
                     continue
@@ -51,22 +48,36 @@ def get_seqs(seqfile, matches, outfile, comparecolumn = None, keepcolumn = None)
     with open(outfile, "w") as f:
         SeqIO.write(seqlist, f, "fasta")
 
+
+
 def main():
-    #assert len(sys.argv) == 3, "usage: python3 pullseqs_fromtrinity.py <sequences.fasta> <blast_hits.txt>"
-    infile = sys.argv[1]
     print("infile is", infile)
-    blast_hits = sys.argv[2]
     print("blast file is", blast_hits)
-    outfile = blast_hits[:blast_hits.index(".")]+".fasta"
-    comparecolumn = []
-    keepcolumn = []
-    if len(sys.argv) >=4:
-        comparecolumn = int(sys.argv[3])
+    outfile = infile + "_matches.fasta"#blast_hits[:blast_hits.index(".")]+".fasta"
+    if comparecolumn:
         print("Column used for comparison is", comparecolumn)
-    if len(sys.argv) == 5:
-        keepcolumn = list(sys.argv[4].split(','))
+    if keepcolumn:
         print("Columns being kept include:", keepcolumn)
     get_seqs(infile, blast_hits, outfile, comparecolumn, keepcolumn)
     print ("outfile is", outfile)
 
+#grab arguments from console and pass them to python script
+import argparse
+parser = argparse.ArgumentParser()
+
+#argument tags
+parser.add_argument("-c", "--contig", dest = "infile", help = "Contig Input")
+parser.add_argument("-b", "--blast", dest = "blast_hits", help = "Blast Input")
+parser.add_argument("-comp", "--colcompare", dest = "comparecolumn", help = "Column for Comparison", default = "1")
+parser.add_argument("-keep", "--colkeep", dest = "keepcolumn", help = "Columns to Keep", default = "1,2,3,4")
+
+args = parser.parse_args()
+
+#assign variables from command line arguments
+infile = args.infile
+blast_hits = args.blast_hits
+comparecolumn = [int(x) for x in args.comparecolumn.split(",")]
+keepcolumn = [int(x) for x in args.keepcolumn.split(",")]
+
+#run main program
 main()
