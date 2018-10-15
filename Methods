@@ -74,4 +74,4 @@ a. 	Transrate will merge the transcriptome assemblies into one file for ease of 
   We pulled blast columns 1, 2, 3, 10, and 13 (counting starts at 0). These correspond to subject acc.ver (protein accession ID), % identity, alignment length, e-value, and subject title (protein name and misc. info) respectively. Each sequence was then printed with the contig ID and blast columns on the same line with the sequence amino acids on the following line. All matches were printed with their respective contig/sequence and duplicates matched to the same contig were removed.
 
 8. RSEM
-  https://deweylab.github.io/RSEM/README.html
+  https://github.com/deweylab/RSEM
