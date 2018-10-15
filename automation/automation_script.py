@@ -93,6 +93,8 @@ def megahit():
         print("Error: Input files were not found")
 
 def abyss():
+    new_dir = os.mkdir(os.getcwd() + "abyss")
+    os.chdir(newdir)
     subprocess.run(f"abyss-pe k=99 name=abyss_run in='{forwreads} {revreads}'", shell=True)
 
 def spades():
