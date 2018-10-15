@@ -52,7 +52,8 @@ Potentially add function here to grab SRX number by grabbing the last section of
 
 #run fastqdump on specific srx number
 def fastqdump(srx):
-    subprocess.call(["fastq-dump", "--dumpbase", "--defline-seq", "'@$sn[_$rn]/$ri'", "--split-files", srx])
+    global forwreads, revreads
+    subprocess.call(["fastq-dump", "--dumpbase", "--defline-seq", "@$sn[_$rn]/$ri", "--split-files", srx])
     forwreads = f"{srx}_1.fastq"
     revreads = f"{srx}_2.fastq"
 
@@ -95,17 +96,7 @@ def abyss():
     subprocess.run(f"abyss-pe k=99 name=abyss_run in='{forwreads} {revreads}'", shell=True)
 
 def spades():
-    subprocess.run(f"{spades_bin} -k 127 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
-
-
-#copy custom blast library into working directory
-def customblast():
-    try:
-        if not os.path.exists(os.getcwd() + "/blast_annotation"):
-            os.mkdir(os.getcwd() + "/blast_annotation")
-            shutil.copytree(custom_location, os.getcwd() + "/blast_annotation")
-    except OSError:
-        print("Blast directory could not be copied.")
+    subprocess.run(f"{spades_bin} -v -k 127 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
 
 
 #combine all contig outputs with transrate
@@ -122,6 +113,14 @@ def transrate():
     #run transrate to combine all contig files
     subprocess.run(f"{transrate_bin} --assembly {megahit_contig}, {abyss_contig}, {spades_contig} --merge-assemblies mergedassemblies")
 
+#copy custom blast library into working directory
+def customblast():
+    try:
+        if not os.path.exists(os.getcwd() + "/blast_annotation"):
+            os.mkdir(os.getcwd() + "/blast_annotation")
+            shutil.copytree(custom_location, os.getcwd() + "/blast_annotation")
+    except OSError:
+        print("Blast directory could not be copied.")
 
 
 
