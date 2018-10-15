@@ -93,27 +93,29 @@ def megahit():
         print("Error: Input files were not found")
 
 def abyss():
-    new_dir = os.mkdir(os.getcwd() + "abyss")
-    os.chdir(newdir)
+    cur_dir = os.getcwd()
+    os.mkdir(os.getcwd() + "/abyss")
+    os.chdir(os.getcwd() + "/abyss")
     subprocess.run(f"abyss-pe k=99 name=abyss_run in='{forwreads} {revreads}'", shell=True)
+    os.chdir(cur_dir)
 
 def spades():
-    subprocess.run(f"{spades_bin} -v -k 127 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
+    subprocess.run(f"{spades_bin} -k 127 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
 
 
 #combine all contig outputs with transrate
 def transrate():
     #find megahit contig file
-    megahit_contig = (os.getcwd() + f"{forwreads}.megahit_asm/final.contigs.fa")
+    megahit_contig = (os.getcwd() + "/output.megahit_asm/final.contigs.fa")
 
     #find abyss contig file
-    abyss_contig = (os.getcwd() + f"abyss/{forwreads}-contigs.fa")
+    abyss_contig = (os.getcwd() + "/abyss/abyss_run-contigs.fa")
 
     #find spades contig file
-    spades_contig = (os.getcwd() + "spade_assembly/contigs.fasta")
+    spades_contig = (os.getcwd() + "/spade_assembly/contigs.fasta")
 
     #run transrate to combine all contig files
-    subprocess.run(f"{transrate_bin} --assembly {megahit_contig}, {abyss_contig}, {spades_contig} --merge-assemblies mergedassemblies")
+    subprocess.run(f"{transrate_bin} --assembly {megahit_contig}, {abyss_contig}, {spades_contig} --merge-assemblies mergedassemblies", shell=True)
 
 
 #copy custom blast library into working directory
