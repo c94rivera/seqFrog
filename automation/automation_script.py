@@ -113,11 +113,13 @@ def transrate():
     #run transrate to combine all contig files
     subprocess.run(f"{transrate_bin} --assembly {megahit_contig}, {abyss_contig}, {spades_contig} --merge-assemblies mergedassemblies")
 
+
 #copy custom blast library into working directory
 def customblast():
     try:
         if not os.path.exists(os.getcwd() + "/blast_annotation"):
             os.mkdir(os.getcwd() + "/blast_annotation")
+            custom_location = input("Drag custom blast library here and press enter")
             shutil.copytree(custom_location, os.getcwd() + "/blast_annotation")
     except OSError:
         print("Blast directory could not be copied.")
