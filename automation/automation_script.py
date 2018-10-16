@@ -29,7 +29,7 @@ blast_bin = "/home/litoria/NCBI_Tools/ncbi-blast-2.7.1+/bin/blastp"
 working_dir = "/home/litoria/Documents/test"
 # assembly_dir = f"{srx}.megahit_asm"
 # output_file = f"{subdir}_megahit.table"
-
+contig_file = []
 
 ########## Functions
 
@@ -120,20 +120,31 @@ def transrate():
 
 #copy custom blast library into working directory
 def customblast():
+    global custom_location, blast_name, contig_file
     try:
-        if not os.path.exists(os.getcwd() + "/blast_annotation"):
-            os.mkdir(os.getcwd() + "/blast_annotation")
-            custom_location = input("Drag custom blast library here and press enter")
-            shutil.copytree(custom_location, os.getcwd() + "/blast_annotation")
+        contig_file = input("Drag contig file here and press enter:")
+        custom_location = os.path.dirname(input("Drag custom blast library here and press enter:"))
+        blast_name = input("Type name of custom blast library:")
+        shutil.copy(contig_file, custom_location)
+
+    # try:
+    #     if not os.path.exists(os.getcwd() + "/blast_annotation"):
+    #         os.mkdir(os.getcwd() + "/blast_annotation")
+    #         custom_location = input("Drag custom blast library here and press enter")
+    #         blast_name = [os.path.abspath(input("Type name of custom blast library:"))]
+    #         shutil.copytree(custom_location, os.getcwd() + "/blast_annotation")
     except OSError:
-        print("Blast directory could not be copied.")
+        print("Blast directory could not be copied or already exists.")
 
 
 
 
 #copy final.contigs.fa into customblast folder and run annotation
 def annotation():
-    blast_code = [f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {output_file} -num_threads 12"]
+    global custom_location, blast_name, contig_file
+    if not contig_file:
+        contig_file = input("Drag contig file here and press enter")
+    blast_code = [f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out output_blast.table -num_threads 12"]
     print(f"Assembly folder found: running annotation with {blast_name} library")
 
     current_dir = os.getcwd()
@@ -141,7 +152,7 @@ def annotation():
 
 
     print(blast_code)
-    subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {output_file} -num_threads 12", shell=True)
+    subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out output_blast.table -num_threads 12", shell=True)
     os.chdir(current_dir)
 
 
