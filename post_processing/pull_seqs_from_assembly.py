@@ -21,7 +21,7 @@ def get_seqs(seqfile, matches, outfile, comparecolumn, keepcolumn):
         for row in reader:
             matchlist.append(row)
         print("Blast file successfully read")
-    print("Comparing contigss to Blast file")
+    print("Comparing contigs to Blast file")
 
     proteinid = []
     for rec in tqdm(records):
