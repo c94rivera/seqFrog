@@ -71,7 +71,7 @@ req_grp.add_argument("-b", "--blast_hits", dest = "blast_hits", required=True, h
 ####end of flags for the required inputs
 
 parser.add_argument("-comp", "--colcompare", dest = "comparecolumn", help = "Column for Comparison, starts counting at '0' (default: 1)", default = "1")
-parser.add_argument("-keep", "--colkeep", dest = "keepcolumn", help = "Columns to Keep, starts counting at '0' (default: 1, 2, 3, 4)", default = "1,2,3,4")
+parser.add_argument("-keep", "--colkeep", dest = "keepcolumn", help = "Columns to Keep, starts counting at '0' (default: 1, 2, 3, 10,13)", default = "1,2,3,10,13")
 
 args = parser.parse_args()
 
