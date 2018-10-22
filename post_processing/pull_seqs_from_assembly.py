@@ -88,8 +88,4 @@ print("Column used for comparison is", comparecolumn)
 print("Columns being kept include:", keepcolumn)
 
 #run main program
-from multiprocessing import pool
-import os
-
-
 main()
