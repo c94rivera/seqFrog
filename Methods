@@ -75,3 +75,17 @@ a. 	Transrate will merge the transcriptome assemblies into one file for ease of 
 
 8. RSEM
   https://github.com/deweylab/RSEM
+
+  --transcripts Trinity.fasta --seqType fq --left reads_1.fq --right reads_2.fq --est_method RSEM --aln_method bowtie --trinity_mode --prep_reference --output_dir rsem_outdir
+
+  --transcripts Trinity.fasta --seqType fq --left reads_1.fq --right reads_2.fq --est_method RSEM --aln_method bowtie --trinity_mode --prep_reference --output_dir rsem_outdir
+
+  /home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl \
+  --transcripts /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/mergedassemblies_matches.fasta \
+  --seqType fq \
+  --left /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/c_percarinatus_gonad_forw.fastq.gz \
+  --right /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/c_percarinatus_gonad_rev.fastq.gz \
+  --est_method RSEM \
+  --aln_method bowtie2 \
+  --prep_reference \
+  --output_dir rsem_outdir
