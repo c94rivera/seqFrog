@@ -66,6 +66,9 @@
 a. 	Transrate will merge the transcriptome assemblies into one file for ease of analysis (confirm the exact method of combining and any quality assessing)
 	/home/litoria/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate --assembly final.contigs.fa, test-contigs.fa, contigs.fasta --merge-assemblies mergedassemblies
 
+6. Build uniprot/other annotation library
+
+
 6. Annotate merged assemblies with uniprot library using blastp
   annotation script/automation script
 
@@ -76,9 +79,7 @@ a. 	Transrate will merge the transcriptome assemblies into one file for ease of 
 8. RSEM
   https://github.com/deweylab/RSEM
 
-  --transcripts Trinity.fasta --seqType fq --left reads_1.fq --right reads_2.fq --est_method RSEM --aln_method bowtie --trinity_mode --prep_reference --output_dir rsem_outdir
-
-  --transcripts Trinity.fasta --seqType fq --left reads_1.fq --right reads_2.fq --est_method RSEM --aln_method bowtie --trinity_mode --prep_reference --output_dir rsem_outdir
+  RSEM was run using scripts included with Trinity
 
   /home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl \
   --transcripts /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/mergedassemblies_matches.fasta \
