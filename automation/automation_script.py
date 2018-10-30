@@ -6,6 +6,7 @@ Functions to add include:
     - rework subprocess functions
     - run the pull seq python script within this scripts
     - seperate out each function of this file into their own files for better mobularity???
+    - make sure it does not overwrite previously existing assemblies, just skips them
 '''
 
 
@@ -51,7 +52,7 @@ if pipeline_conf.spades_bin:
 if pipeline_conf.transrate_bin:
     transrate_bin = pipeline_conf.transrate_bin
 
-coreamount = os.cpu_count()
+coreamount = int(os.cpu_count())
 ########## Functions
 
 
@@ -91,7 +92,8 @@ def manual_input():
 def megahit1():     #use when manually inputing files
     global megahit_bin, forwreads, revreads
     if len(glob.glob("*.megahit_asm")) >= 1:
-        print("Megahit assembly folder already present")
+        print("Megahit assembly folder already present.\nSkipping Megahit Assembly")
+        sleep(5)
     else:
         if not revreads:
             print("Running Megahit in single-end mode")
@@ -107,6 +109,7 @@ def megahit1():     #use when manually inputing files
 def megahit():      #use when input files need to be automatically detected
     if len(glob.glob("*.megahit_asm")) >= 1:
         print("Megahit assembly folder already present")
+        sleep(5)
     elif len(glob.glob("*.fastq")) == 2:
         subprocess.run(f"{megahit_bin} -1 {forwreads} -2 {revreads} -o {forwreads}.megahit_asm", shell=True)
     elif len(glob.glob("*.fastq")) == 1:
@@ -116,11 +119,15 @@ def megahit():      #use when input files need to be automatically detected
 
 def abyss():
     global abyss_bin, forwreads, revreads
-    cur_dir = os.getcwd()
-    os.mkdir(os.getcwd() + "/abyss")
-    os.chdir(os.getcwd() + "/abyss")
-    subprocess.run(f"abyss-pe np={coreamount} k=99 name=abyss_run in='{forwreads} {revreads}'", shell=True)
-    os.chdir(cur_dir)
+    if len(glob.glob("abyss")) >= 1:
+        print("Abyss assembly folder already present.\nSkipping Abyss assembly")
+        sleep(5)
+    else:
+        cur_dir = os.getcwd()
+        os.mkdir(os.getcwd() + "/abyss")
+        os.chdir(os.getcwd() + "/abyss")
+        subprocess.run(f"{abyss_bin} j={coreamount} k=99 name=abyss_run in='{forwreads} {revreads}'", shell=True)
+        os.chdir(cur_dir)
 
 def spades():
     global spades_bin, forwreads, revreads
