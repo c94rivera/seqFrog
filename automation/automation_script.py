@@ -2,8 +2,10 @@
 Functions to add include:
     - if foldername.txt file is not present skip makefolders() and fastqdump() and ask for the forward and reverse reads (so script can be run on individual data sets not published to NCBI)
     - run through all 3 assemblers in one go (Megahit, abyss, Spades)
-    - configuration file for binary files
+    - configuration file for binary file locations
     - rework subprocess functions
+    - run the pull seq python script within this scripts
+    - seperate out each function of this file into their own files for better mobularity???
 '''
 
 
@@ -12,25 +14,44 @@ import shutil
 import glob
 import subprocess
 from time import sleep
+import sys
+import pipeline_conf
 
-#this script assumes that all the necessary bin files are in PATH
-#it also is designed for megahit as the only assembler
+# ########## User input
+# input_srx = "/home/litoria/Documents/test/foldernames.txt"	#name of file with all SRX numbers and sample names
+# spades_bin = "~/Assembly_Tools/SPAdes-3.12.0/bin/spades.py" #location of spades binary on system
+# custom_location = "/home/litoria/Assembly_Tools/Uniprot_library" 	#location of custom blast library
+# blast_name = "uniprot_db"		#name of custom blast library
+# transrate_bin = "/home/litoria/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate"     #location of transrate binary on system
+# megahit_bin = "megahit"
+#
+#
+# blast_bin = "/home/litoria/NCBI_Tools/ncbi-blast-2.7.1+/bin/blastp"
+# working_dir = "/home/litoria/Documents/test"
+# # assembly_dir = f"{srx}.megahit_asm"
+# # output_file = f"{subdir}_megahit.table"
+# contig_file = []
 
+#change names of all imported variables
+if pipeline_conf.forwreads:
+    forwreads = pipeline_conf.forwreads
 
-########## User input
-input_srx = "/home/litoria/Documents/test/foldernames.txt"	#name of file with all SRX numbers and sample names
-spades_bin = "~/Assembly_Tools/SPAdes-3.12.0/bin/spades.py" #location of spades binary on system
-custom_location = "/home/litoria/Assembly_Tools/Uniprot_library" 	#location of custom blast library
-blast_name = "uniprot_db"		#name of custom blast library
-transrate_bin = "/home/litoria/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate"     #location of transrate binary on system
+if pipeline_conf.revreads:
+    revreads = pipeline_conf.revreads
 
-filename = "final.contigs.fa"	#name of output from assembler
-blast_bin = "/home/litoria/NCBI_Tools/ncbi-blast-2.7.1+/bin/blastp"
-working_dir = "/home/litoria/Documents/test"
-# assembly_dir = f"{srx}.megahit_asm"
-# output_file = f"{subdir}_megahit.table"
-contig_file = []
+if pipeline_conf.megahit_bin:
+    megahit_bin = pipeline_conf.megahit_bin
 
+if pipeline_conf.abyss_bin:
+    abyss_bin = pipeline_conf.abyss_bin
+
+if pipeline_conf.spades_bin:
+    spades_bin = pipeline_conf.abyss_bin
+
+if pipeline_conf.transrate_bin:
+    transrate_bin = pipeline_conf.transrate_bin
+
+coreamount = os.cpu_count()
 ########## Functions
 
 
@@ -57,54 +78,58 @@ def fastqdump(srx):
     forwreads = f"{srx}_1.fastq"
     revreads = f"{srx}_2.fastq"
 
-
-'''
-Add function to either automatically get the file name for the inputs if they were downloading using fastqdump()
-or to use the user provided file names
-'''
 #manually select input files
 def manual_input():
     global forwreads, revreads
-    forwreads = input("Drag forward reads here and press enter")
-    revreads = input("Drag reverse reads here and press enter")
+    # forwreads = input("Drag forward reads here and press enter")
+    # revreads = input("Drag reverse reads here and press enter")
+    forwreads = sys.argv[1]
+    revreads = sys.argv[2]
 
 
 #run megahit in single or paired end mode depending on amount of input files found
-def megahit1():
-    if not revreads:
-        print("Running Megahit in single-end mode")
-        sleep(5)
-        subprocess.run(f"megahit -r {forwreads} -o output.megahit_asm", shell=True)
+def megahit1():     #use when manually inputing files
+    global megahit_bin, forwreads, revreads
+    if len(glob.glob("*.megahit_asm")) >= 1:
+        print("Megahit assembly folder already present")
     else:
-        print("Running Megahit in paired-end mode")
-        sleep(5)
-        subprocess.run(f"megahit -1 {forwreads} -2 {revreads} -o output.megahit_asm", shell=True)
+        if not revreads:
+            print("Running Megahit in single-end mode")
+            sleep(5)
+            subprocess.run(f"{megahit_bin} -r {forwreads} -o output.megahit_asm", shell=True)
+        else:
+            print("Running Megahit in paired-end mode")
+            sleep(5)
+            subprocess.run(f"{megahit_bin} -1 {forwreads} -2 {revreads} -o output.megahit_asm", shell=True)
 
 
 
-def megahit():
+def megahit():      #use when input files need to be automatically detected
     if len(glob.glob("*.megahit_asm")) >= 1:
         print("Megahit assembly folder already present")
     elif len(glob.glob("*.fastq")) == 2:
-        subprocess.run(f"megahit -1 {forwreads} -2 {revreads} -o {forwreads}.megahit_asm", shell=True)
+        subprocess.run(f"{megahit_bin} -1 {forwreads} -2 {revreads} -o {forwreads}.megahit_asm", shell=True)
     elif len(glob.glob("*.fastq")) == 1:
-        subprocess.run(f"megahit -r {forwreads} -o {forwreads}.megahit_asm", shell=True)
+        subprocess.run(f"{megahit_bin} -r {forwreads} -o {forwreads}.megahit_asm", shell=True)
     else:
         print("Error: Input files were not found")
 
 def abyss():
+    global abyss_bin, forwreads, revreads
     cur_dir = os.getcwd()
     os.mkdir(os.getcwd() + "/abyss")
     os.chdir(os.getcwd() + "/abyss")
-    subprocess.run(f"abyss-pe k=99 name=abyss_run in='{forwreads} {revreads}'", shell=True)
+    subprocess.run(f"abyss-pe np={coreamount} k=99 name=abyss_run in='{forwreads} {revreads}'", shell=True)
     os.chdir(cur_dir)
 
 def spades():
+    global spades_bin, forwreads, revreads
     subprocess.run(f"{spades_bin} -k 127 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
 
 
 #combine all contig outputs with transrate
 def transrate():
+    global transrate_bin
     #find megahit contig file
     megahit_contig = (os.getcwd() + "/output.megahit_asm/final.contigs.fa")
 
