@@ -4,7 +4,7 @@ input_srx = "path/to/file"
 #binary locations
 megahit_bin = "megahit"
 abyss_bin = "abyss-pe"
-spades_bin = "~/Assembly_Tools/SPAdes-3.12.0/bin/spades.py" #location of spades binary on system
+spades_bin = "/home/litoria/Assembly_Tools/SPAdes-3.12.0/bin/spades.py" #location of spades binary on system
 transrate_bin = "/home/litoria/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate"
 blast_bin = "/home/litoria/NCBI_Tools/ncbi-blast-2.7.1+/bin/blastp"
 
