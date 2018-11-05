@@ -1,12 +1,9 @@
 '''
 Functions to add include:
     - if foldername.txt file is not present skip makefolders() and fastqdump() and ask for the forward and reverse reads (so script can be run on individual data sets not published to NCBI)
-    - run through all 3 assemblers in one go (Megahit, abyss, Spades)
-    - configuration file for binary file locations
     - rework subprocess functions
     - run the pull seq python script within this scripts
-    - seperate out each function of this file into their own files for better mobularity???
-    - make sure it does not overwrite previously existing assemblies, just skips them
+    - seperate out each function of this file into their own files for better modularity???
 '''
 
 
@@ -17,21 +14,6 @@ import subprocess
 from time import sleep
 import sys
 import pipeline_conf
-
-# ########## User input
-# input_srx = "/home/litoria/Documents/test/foldernames.txt"	#name of file with all SRX numbers and sample names
-# spades_bin = "~/Assembly_Tools/SPAdes-3.12.0/bin/spades.py" #location of spades binary on system
-# custom_location = "/home/litoria/Assembly_Tools/Uniprot_library" 	#location of custom blast library
-# blast_name = "uniprot_db"		#name of custom blast library
-# transrate_bin = "/home/litoria/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate"     #location of transrate binary on system
-# megahit_bin = "megahit"
-#
-#
-# blast_bin = "/home/litoria/NCBI_Tools/ncbi-blast-2.7.1+/bin/blastp"
-# working_dir = "/home/litoria/Documents/test"
-# # assembly_dir = f"{srx}.megahit_asm"
-# # output_file = f"{subdir}_megahit.table"
-# contig_file = []
 
 #change names of all imported variables
 if pipeline_conf.forwreads:
@@ -157,14 +139,15 @@ def transrate():
 
     #run transrate to combine all contig files
     subprocess.run(f"{transrate_bin} --assembly {megahit_contig}, {abyss_contig}, {spades_contig} --merge-assemblies merged_assemblies", shell=True)
-    contig_file =
+    # contig_file = ****************
 
 
-#copy final.contigs.fa into customblast folder and run annotation
+#run annotation with database set in config file
 def annotation():
     global custom_location, blast_name, contig_file
     if not contig_file:
         print("No contig file was found.")
+        return #stops program if contig_file is empty/not set
     print(f"Assembly folder found: running annotation with {blast_name} library")
 
     wd = os.getcwd()
@@ -176,3 +159,4 @@ def annotation():
 
 
 ########## End of Functions
+import test
