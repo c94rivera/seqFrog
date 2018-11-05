@@ -160,27 +160,6 @@ def transrate():
     contig_file =
 
 
-#copy custom blast library into working directory (NOT necessary)
-def customblast():
-    global custom_location, blast_name, contig_file
-    try:
-        # contig_file = input("Drag contig file here and press enter:")
-        custom_location = os.path.dirname(input("Drag custom blast library here and press enter:"))
-        blast_name = input("Type name of custom blast library:")
-        shutil.copy(contig_file, custom_location)
-
-    # try:
-    #     if not os.path.exists(os.getcwd() + "/blast_annotation"):
-    #         os.mkdir(os.getcwd() + "/blast_annotation")
-    #         custom_location = input("Drag custom blast library here and press enter")
-    #         blast_name = [os.path.abspath(input("Type name of custom blast library:"))]
-    #         shutil.copytree(custom_location, os.getcwd() + "/blast_annotation")
-    except OSError:
-        print("Blast directory could not be copied or already exists.")
-
-
-
-
 #copy final.contigs.fa into customblast folder and run annotation
 def annotation():
     global custom_location, blast_name, contig_file
