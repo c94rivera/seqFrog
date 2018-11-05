@@ -151,14 +151,14 @@ def transrate():
     spades_contig = (os.getcwd() + "/spade_assembly/contigs.fasta")
 
     #run transrate to combine all contig files
-    subprocess.run(f"{transrate_bin} --assembly {megahit_contig}, {abyss_contig}, {spades_contig} --merge-assemblies mergedassemblies", shell=True)
+    subprocess.run(f"{transrate_bin} --assembly {megahit_contig}, {abyss_contig}, {spades_contig} --merge-assemblies merged_assemblies", shell=True)
 
 
 #copy custom blast library into working directory
 def customblast():
     global custom_location, blast_name, contig_file
     try:
-        contig_file = input("Drag contig file here and press enter:")
+        # contig_file = input("Drag contig file here and press enter:")
         custom_location = os.path.dirname(input("Drag custom blast library here and press enter:"))
         blast_name = input("Type name of custom blast library:")
         shutil.copy(contig_file, custom_location)
