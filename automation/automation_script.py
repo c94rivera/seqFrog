@@ -176,32 +176,3 @@ def annotation():
 
 
 ########## End of Functions
-
-
-#make folders based on the lines within a textfile
-# os.chdir(working_dir)
-# makefolders(input_srx)
-#
-# subdirs = next(os.walk("."))[1]
-# print(subdirs)												#remove after testing
-# for subdir in subdirs:
-# 	#grab srx from folder name
-# 	print(subdir)
-# 	srx = subdir.split("_")[2]
-# 	print(srx)
-# 	#open folder
-# 	os.chdir(os.getcwd() + "/" + subdir)
-# 	print(os.getcwd())										#remove after testing
-# 	#run fastqdump
-# 	fastqdump(srx)
-# 	#run megahit
-# 	megahit()
-# 	#prepare folders for blast blast_annotation
-# 	# customblast()
-# 	#run annotation on custom blast library
-# 	annotation()
-# 	#make additional folder and copy final files into it
-# 	finalfolder()
-# 	#leave current folder to continue loop
-# 	os.chdir("..")
-# 	os.chdir("..")
