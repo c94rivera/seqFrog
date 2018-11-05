@@ -11,11 +11,11 @@ blast_bin = "/home/litoria/NCBI_Tools/ncbi-blast-2.7.1+/bin/blastp"
 #custom blast library location
 custom_location = "/home/litoria/Assembly_Tools/Uniprot_library" 	#this might need to be removed if above input works
 
-#name of custom blast library
-blast_name = "name_of_library"
+#name of custom blast library; name in db folder
+blast_name = "uniprot_db"
 
-#final file path for assembly output
-filename = "final.contigs.fa"
+#contig file for blast annotation, only use is not running assembly first
+contig_file = []
 
 #location of forward and reverse reads
 forwreads = '/home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/hemipenes/3M-Nathan_S3_R1_001.fastq.gz'
