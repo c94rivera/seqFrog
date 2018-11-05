@@ -104,7 +104,7 @@ def megahit1():     #use when manually inputing files
             sleep(5)
             subprocess.run(f"{megahit_bin} -1 {forwreads} -2 {revreads} -o megahit_assembly", shell=True)
 
-
+        contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
 def megahit():      #use when input files need to be automatically detected
     if len(glob.glob("megahit_assembly")) >= 1:
@@ -116,6 +116,8 @@ def megahit():      #use when input files need to be automatically detected
         subprocess.run(f"{megahit_bin} -r {forwreads} -o megahit_assembly", shell=True)
     else:
         print("Error: Input files were not found")
+
+    contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
 def abyss():
     global abyss_bin, forwreads, revreads
@@ -129,6 +131,8 @@ def abyss():
         subprocess.run(f"{abyss_bin} j={coreamount} k=99 name=abyss_run in='{forwreads} {revreads}'", shell=True)
         os.chdir(cur_dir)
 
+        contig_file = (os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa")
+
 def spades():
     global spades_bin, forwreads, revreads
     if len(glob.glob("spades_assembly")) >= 1:
@@ -136,6 +140,7 @@ def spades():
         sleep(5)
     else:
         subprocess.run(f"{spades_bin} -k 127 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
+        contig_file = (os.getcwd() + "/spade_assembly/contigs.fasta")
 
 
 #combine all contig outputs with transrate
@@ -152,9 +157,10 @@ def transrate():
 
     #run transrate to combine all contig files
     subprocess.run(f"{transrate_bin} --assembly {megahit_contig}, {abyss_contig}, {spades_contig} --merge-assemblies merged_assemblies", shell=True)
+    contig_file =
 
 
-#copy custom blast library into working directory
+#copy custom blast library into working directory (NOT necessary)
 def customblast():
     global custom_location, blast_name, contig_file
     try:
@@ -179,17 +185,15 @@ def customblast():
 def annotation():
     global custom_location, blast_name, contig_file
     if not contig_file:
-        contig_file = input("Drag contig file here and press enter")
-    blast_code = [f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out output_blast.table -num_threads 12"]
+        print("No contig file was found.")
     print(f"Assembly folder found: running annotation with {blast_name} library")
 
-    current_dir = os.getcwd()
+    wd = os.getcwd()
     os.chdir(custom_location)
 
-
-    print(blast_code)
-    subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out output_blast.table -num_threads 12", shell=True)
-    os.chdir(current_dir)
+    subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {contig_file}_blast.table -num_threads 12", shell=True)
+    shutil.copy(f"{contig_file}_blast.table", wd)
+    os.chdir(wd)
 
 
 #create final output folder and move output files into this folder
