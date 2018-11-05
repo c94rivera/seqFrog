@@ -196,15 +196,6 @@ def annotation():
     os.chdir(wd)
 
 
-#create final output folder and move output files into this folder
-def finalfolder():
-    output_file = f"{subdir}_megahit.table"
-    os.mkdir(subdir)
-    os.chdir(subdir)
-    shutil.copy(custom_location + "/" + filename, ".")
-    shutil.copy(os.getcwd() + "/" + assembly_dir + filename, "." + subdir)
-
-
 ########## End of Functions
 
 
