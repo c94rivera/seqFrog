@@ -7,6 +7,7 @@ abyss_bin = "abyss-pe"
 spades_bin = "/home/litoria/Assembly_Tools/SPAdes-3.12.0/bin/spades.py" #location of spades binary on system
 transrate_bin = "/home/litoria/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate"
 blast_bin = "/home/litoria/NCBI_Tools/ncbi-blast-2.7.1+/bin/blastp"
+trimmomatic_jar = "/home/litoria/Assembly_Tools/Trimmomatic-0.38/trimmomatic-0.38.jar"
 
 #custom blast library location
 custom_location = "/home/litoria/Assembly_Tools/Uniprot_library" 	#this might need to be removed if above input works

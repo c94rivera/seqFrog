@@ -71,13 +71,9 @@ Potentially add function here to grab SRX number by grabbing the last section of
 '''
 
 #run fastqdump on specific srx number
-# def trimmomatic():
-#     global forwreads, revreads
-#
-#
-# 	java -jar trimmomatic-0.38.jar PE -threads 10 -phred33 SRX2382495_1.fastq SRX2382495_2.fastq SRX2382495_1_paired.fastq SRX2382495_1_unpaired.fastq SRX2382495_2_paired.fastq SRX2382495_2_unpaired.fastq ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
-
-
+def trimmomatic():
+    global forwreads, revreads, trimmomatic_jar
+    subprocess.run(f"java -jar {trimmomatic_jar} PE -threads 10 -phred33 {forwreads} {revreads} forward_paired.fastq forward_unpaired.fastq reverse_paired.fastq reverse_unpaired.fastq ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36", shell=True)
 
 
 def fastqdump(srx):
