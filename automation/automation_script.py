@@ -50,6 +50,9 @@ if pipeline_conf.blast_name:
 if pipeline_conf.blast_bin:
     blast_bin = pipeline_conf.blast_bin
 
+if pipeline_conf.trimmomatic_jar:
+    trimmomatic_jar = pipeline_conf.trimmomatic_jar
+
 coreamount = int(os.cpu_count())
 ########## Functions
 
@@ -62,6 +65,7 @@ def manual_input():
     revreads = sys.argv[2]
     print(f"Forward reads:\n{forwreads}\n")
     print(f"Reverse reads:\n{revreads}\n")
+    sleep(5)
 
 
 #make folders based on strings in input file; DOES NOT WORK
