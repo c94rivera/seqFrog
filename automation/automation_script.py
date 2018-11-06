@@ -53,6 +53,16 @@ if pipeline_conf.blast_bin:
 coreamount = int(os.cpu_count())
 ########## Functions
 
+#manually select input files
+def manual_input():
+    global forwreads, revreads
+    # forwreads = input("Drag forward reads here and press enter")
+    # revreads = input("Drag reverse reads here and press enter")
+    forwreads = sys.argv[1]
+    revreads = sys.argv[2]
+    print(f"Forward reads:\n{forwreads}\n")
+    print(f"Reverse reads:\n{revreads}\n")
+
 
 #make folders based on strings in input file; DOES NOT WORK
 def makefolders(input_srx):
@@ -81,16 +91,6 @@ def fastqdump(srx):
     subprocess.call(["fastq-dump", "--dumpbase", "--defline-seq", "@$sn[_$rn]/$ri", "--split-files", srx])
     forwreads = f"{srx}_1.fastq"
     revreads = f"{srx}_2.fastq"
-
-#manually select input files
-def manual_input():
-    global forwreads, revreads
-    # forwreads = input("Drag forward reads here and press enter")
-    # revreads = input("Drag reverse reads here and press enter")
-    forwreads = sys.argv[1]
-    revreads = sys.argv[2]
-    print(f"Forward reads:\n{forwreads}\n")
-    print(f"Reverse reads:\n{revreads}\n")
 
 
 #run megahit in single or paired end mode depending on amount of input files found
