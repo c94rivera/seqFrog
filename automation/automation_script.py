@@ -14,13 +14,20 @@ import subprocess
 from time import sleep
 import sys
 import pipeline_conf
+import test
 
 #change names of all imported variables
-if pipeline_conf.forwreads:
-    forwreads = pipeline_conf.forwreads
+# if pipeline_conf.forwreads:
+#     forwreads = pipeline_conf.forwreads
+#
+# if pipeline_conf.revreads:
+#     revreads = pipeline_conf.revreads
+if test.forwreads:
+    forwreads = test.forwreads
 
-if pipeline_conf.revreads:
-    revreads = pipeline_conf.revreads
+if test.revreads:
+    revreads = test.revreads
+
 
 if pipeline_conf.megahit_bin:
     megahit_bin = pipeline_conf.megahit_bin
@@ -34,11 +41,20 @@ if pipeline_conf.spades_bin:
 if pipeline_conf.transrate_bin:
     transrate_bin = pipeline_conf.transrate_bin
 
+if pipeline_conf.custom_location:
+    custom_location = pipeline_conf.custom_location
+
+if pipeline_conf.blast_name:
+    blast_name = pipeline_conf.blast_name
+
+if pipeline_conf.blast_bin:
+    blast_bin = pipeline_conf.blast_bin
+
 coreamount = int(os.cpu_count())
 ########## Functions
 
 
-#make folders based on strings in input file
+#make folders based on strings in input file; DOES NOT WORK
 def makefolders(input_srx):
     global name
     with open(input_srx) as x:
@@ -86,9 +102,12 @@ def megahit1():     #use when manually inputing files
             sleep(5)
             subprocess.run(f"{megahit_bin} -1 {forwreads} -2 {revreads} -o megahit_assembly", shell=True)
 
-        contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
-def megahit():      #use when input files need to be automatically detected
+def megahit():      #use when input files need to be automatically detected NOT working
+    '''
+    add section to automatically pick forward and reverse revreads
+    -if 1.fasta or 1.fa or 1.fa.gz then forward reads, same for reverse
+    '''
     if len(glob.glob("megahit_assembly")) >= 1:
         print("Megahit assembly folder already present")
         sleep(5)
@@ -99,7 +118,6 @@ def megahit():      #use when input files need to be automatically detected
     else:
         print("Error: Input files were not found")
 
-    contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
 def abyss():
     global abyss_bin, forwreads, revreads
@@ -113,7 +131,6 @@ def abyss():
         subprocess.run(f"{abyss_bin} j={coreamount} k=99 name=abyss_run in='{forwreads} {revreads}'", shell=True)
         os.chdir(cur_dir)
 
-        contig_file = (os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa")
 
 def spades():
     global spades_bin, forwreads, revreads
@@ -122,7 +139,6 @@ def spades():
         sleep(5)
     else:
         subprocess.run(f"{spades_bin} -k 127 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
-        contig_file = (os.getcwd() + "/spade_assembly/contigs.fasta")
 
 
 #combine all contig outputs with transrate
@@ -138,13 +154,16 @@ def transrate():
     spades_contig = (os.getcwd() + "/spade_assembly/contigs.fasta")
 
     #run transrate to combine all contig files
-    subprocess.run(f"{transrate_bin} --assembly {megahit_contig}, {abyss_contig}, {spades_contig} --merge-assemblies merged_assemblies", shell=True)
-    # contig_file = ****************
+    subprocess.run(f"{transrate_bin} --assembly {megahit_contig},{abyss_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
+
+    contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
+    return contig_file #output of this function will be this variable
 
 
 #run annotation with database set in config file
 def annotation():
-    global custom_location, blast_name, contig_file
+    contig_file = transrate()
+    global custom_location, blast_name
     if not contig_file:
         print("No contig file was found.")
         return #stops program if contig_file is empty/not set
@@ -158,5 +177,11 @@ def annotation():
     os.chdir(wd)
 
 
+'''
+Add section to pick out matches from annotation
+remove remove_spaces
+run rsem
+output expression files
+'''
+
 ########## End of Functions
-import test
