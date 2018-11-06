@@ -15,8 +15,6 @@ custom_location = "/home/litoria/Assembly_Tools/Uniprot_library" 	#this might ne
 blast_name = "uniprot_db"
 
 #contig file for blast annotation, only use is not running assembly first
-contig_file = []
+# contig_file = []
 
 #location of forward and reverse reads
-forwreads = '/home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/hemipenes/3M-Nathan_S3_R1_001.fastq.gz'
-revreads = '/home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/hemipenes/3M-Nathan_S3_R2_001.fastq.gz'
