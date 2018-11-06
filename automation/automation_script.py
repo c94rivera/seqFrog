@@ -71,6 +71,15 @@ Potentially add function here to grab SRX number by grabbing the last section of
 '''
 
 #run fastqdump on specific srx number
+# def trimmomatic():
+#     global forwreads, revreads
+#
+#
+# 	java -jar trimmomatic-0.38.jar PE -threads 10 -phred33 SRX2382495_1.fastq SRX2382495_2.fastq SRX2382495_1_paired.fastq SRX2382495_1_unpaired.fastq SRX2382495_2_paired.fastq SRX2382495_2_unpaired.fastq ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+
+
+
+
 def fastqdump(srx):
     global forwreads, revreads
     subprocess.call(["fastq-dump", "--dumpbase", "--defline-seq", "@$sn[_$rn]/$ri", "--split-files", srx])
@@ -142,8 +151,9 @@ def spades():
     if len(glob.glob("spades_assembly")) >= 1:
         print("Spades assembly folder already present.\nSkipping Spades assembly")
         sleep(5)
+
     else:
-        subprocess.run(f"{spades_bin} -k 127 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
+        subprocess.run(f"{spades_bin} --only-assembler -k 99 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
 
 
 #combine all contig outputs with transrate
