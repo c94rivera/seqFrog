@@ -84,6 +84,8 @@ def manual_input():
     # revreads = input("Drag reverse reads here and press enter")
     forwreads = sys.argv[1]
     revreads = sys.argv[2]
+    print(f"Forward reads:\n{forwreads}\n")
+    print(f"Reverse reads:\n{revreads}\n")
 
 
 #run megahit in single or paired end mode depending on amount of input files found
@@ -101,6 +103,9 @@ def megahit1():     #use when manually inputing files
             print("Running Megahit in paired-end mode")
             sleep(5)
             subprocess.run(f"{megahit_bin} -1 {forwreads} -2 {revreads} -o megahit_assembly", shell=True)
+
+        contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
+        return contig_file
 
 
 def megahit():      #use when input files need to be automatically detected NOT working
@@ -162,7 +167,11 @@ def transrate():
 
 #run annotation with database set in config file
 def annotation():
-    contig_file = transrate()
+    '''
+    add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
+    '''
+    if not contig_file:
+        contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
     global custom_location, blast_name
     if not contig_file:
         print("No contig file was found.")
