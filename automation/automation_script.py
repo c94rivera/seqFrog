@@ -54,6 +54,7 @@ if pipeline_conf.trimmomatic_jar:
     trimmomatic_jar = pipeline_conf.trimmomatic_jar
 
 coreamount = int(os.cpu_count())
+contig_file = []
 ########## Functions
 
 #manually select input files
@@ -114,7 +115,6 @@ def megahit1():     #use when manually inputing files
             subprocess.run(f"{megahit_bin} -1 {forwreads} -2 {revreads} -o megahit_assembly", shell=True)
 
         contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
-        return contig_file
 
 
 def megahit():      #use when input files need to be automatically detected NOT working
@@ -158,7 +158,7 @@ def spades():
 
 #combine all contig outputs with transrate
 def transrate():
-    global transrate_bin
+    global transrate_bin, contig_file
     #find megahit contig file
     megahit_contig = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
@@ -166,34 +166,40 @@ def transrate():
     abyss_contig = (os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa")
 
     #find spades contig file
-    spades_contig = (os.getcwd() + "/spade_assembly/contigs.fasta")
+    spades_contig = (os.getcwd() + "/spades_assembly/contigs.fasta")
 
-    #run transrate to combine all contig files
-    subprocess.run(f"{transrate_bin} --assembly {megahit_contig},{abyss_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
+    if len(glob.glob("transrate_results")) >= 1:
+        print("Transrate folder already present.\nSkipping Transrate")
+        sleep(5)
+    else:
+        #run transrate to combine all contig files
+        subprocess.run(f"{transrate_bin} --assembly {megahit_contig},{abyss_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
 
-    contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
-    return contig_file #output of this function will be this variable
+        contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
 
 
 #run annotation with database set in config file
 def annotation():
+    global contig_file
     '''
     add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
     '''
-    if not contig_file:
+
+    if not contig_file: #why????
         contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
     global custom_location, blast_name
     if not contig_file:
         print("No contig file was found.")
         return #stops program if contig_file is empty/not set
-    print(f"Assembly folder found: running annotation with {blast_name} library")
+    else:
+        print(f"Assembly folder found: running annotation with {blast_name} library")
 
-    wd = os.getcwd()
-    os.chdir(custom_location)
+        wd = os.getcwd()
+        os.chdir(custom_location)
 
-    subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {contig_file}_blast.table -num_threads 12", shell=True)
-    shutil.copy(f"{contig_file}_blast.table", wd)
-    os.chdir(wd)
+        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {contig_file}_blast.table -num_threads 12", shell=True)
+        shutil.copy(f"{contig_file}_blast.table", wd)
+        os.chdir(wd)
 
 
 '''
