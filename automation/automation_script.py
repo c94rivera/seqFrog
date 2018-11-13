@@ -14,7 +14,7 @@ import subprocess
 from time import sleep
 import sys
 import pipeline_conf
-import test
+import run_automation
 
 #change names of all imported variables
 # if pipeline_conf.forwreads:
@@ -22,11 +22,11 @@ import test
 #
 # if pipeline_conf.revreads:
 #     revreads = pipeline_conf.revreads
-if test.forwreads:
-    forwreads = test.forwreads
+if run_automation.forwreads:
+    forwreads = run_automation.forwreads
 
-if test.revreads:
-    revreads = test.revreads
+if run_automation.revreads:
+    revreads = run_automation.revreads
 
 
 if pipeline_conf.megahit_bin:
@@ -59,11 +59,12 @@ contig_file = []
 
 #manually select input files
 def manual_input():
-    global forwreads, revreads
+    global forwreads, revreads, contig_file
     # forwreads = input("Drag forward reads here and press enter")
     # revreads = input("Drag reverse reads here and press enter")
     forwreads = sys.argv[1]
     revreads = sys.argv[2]
+    contig_file = sys.argv[3]
     print(f"Forward reads:\n{forwreads}\n")
     print(f"Reverse reads:\n{revreads}\n")
     sleep(5)
@@ -88,8 +89,9 @@ Potentially add function here to grab SRX number by grabbing the last section of
 #run fastqdump on specific srx number
 def trimmomatic():
     global forwreads, revreads, trimmomatic_jar
-    subprocess.run(f"java -jar {trimmomatic_jar} PE -threads 10 -phred33 {forwreads} {revreads} forward_paired.fastq forward_unpaired.fastq reverse_paired.fastq reverse_unpaired.fastq ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36", shell=True)
-
+    subprocess.run(f"java -jar {trimmomatic_jar} PE -threads 10 -phred33 {forwreads} {revreads} forward_paired.fastq.gz forward_unpaired.fastq.gz reverse_paired.fastq.gz reverse_unpaired.fastq.gz ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36", shell=True)
+    forwreads = (os.getcwd() + "forward_paired.fastq.gz")
+    revreads = (os.getcwd() + "reverse_paired.fastq.gz")
 
 def fastqdump(srx):
     global forwreads, revreads
