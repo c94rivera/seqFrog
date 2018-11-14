@@ -63,10 +63,14 @@ def manual_input():
     # forwreads = input("Drag forward reads here and press enter")
     # revreads = input("Drag reverse reads here and press enter")
     forwreads = sys.argv[1]
-    revreads = sys.argv[2]
-    contig_file = sys.argv[3]
     print(f"Forward reads:\n{forwreads}\n")
+
+    revreads = sys.argv[2]
     print(f"Reverse reads:\n{revreads}\n")
+
+    contig_file = sys.argv[3]
+    print(f"Contig file:\n{contig_file}\n")
+    
     sleep(5)
 
 
@@ -90,8 +94,8 @@ Potentially add function here to grab SRX number by grabbing the last section of
 def trimmomatic():
     global forwreads, revreads, trimmomatic_jar
     subprocess.run(f"java -jar {trimmomatic_jar} PE -threads 10 -phred33 {forwreads} {revreads} forward_paired.fastq.gz forward_unpaired.fastq.gz reverse_paired.fastq.gz reverse_unpaired.fastq.gz ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36", shell=True)
-    forwreads = (os.getcwd() + "forward_paired.fastq.gz")
-    revreads = (os.getcwd() + "reverse_paired.fastq.gz")
+    forwreads = (os.getcwd() +"/forward_paired.fastq.gz")
+    revreads = (os.getcwd() + "/reverse_paired.fastq.gz")
 
 def fastqdump(srx):
     global forwreads, revreads
