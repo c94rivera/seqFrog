@@ -106,7 +106,7 @@ def fastqdump(srx):
 
 #run megahit in single or paired end mode depending on amount of input files found
 def megahit1():     #use when manually inputing files
-    global megahit_bin, forwreads, revreads contig_file
+    global megahit_bin, forwreads, revreads, contig_file
     if len(glob.glob("megahit_assembly")) >= 1:
         print("Megahit assembly folder already present.\nSkipping Megahit Assembly")
         sleep(5)
