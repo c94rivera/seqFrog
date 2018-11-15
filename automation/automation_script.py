@@ -198,7 +198,7 @@ def annotation():
         print("No contig file was found.")
         return #stops program if contig_file is empty/not set
     else:
-        print(f"Assembly folder found: running annotation with {blast_name} library")
+        print(f"Assembly folder found: running annotation on {contig_file} with {blast_name} library")
 
         wd = os.getcwd()
         os.chdir(custom_location)
