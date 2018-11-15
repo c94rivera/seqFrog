@@ -70,7 +70,7 @@ def manual_input():
 
     contig_file = sys.argv[3]
     print(f"Contig file:\n{contig_file}\n")
-    
+
     sleep(5)
 
 
@@ -148,7 +148,7 @@ def abyss():
         cur_dir = os.getcwd()
         os.mkdir(os.getcwd() + "/abyss_assembly")
         os.chdir(os.getcwd() + "/abyss_assembly")
-        subprocess.run(f"{abyss_bin} j={coreamount} k=99 name=abyss_run in='{forwreads} {revreads}'", shell=True)
+        subprocess.run(f"{abyss_bin} j={coreamount} k=59 name=abyss_run in='{forwreads} {revreads}'", shell=True)
         os.chdir(cur_dir)
 
 
@@ -159,7 +159,7 @@ def spades():
         sleep(5)
 
     else:
-        subprocess.run(f"{spades_bin} --only-assembler -k 99 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
+        subprocess.run(f"{spades_bin} --only-assembler -k 59 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
 
 
 #combine all contig outputs with transrate
@@ -208,6 +208,18 @@ def annotation():
         os.chdir(wd)
 
 
+# def pull_matches():
+#     ../postprocessing
+#     '''RUN PYTHON SCRIPT
+#     ADD LENGTH OF CONTIGS FOR ANALYSIS'''
+#
+#
+#
+#
+# def rsem():
+#
+#
+#
 '''
 Add section to pick out matches from annotation
 remove remove_spaces
