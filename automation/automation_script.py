@@ -204,7 +204,7 @@ def annotation():
         os.chdir(custom_location)
 
         subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out [{blast_name}]{contig_file}_blast.table -num_threads 12", shell=True)
-        shutil.copy(f"[{frog_mito}]{contig_file}_blast.table", wd)
+        shutil.copy(f"[{blast_name}]{contig_file}_blast.table", wd)
         os.chdir(wd)
 
 
