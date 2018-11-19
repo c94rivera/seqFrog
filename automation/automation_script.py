@@ -62,16 +62,59 @@ def manual_input():
     global forwreads, revreads, contig_file
     # forwreads = input("Drag forward reads here and press enter")
     # revreads = input("Drag reverse reads here and press enter")
-    forwreads = sys.argv[1]
+    # forwreads = sys.argv[1]
+    # print(f"Forward reads:\n{forwreads}\n")
+    #
+    # revreads = sys.argv[2]
+    # print(f"Reverse reads:\n{revreads}\n")
+    #
+    # contig_file = sys.argv[3]
+    # print(f"Contig file:\n{contig_file}\n")
+    #
+    # species_name = sys.argv[4]
+    # print(f"Species name:\n{species_name}\n")
+    #
+    # tissue_type = sys.argv[5]
+    # print(f"Tissue type:\n{tissue_type}\n")
+    #
+    # sleep(5)
+
+    #grab arguments from console and pass them to python script
+    import argparse
+    parser = argparse.ArgumentParser()
+
+    #argument tags
+    # parser.add_argument("contigs", help = "Contigs Input file")
+    # parser.add_argument("blast_hits", help = "Blast Input")
+
+    ####flags for the required inputs
+    req_grp = parser.add_argument_group(title='required arguments')
+    req_grp.add_argument("-f", "--forward-reads", dest = "forwreads", required=True, help="Forward Reads")
+    req_grp.add_argument("-r", "--reverse-reads", dest = "revreads", required=True, help="Reverse Reads")
+    ####end of flags for the required inputs
+
+    parser.add_argument("-c", "--contigs", dest = "contig_file", help = "Contig file used if skipping assemblies", default = "")
+    parser.add_argument("-sp", "--species", dest = "species_name", help = "Species name for organism being analysed (used for naming of final output files)", default = "")
+    parser.add_argument("-t", "--tissue", dest = "tissue_type", help = "Tissue type for organism being analysed (used for naming of final output files)", default = "")
+
+    args = parser.parse_args()
+
+    #assign variables from command line arguments
+    forwreads = args.forwreads
+    revreads = args.revreads
+    contig_file = args.contig_file
+    species_name = args.species_name
+    tissue_type = args.tissue_type
+
+    print("\n")
     print(f"Forward reads:\n{forwreads}\n")
-
-    revreads = sys.argv[2]
     print(f"Reverse reads:\n{revreads}\n")
-
-    contig_file = sys.argv[3]
     print(f"Contig file:\n{contig_file}\n")
+    print(f"Species name:\n{species_name}\n")
+    print(f"Tissue type:\n{tissue_type}\n")
 
     sleep(5)
+
 
 
 #make folders based on strings in input file; DOES NOT WORK
