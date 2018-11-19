@@ -57,35 +57,32 @@ def main():
 
 
 #grab arguments from console and pass them to python script
-import argparse
-parser = argparse.ArgumentParser()
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
 
-#argument tags
-# parser.add_argument("contigs", help = "Contigs Input file")
-# parser.add_argument("blast_hits", help = "Blast Input")
+    ####flags for the required inputs
+    req_grp = parser.add_argument_group(title='required arguments')
+    req_grp.add_argument("-c", "--contig_file", dest = "contigs", required=True, help="Contigs input file ")
+    req_grp.add_argument("-b", "--blast_hits", dest = "blast_hits", required=True, help="Blast Input File")
+    ####end of flags for the required inputs
 
-####flags for the required inputs
-req_grp = parser.add_argument_group(title='required arguments')
-req_grp.add_argument("-c", "--contig_file", dest = "contigs", required=True, help="Contigs input file ")
-req_grp.add_argument("-b", "--blast_hits", dest = "blast_hits", required=True, help="Blast Input File")
-####end of flags for the required inputs
+    parser.add_argument("-comp", "--colcompare", dest = "comparecolumn", help = "Column for Comparison, starts counting at '0' (default: 1)", default = "1")
+    parser.add_argument("-keep", "--colkeep", dest = "keepcolumn", help = "Columns to Keep, starts counting at '0' (default: 1, 2, 3, 10,13)", default = "1,2,3,10,13")
 
-parser.add_argument("-comp", "--colcompare", dest = "comparecolumn", help = "Column for Comparison, starts counting at '0' (default: 1)", default = "1")
-parser.add_argument("-keep", "--colkeep", dest = "keepcolumn", help = "Columns to Keep, starts counting at '0' (default: 1, 2, 3, 10,13)", default = "1,2,3,10,13")
+    args = parser.parse_args()
 
-args = parser.parse_args()
+    #assign variables from command line arguments
+    contigs = args.contigs
+    blast_hits = args.blast_hits
+    comparecolumn = [int(x) for x in args.comparecolumn.split(",")]
+    keepcolumn = [int(x) for x in args.keepcolumn.split(",")]
 
-#assign variables from command line arguments
-contigs = args.contigs
-blast_hits = args.blast_hits
-comparecolumn = [int(x) for x in args.comparecolumn.split(",")]
-keepcolumn = [int(x) for x in args.keepcolumn.split(",")]
+    print("contigs is", contigs)
+    print("blast file is", blast_hits)
+    outfile = contigs + "_matches.fasta"#blast_hits[:blast_hits.index(".")]+".fasta"
+    print("Column used for comparison is", comparecolumn)
+    print("Columns being kept include:", keepcolumn)
 
-print("contigs is", contigs)
-print("blast file is", blast_hits)
-outfile = contigs + "_matches.fasta"#blast_hits[:blast_hits.index(".")]+".fasta"
-print("Column used for comparison is", comparecolumn)
-print("Columns being kept include:", keepcolumn)
-
-#run main program
-main()
+    #run main program
+    main()
