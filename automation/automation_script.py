@@ -15,6 +15,10 @@ from time import sleep
 import sys
 import pipeline_conf
 import ntpath
+sys.path.insert(0, '/home/litoria/Documents/git/transcriptome_assembly/post_processing/')
+import pull_seqs_from_assembly
+
+
 
 #change names of all imported variables
 # if pipeline_conf.forwreads:
@@ -87,6 +91,7 @@ def manual_input():
     contig_file = args.contig_file
     species_name = args.species_name
     tissue_type = args.tissue_type
+    blast_file = []
 
     print("\n")
     print(f"Forward reads:\n{forwreads}\n")
@@ -211,7 +216,7 @@ def transrate():
 
 #run annotation with database set in config file
 def annotation():
-    global contig_file, custom_location, blast_name, species_name, tissue_type
+    global contig_file, custom_location, blast_name, species_name, tissue_type, blast_file
     '''
     add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
     '''
@@ -246,14 +251,16 @@ def annotation():
 
 
         subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
-        shutil.move(f"{one}{two}[{blast_name}]{filename}_blast.table", wd)
+        blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
+        shutil.move(blast_file, wd)
         os.chdir(wd)
 
 
-# def pull_matches():
-#     ../postprocessing
-#     '''RUN PYTHON SCRIPT
-#     ADD LENGTH OF CONTIGS FOR ANALYSIS'''
+def pull_matches():
+    full_name = (f"{one}{two}[{blast_name}]{filename}_blast.table")
+    get_seqs(contig_file, blast_file, full_name, "1", "1,2,3,10,13")
+    '''RUN PYTHON SCRIPT ADD LENGTH OF CONTIGS FOR ANALYSIS
+    NAME MATCHES'''
 #
 #
 #
