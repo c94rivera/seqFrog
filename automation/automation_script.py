@@ -14,7 +14,6 @@ import subprocess
 from time import sleep
 import sys
 import pipeline_conf
-import run_automation
 import ntpath
 
 #change names of all imported variables
@@ -23,11 +22,11 @@ import ntpath
 #
 # if pipeline_conf.revreads:
 #     revreads = pipeline_conf.revreads
-if run_automation.forwreads:
-    forwreads = run_automation.forwreads
+if pipeline_conf.forwreads:
+    forwreads = pipeline_conf.forwreads
 
-if run_automation.revreads:
-    revreads = run_automation.revreads
+if pipeline_conf.revreads:
+    revreads = pipeline_conf.revreads
 
 
 if pipeline_conf.megahit_bin:
