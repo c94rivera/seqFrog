@@ -60,24 +60,6 @@ contig_file = []
 #manually select input files
 def manual_input():
     global forwreads, revreads, contig_file, species_name, tissue_type
-    # forwreads = input("Drag forward reads here and press enter")
-    # revreads = input("Drag reverse reads here and press enter")
-    # forwreads = sys.argv[1]
-    # print(f"Forward reads:\n{forwreads}\n")
-    #
-    # revreads = sys.argv[2]
-    # print(f"Reverse reads:\n{revreads}\n")
-    #
-    # contig_file = sys.argv[3]
-    # print(f"Contig file:\n{contig_file}\n")
-    #
-    # species_name = sys.argv[4]
-    # print(f"Species name:\n{species_name}\n")
-    #
-    # tissue_type = sys.argv[5]
-    # print(f"Tissue type:\n{tissue_type}\n")
-    #
-    # sleep(5)
 
     #grab arguments from console and pass them to python script
     import argparse
