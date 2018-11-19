@@ -15,6 +15,7 @@ from time import sleep
 import sys
 import pipeline_conf
 import run_automation
+import ntpath
 
 #change names of all imported variables
 # if pipeline_conf.forwreads:
@@ -202,9 +203,11 @@ def annotation():
 
         wd = os.getcwd()
         os.chdir(custom_location)
+        filename = ntpath.basename(f"{contig_file}")
+        print(filename)
 
-        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out [{blast_name}]{contig_file}_blast.table -num_threads 12", shell=True)
-        shutil.copy(f"[{blast_name}]{contig_file}_blast.table", wd)
+        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out [{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
+        shutil.copy(f"[{blast_name}]{filename}_blast.table", wd)
         os.chdir(wd)
 
 
