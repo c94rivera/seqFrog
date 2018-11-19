@@ -16,6 +16,7 @@ def main():
     # spades()
     # transrate()
     annotation()
+    pull_matches()
 
 if __name__ == '__main__':
     main()
