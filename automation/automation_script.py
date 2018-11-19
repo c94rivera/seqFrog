@@ -186,14 +186,14 @@ def transrate():
 
 #run annotation with database set in config file
 def annotation():
-    global contig_file
+    global contig_file, custom_location, blast_name
     '''
     add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
     '''
 
     if not contig_file: #why????
         contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
-    global custom_location, blast_name
+
     if not contig_file:
         print("No contig file was found.")
         return #stops program if contig_file is empty/not set
@@ -203,7 +203,7 @@ def annotation():
         wd = os.getcwd()
         os.chdir(custom_location)
 
-        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out [{frog_mito}]{contig_file}_blast.table -num_threads 12", shell=True)
+        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out [{blast_name}]{contig_file}_blast.table -num_threads 12", shell=True)
         shutil.copy(f"[{frog_mito}]{contig_file}_blast.table", wd)
         os.chdir(wd)
 
