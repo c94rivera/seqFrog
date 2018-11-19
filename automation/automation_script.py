@@ -59,7 +59,7 @@ contig_file = []
 
 #manually select input files
 def manual_input():
-    global forwreads, revreads, contig_file
+    global forwreads, revreads, contig_file, species_name, tissue_type
     # forwreads = input("Drag forward reads here and press enter")
     # revreads = input("Drag reverse reads here and press enter")
     # forwreads = sys.argv[1]
@@ -229,7 +229,7 @@ def transrate():
 
 #run annotation with database set in config file
 def annotation():
-    global contig_file, custom_location, blast_name
+    global contig_file, custom_location, blast_name, species_name, tissue_type
     '''
     add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
     '''
@@ -248,8 +248,23 @@ def annotation():
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out [{species_name}][{tissue_type}][{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
-        shutil.move(f"[{species_name}][{tissue_type}][{blast_name}]{filename}_blast.table", wd)
+        if species_name:
+            one = f"[{species_name}]"
+            print(species_name)
+        else:
+            one = ""
+            print("Species not specified")
+
+        if tissue_type:
+            two = f"[{tissue_type}]"
+            print(tissue_type)
+        else:
+            two = ""
+            print("Tissue type not specified")
+
+
+        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
+        shutil.move(f"{one}{two}[{blast_name}]{filename}_blast.table", wd)
         os.chdir(wd)
 
 
