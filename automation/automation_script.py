@@ -15,7 +15,6 @@ from time import sleep
 import sys
 import pipeline_conf
 import ntpath
-sys.path.insert(0, '/home/litoria/Documents/git/transcriptome_assembly/post_processing/')
 import pull_seqs_from_assembly
 
 
