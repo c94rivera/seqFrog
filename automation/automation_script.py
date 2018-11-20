@@ -214,21 +214,27 @@ def transrate():
 
     shutil.copy(os.getcwd() + "/megahit_assembly/final.contigs.fa", os.getcwd() + "/megahit_assembly/[backup]final.contigs.fa")
     with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'r') as f:
-        data = f.read().replace(" ","_")
-    with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'w') as f:
-        f.write(data)
+        data = f.read()
+    data = data.replace(" ","_")
+    data = data.replace(",","_")
+    with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'w') as g:
+        g.write(data)
 
     shutil.copy(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", os.getcwd() + "/abyss_assembly/[backup]abyss_run-contigs.fa")
     with open(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", 'r') as f:
-        data = f.read().replace(" ","_")
-    with open(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", 'w') as f:
-        f.write(data)
+        data = f.read()
+    data = data.replace(" ","_")
+    data = data.replace(",","_")
+    with open(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", 'w') as g:
+        g.write(data)
 
     shutil.copy(os.getcwd() + "/spades_assembly/contigs.fasta", os.getcwd() + "/spades_assembly/[backup]contigs.fasta")
     with open(os.getcwd() + "/spades_assembly/contigs.fasta", 'r') as f:
-        data = f.read().replace(" ","_")
-    with open(os.getcwd() + "/spades_assembly/contigs.fasta", 'w') as f:
-        f.write(data)
+        data = f.read()
+    data = data.replace(" ","_")
+    data = data.replace(",","_")
+    with open(os.getcwd() + "/spades_assembly/contigs.fasta", 'w') as g:
+        g.write(data)
 
     #find megahit contig file
     megahit_contig = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
@@ -285,8 +291,6 @@ def pull_matches():
     get_seqs(contig_file, blast_file, full_name, [int(x) for x in comparecolumn.split(",")], [int(x) for x in keepcolumn.split(",")])
 
 
-'''RUN PYTHON SCRIPT ADD LENGTH OF CONTIGS amd "MULTI" FOR ANALYSIS
-    NAME MATCHES'''
 #
 #
 #
@@ -296,7 +300,6 @@ def pull_matches():
 #
 #
 '''
-Add section to pick out matches from annotation
 remove remove_spaces
 run rsem
 output expression files
