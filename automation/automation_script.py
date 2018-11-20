@@ -15,7 +15,7 @@ from time import sleep
 import sys
 import pipeline_conf
 import ntpath
-import pull_seqs_from_assembly
+from pull_seqs_from_assembly import get_seqs
 
 
 
@@ -62,7 +62,7 @@ contig_file = []
 
 #manually select input files
 def manual_input():
-    global forwreads, revreads, contig_file, species_name, tissue_type
+    global forwreads, revreads, contig_file, species_name, tissue_type, blast_file
 
     #grab arguments from console and pass them to python script
     import argparse
@@ -81,6 +81,7 @@ def manual_input():
     parser.add_argument("-c", "--contigs", dest = "contig_file", help = "Contig file used if skipping assemblies", default = "")
     parser.add_argument("-sp", "--species", dest = "species_name", help = "Species name for organism being analysed (used for naming of final output files)", default = "")
     parser.add_argument("-t", "--tissue", dest = "tissue_type", help = "Tissue type for organism being analysed (used for naming of final output files)", default = "")
+    parser.add_argument("-b", "-blast-file", dest = "blast_file", help = "Blast file for comparison", default = "")
 
     args = parser.parse_args()
 
@@ -90,14 +91,28 @@ def manual_input():
     contig_file = args.contig_file
     species_name = args.species_name
     tissue_type = args.tissue_type
-    blast_file = []
+    blast_file = args.blast_file
 
     print("\n")
     print(f"Forward reads:\n{forwreads}\n")
     print(f"Reverse reads:\n{revreads}\n")
     print(f"Contig file:\n{contig_file}\n")
+    print(f"Blast file:\n{blast_file}\n")
     print(f"Species name:\n{species_name}\n")
     print(f"Tissue type:\n{tissue_type}\n")
+    if species_name:
+        one = f"[{species_name}]"
+        print(f"Species name:\n{species_name}\n")
+    else:
+        one = ""
+        print("Species not specified\n")
+
+    if tissue_type:
+        two = f"[{tissue_type}]"
+        print(f"Tissue type:\n{tissue_type}")
+    else:
+        two = ""
+        print("Tissue type not specified")
 
     sleep(5)
 
@@ -215,7 +230,7 @@ def transrate():
 
 #run annotation with database set in config file
 def annotation():
-    global contig_file, custom_location, blast_name, species_name, tissue_type, blast_file
+    global contig_file, custom_location, blast_name, species_name, tissue_type, blast_file, one, two
     '''
     add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
     '''
@@ -256,9 +271,15 @@ def annotation():
 
 
 def pull_matches():
-    full_name = (f"{one}{two}[{blast_name}]{filename}_blast.table")
-    get_seqs(contig_file, blast_file, full_name, "1", "1,2,3,10,13")
-    '''RUN PYTHON SCRIPT ADD LENGTH OF CONTIGS FOR ANALYSIS
+    global blast_file, one, two
+    full_name = f"{blast_file}_matches.fasta"
+
+    comparecolumn = "1"
+    keepcolumn = "1,2,3,4,5"
+    get_seqs(contig_file, blast_file, full_name, [int(x) for x in comparecolumn.split(",")], [int(x) for x in keepcolumn.split(",")])
+
+
+'''RUN PYTHON SCRIPT ADD LENGTH OF CONTIGS FOR ANALYSIS
     NAME MATCHES'''
 #
 #
