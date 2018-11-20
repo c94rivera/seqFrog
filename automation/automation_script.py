@@ -99,10 +99,6 @@ def manual_input():
     if blast_file:
         print(f"Blast file:\n{blast_file}\n")
     if species_name:
-        print(f"Species name:\n{species_name}\n")
-    if tissue_type:
-        print(f"Tissue type:\n{tissue_type}\n")
-    if species_name:
         one = f"[{species_name}]"
         print(f"Species name:\n{species_name}\n")
     else:
