@@ -211,6 +211,25 @@ def spades():
 #combine all contig outputs with transrate
 def transrate():
     global transrate_bin, contig_file
+
+    shutil.copy(os.getcwd() + "/megahit_assembly/final.contigs.fa", os.getcwd() + "/megahit_assembly/[backup]final.contigs.fa")
+    with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'r') as f:
+        data = f.read().replace(" ","_")
+    with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'w') as f:
+        f.write(data)
+
+    shutil.copy(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", os.getcwd() + "/abyss_assembly/[backup]abyss_run-contigs.fa")
+    with open(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", 'r') as f:
+        data = f.read().replace(" ","_")
+    with open(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", 'w') as f:
+        f.write(data)
+
+    shutil.copy(os.getcwd() + "/spades_assembly/contigs.fasta", os.getcwd() + "/spades_assembly/[backup]contigs.fasta")
+    with open(os.getcwd() + "/spades_assembly/contigs.fasta", 'r') as f:
+        data = f.read().replace(" ","_")
+    with open(os.getcwd() + "/spades_assembly/contigs.fasta", 'w') as f:
+        f.write(data)
+
     #find megahit contig file
     megahit_contig = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
