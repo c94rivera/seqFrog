@@ -68,16 +68,13 @@ def manual_input():
     import argparse
     parser = argparse.ArgumentParser()
 
-    #argument tags
-    # parser.add_argument("contigs", help = "Contigs Input file")
-    # parser.add_argument("blast_hits", help = "Blast Input")
-
     ####flags for the required inputs
     req_grp = parser.add_argument_group(title='required arguments')
     req_grp.add_argument("-f", "--forward-reads", dest = "forwreads", required=True, help="Forward Reads")
     req_grp.add_argument("-r", "--reverse-reads", dest = "revreads", required=True, help="Reverse Reads")
     ####end of flags for the required inputs
 
+    #optional inputs
     parser.add_argument("-c", "--contigs", dest = "contig_file", help = "Contig file used if skipping assemblies", default = "")
     parser.add_argument("-sp", "--species", dest = "species_name", help = "Species name for organism being analysed (used for naming of final output files)", default = "")
     parser.add_argument("-t", "--tissue", dest = "tissue_type", help = "Tissue type for organism being analysed (used for naming of final output files)", default = "")
@@ -93,13 +90,18 @@ def manual_input():
     tissue_type = args.tissue_type
     blast_file = args.blast_file
 
+#Print which files were manually set
     print("\n")
     print(f"Forward reads:\n{forwreads}\n")
     print(f"Reverse reads:\n{revreads}\n")
-    print(f"Contig file:\n{contig_file}\n")
-    print(f"Blast file:\n{blast_file}\n")
-    print(f"Species name:\n{species_name}\n")
-    print(f"Tissue type:\n{tissue_type}\n")
+    if contig_file:
+        print(f"Contig file:\n{contig_file}\n")
+    if blast_file:
+        print(f"Blast file:\n{blast_file}\n")
+    if species_name:
+        print(f"Species name:\n{species_name}\n")
+    if tissue_type:
+        print(f"Tissue type:\n{tissue_type}\n")
     if species_name:
         one = f"[{species_name}]"
         print(f"Species name:\n{species_name}\n")
@@ -109,7 +111,7 @@ def manual_input():
 
     if tissue_type:
         two = f"[{tissue_type}]"
-        print(f"Tissue type:\n{tissue_type}")
+        print(f"Tissue type:\n{tissue_type}\n")
     else:
         two = ""
         print("Tissue type not specified")
@@ -249,21 +251,6 @@ def annotation():
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        if species_name:
-            one = f"[{species_name}]"
-            print(species_name)
-        else:
-            one = ""
-            print("Species not specified")
-
-        if tissue_type:
-            two = f"[{tissue_type}]"
-            print(tissue_type)
-        else:
-            two = ""
-            print("Tissue type not specified")
-
-
         subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
         blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
         shutil.move(blast_file, wd)
@@ -279,7 +266,7 @@ def pull_matches():
     get_seqs(contig_file, blast_file, full_name, [int(x) for x in comparecolumn.split(",")], [int(x) for x in keepcolumn.split(",")])
 
 
-'''RUN PYTHON SCRIPT ADD LENGTH OF CONTIGS FOR ANALYSIS
+'''RUN PYTHON SCRIPT ADD LENGTH OF CONTIGS amd "MULTI" FOR ANALYSIS
     NAME MATCHES'''
 #
 #
