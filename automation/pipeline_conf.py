@@ -10,13 +10,14 @@ revreads = []
 #change line below to pick which modules to run
 def main():
     manual_input()
-    trimmomatic()
-    megahit1()
+    # trimmomatic()
+    # megahit1()
     # abyss()
     # spades()
     # transrate()
-    annotation()
-    pull_matches()
+    # annotation()
+    # pull_matches()
+    pull_matches_fast()
 
 if __name__ == '__main__':
     main()

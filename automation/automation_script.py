@@ -16,6 +16,7 @@ import sys
 import pipeline_conf
 import ntpath
 from pull_seqs_from_assembly import get_seqs
+from multi import compare, get_seqs_fast
 
 
 
@@ -62,7 +63,7 @@ contig_file = []
 
 #manually select input files
 def manual_input():
-    global forwreads, revreads, contig_file, species_name, tissue_type, blast_file
+    global forwreads, revreads, contig_file, species_name, tissue_type, blast_file, one, two
 
     #grab arguments from console and pass them to python script
     import argparse
@@ -243,6 +244,7 @@ def transrate():
 
     if len(glob.glob("transrate_results")) >= 1:
         print("Transrate folder already present.\nSkipping Transrate")
+        contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
         sleep(5)
     else:
         #run transrate to combine all contig files
@@ -279,12 +281,22 @@ def annotation():
 
 
 def pull_matches():
-    global blast_file, one, two
+    global contig_file, blast_file
     full_name = f"{blast_file}_matches.fasta"
 
     comparecolumn = "1"
     keepcolumn = "1,2,3,4,5"
     get_seqs(contig_file, blast_file, full_name, [int(x) for x in comparecolumn.split(",")], [int(x) for x in keepcolumn.split(",")])
+
+
+def pull_matches_fast():
+    global contig_file, blast_file
+    full_name = f"{blast_file}_matches.fasta"
+
+    comparecolumn = "1"
+    keepcolumn = "1,2,3,4,5"
+    get_seqs_fast(contig_file, blast_file, full_name, [int(x) for x in comparecolumn.split(",")], [int(x) for x in keepcolumn.split(",")])
+
 
 
 #
@@ -296,7 +308,6 @@ def pull_matches():
 #
 #
 '''
-remove remove_spaces
 run rsem
 output expression files
 '''
