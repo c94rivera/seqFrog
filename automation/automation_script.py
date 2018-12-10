@@ -57,6 +57,12 @@ if pipeline_conf.blast_bin:
 if pipeline_conf.trimmomatic_jar:
     trimmomatic_jar = pipeline_conf.trimmomatic_jar
 
+if pipeline_conf.rsem_loc:
+    rsem_loc = pipeline_conf.rsem_loc
+
+if pipeline_conf.bowtie_bin:
+    bowtie_bin = pipeline_conf.bowtie_bin
+
 coreamount = int(os.cpu_count())
 contig_file = []
 ########## Functions
@@ -260,9 +266,6 @@ def annotation():
     add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
     '''
 
-    if not contig_file: #why????
-        contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
-
     if not contig_file:
         print("No contig file was found.")
         return #stops program if contig_file is empty/not set
@@ -295,15 +298,24 @@ def pull_matches_fast():
 
     comparecolumn = "1"
     keepcolumn = "1,2,3,4,5"
-    get_seqs_fast(contig_file, blast_file, full_name, [int(x) for x in comparecolumn.split(",")], [int(x) for x in keepcolumn.split(",")])
+    get_seqs_fast(contig_file, blast_file, full_name, [int(x) for x in comparecolumn], [int(x) for x in keepcolumn.split(",")])
+
+
+def rsem():
+    full_name = f"{contig_file}_matches.fasta"
+    subprocess.run(f"{rsem_loc} --transcripts {full_name} --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_outdir", shell=True)
 
 
 
-#
-#
-#
-#
-# def rsem():
+      # /home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl \
+      # --transcripts /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/mergedassemblies_matches.fasta \
+      # --seqType fq \
+      # --left /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/c_percarinatus_gonad_forw.fastq.gz \
+      # --right /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/c_percarinatus_gonad_rev.fastq.gz \
+      # --est_method RSEM \
+      # --aln_method bowtie2 \
+      # --prep_reference \
+      # --output_dir rsem_outdir
 #
 #
 #
