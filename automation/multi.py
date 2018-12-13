@@ -15,20 +15,19 @@ from multiprocessing import Pool
 
 def compare(rec):
     global matchlist, proteinid, seqlist, comparecolumn, keepcolumn
-
+    keepcolumn = [1,2,3,10,13]
     proteinid.clear()
     for match in matchlist:
         if match[0] == rec.id:
-            for x in comparecolumn:
-                if match[x] not in proteinid:
-                    proteinid.append(match[x])
-                    rec2 = rec[:]
+            if match[1] not in proteinid:
+                proteinid.append(match[1])
+                rec2 = rec[:]
 
-                    for column in keepcolumn:
-                        rec2.description += "\t" + match[int(column)]
+                for column in keepcolumn:
+                    rec2.description += "\t" + match[int(column)]
 
-                    # seqlist.append(rec2)
-                    return(rec2)
+                # seqlist.append(rec2)
+                return(rec2)
                 continue
             else:
                 continue
