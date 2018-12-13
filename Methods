@@ -9,23 +9,15 @@
  3. Assemble contigs
  	a. Megahit
  	b. Abyss
- 	c. BinPacker
  	d. Spades
- 4. Assess quality
- 	a. Transrate
- 			b. ***BUSCO
-5. Merge transcriptome assemblies
+ 4. Assess quality and merge transcriptome assemblies
 	a. Transrate
- 			b. Transfuse
- 6. Find coding regions
- 	a. TransDecoder
- 7. Map reads to assembly
- 	a. bowtie?
- 	b. Salmon?
- 8. Annotate
- 	a. dammit
- 	b. Trinotate
- 	c. Dr. Santos' method
+  5. Build annotation library
+  6. Annotate merged assemblies
+7. Pull out annotation matches
+8. RSEM for expression analysis
+  a. remove spaces
+  b. run analysis
 
 #####################################################################
 
@@ -54,17 +46,41 @@
 	b. Abyss
 		abyss-pe k=99 name=test in='c_percarinatus_gonad_forw.fastq.gz c_percarinatus_gonad_rev.fastq.gz'
 
-	c. BinPacker
-		~/Assembly_Tools/BinPacker_binary/BinPacker -s fq -p pair -k 127 -l SRX2012788_1.fastq -r SRX2012788_2.fastq
-
 	d. Spades
 		~/Assembly_Tools/SPAdes-3.12.0/bin/spades.py -k 127 -1 c_percarinatus_gonad_forw.fastq.gz -2 c_percarinatus_gonad_rev.fastq.gz -o spades_test
 
 
-5.	Merge transcriptome assemblies
+4.	Assess quality and merge transcriptome assemblies
 
-a. 	Transrate will merge the transcriptome assemblies into one file for ease of analysis (confirm the exact method of combining and any quality assessing)
-	/home/litoria/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate --assembly final.contigs.fa, test-contigs.fa, contigs.fasta --merge-assemblies mergedassemblies
+  a. 	Transrate will merge the transcriptome assemblies into one file for ease of analysis (confirm the exact method of combining and any quality assessing)
+	 /home/litoria/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate --assembly final.contigs.fa,test-contigs.fa,contigs.fasta --merge-assemblies mergedassemblies
+
+5. Build uniprot/other annotation library
 
 
-8. Annotate
+6. Annotate merged assemblies with uniprot library using blastp
+  annotation script/automation script
+
+7. Pull out annotation matches
+  pull_seqs_from_assembly.py
+  We pulled blast columns 1, 2, 3, 10, and 13 (counting starts at 0). These correspond to subject acc.ver (protein accession ID), % identity, alignment length, e-value, and subject title (protein name and misc. info) respectively. Each sequence was then printed with the contig ID and blast columns on the same line with the sequence amino acids on the following line. All matches were printed with their respective contig/sequence and duplicates matched to the same contig were removed.
+
+8. RSEM
+  https://github.com/deweylab/RSEM
+
+  RSEM was run using scripts included with Trinity
+
+  a. /home/litoria/Documents/git/transcriptome_assembly/post_processing/remove_spaces' '/home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/mergedassemblies_matches.fasta'
+
+
+  b.
+
+  /home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl \
+  --transcripts /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/mergedassemblies_matches.fasta \
+  --seqType fq \
+  --left /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/c_percarinatus_gonad_forw.fastq.gz \
+  --right /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/c_percarinatus_gonad_rev.fastq.gz \
+  --est_method RSEM \
+  --aln_method bowtie2 \
+  --prep_reference \
+  --output_dir rsem_outdir
