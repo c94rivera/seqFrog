@@ -302,8 +302,8 @@ def pull_matches_fast():
 
 
 def rsem():
-    full_name = f"{contig_file}_matches.fasta"
-    subprocess.run(f"{rsem_loc} --transcripts {full_name} --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_outdir", shell=True)
+    full_name = f"{blast_file}_matches.fasta"
+    subprocess.run(f"{rsem_loc} --transcripts {full_name} --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
 
 
 
