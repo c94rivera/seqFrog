@@ -307,6 +307,7 @@ def rsem():
 
 
     #below works, but not the above wrapper
+    #CANT HAVE ALL THE BRACKETS IN THE name
       #/home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl --transcripts /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/mergedassemblies_matches.fasta --seqType fq --left /home/litoria/Desktop/media/Christopher_thesis/1/forward_paired.fastq.gz --right /home/litoria/Desktop/media/Christopher_thesis/1/reverse_paired.fastq.gz --est_method RSEM --aln_method bowtie2 --prep_reference --output_dir rsem_outdir
 #
 #
