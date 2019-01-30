@@ -306,16 +306,8 @@ def rsem():
     subprocess.run(f"{rsem_loc} --transcripts {full_name} --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
 
 
-
-      # /home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl \
-      # --transcripts /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/mergedassemblies_matches.fasta \
-      # --seqType fq \
-      # --left /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/c_percarinatus_gonad_forw.fastq.gz \
-      # --right /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/c_percarinatus_gonad_rev.fastq.gz \
-      # --est_method RSEM \
-      # --aln_method bowtie2 \
-      # --prep_reference \
-      # --output_dir rsem_outdir
+    #below works, but not the above wrapper
+      #/home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl --transcripts /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/mergedassemblies_matches.fasta --seqType fq --left /home/litoria/Desktop/media/Christopher_thesis/1/forward_paired.fastq.gz --right /home/litoria/Desktop/media/Christopher_thesis/1/reverse_paired.fastq.gz --est_method RSEM --aln_method bowtie2 --prep_reference --output_dir rsem_outdir
 #
 #
 #

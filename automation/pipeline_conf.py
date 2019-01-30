@@ -17,7 +17,8 @@ def main():
     # transrate()
     # annotation()
     # pull_matches()
-    pull_matches_fast()
+    # pull_matches_fast()
+    rsem()
 
 if __name__ == '__main__':
     main()
@@ -33,6 +34,8 @@ spades_bin = "/home/litoria/Assembly_Tools/SPAdes-3.12.0/bin/spades.py" #locatio
 transrate_bin = "/home/litoria/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate"
 blast_bin = "/home/litoria/NCBI_Tools/ncbi-blast-2.7.1+/bin/blastn"
 trimmomatic_jar = "/home/litoria/Assembly_Tools/Trimmomatic-0.38/trimmomatic-0.38.jar"
+rsem_loc = '/home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl'
+bowtie_bin = "bowtie2"
 
 #custom blast library location
 custom_location = "/home/litoria/Assembly_Tools/blastn_mitochondria"
