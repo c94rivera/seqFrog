@@ -17,22 +17,15 @@ import pipeline_conf
 import ntpath
 from pull_seqs_from_assembly import get_seqs
 from multi import compare, get_seqs_fast
-from remove_spaces import remove_spaces
 
 
 
 #change names of all imported variables
-# if pipeline_conf.forwreads:
-#     forwreads = pipeline_conf.forwreads
-#
-# if pipeline_conf.revreads:
-#     revreads = pipeline_conf.revreads
 if pipeline_conf.forwreads:
     forwreads = pipeline_conf.forwreads
 
 if pipeline_conf.revreads:
     revreads = pipeline_conf.revreads
-
 
 if pipeline_conf.megahit_bin:
     megahit_bin = pipeline_conf.megahit_bin
@@ -64,7 +57,9 @@ if pipeline_conf.rsem_loc:
 if pipeline_conf.bowtie_bin:
     bowtie_bin = pipeline_conf.bowtie_bin
 
+#grab number of cpu cores for later use
 coreamount = int(os.cpu_count())
+
 contig_file = []
 ########## Functions
 
