@@ -21,17 +21,11 @@ from multi import compare, get_seqs_fast
 
 
 #change names of all imported variables
-# if pipeline_conf.forwreads:
-#     forwreads = pipeline_conf.forwreads
-#
-# if pipeline_conf.revreads:
-#     revreads = pipeline_conf.revreads
 if pipeline_conf.forwreads:
     forwreads = pipeline_conf.forwreads
 
 if pipeline_conf.revreads:
     revreads = pipeline_conf.revreads
-
 
 if pipeline_conf.megahit_bin:
     megahit_bin = pipeline_conf.megahit_bin
@@ -63,7 +57,9 @@ if pipeline_conf.rsem_loc:
 if pipeline_conf.bowtie_bin:
     bowtie_bin = pipeline_conf.bowtie_bin
 
+#grab number of cpu cores for later use
 coreamount = int(os.cpu_count())
+
 contig_file = []
 ########## Functions
 
@@ -300,28 +296,13 @@ def pull_matches_fast():
     keepcolumn = "1,2,3,4,5"
     get_seqs_fast(contig_file, blast_file, full_name, [int(x) for x in comparecolumn], [int(x) for x in keepcolumn.split(",")])
 
-
 def rsem():
-    full_name = f"{blast_file}_matches.fasta"
-    subprocess.run(f"{rsem_loc} --transcripts {full_name} --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
+    with fileinput.FileInput(f"{blast_file}_matches.fasta", inplace=True, backup='.bak') as file:
+        for line in file:
+            print(line.replace(" ", "_").replace("\t", "__"), end='')
+        os.rename(f"{blast_file}_matches.fasta", "matches.fasta")
 
+    subprocess.run(f"{rsem_loc} --transcripts matches.fasta --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
 
-
-      # /home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl \
-      # --transcripts /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/mergedassemblies_matches.fasta \
-      # --seqType fq \
-      # --left /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/c_percarinatus_gonad_forw.fastq.gz \
-      # --right /home/litoria/Desktop/media/genomes/Corytophanes_percarinatus_unpublished/gonad/c_percarinatus_gonad_rev.fastq.gz \
-      # --est_method RSEM \
-      # --aln_method bowtie2 \
-      # --prep_reference \
-      # --output_dir rsem_outdir
-#
-#
-#
-'''
-run rsem
-output expression files
-'''
 
 ########## End of Functions
