@@ -4,11 +4,14 @@
 #     search for uniprot gene id
 #     group all lines with same gene id and perform function to that group
 # print entire line to new file
+# compare both files for genes and if a gene doesn't exist in one file print it with 0's so it can still be compared
+#     use column with the blast matches?
+#     use uniprot id?
 
 import pandas as pd
 
 #open RSEM file into dataframe
-data = pd.read_csv('/home/christopher/Documents/1RSEM.genes.results', sep="\t")
+data = pd.read_csv('/home/christopher/Documents/RSEM.genes.results', sep="\t")
 
 #split 'gene_id' column into contig and uniprot id
 new = data['gene_id'].str.split('__', 5, expand=True)
@@ -28,17 +31,24 @@ uniques
 #create separate dataframes for each uniprot id and place all the dataframes into a dictionary
 diff_uniprot = dict(tuple(data.groupby('uniprot_id')))
 
-###not working
-new_df = pd.DataFrame()
+#create empty dataframe
+evalue_df = pd.DataFrame()
+
+#run a loop through all of the uniprot ids and take the entry with the lowest e-value(can be more than one)
+#and append to the empty dataframe
 for i in uniques:
     df2 = diff_uniprot[i]
     temp = df2[df2['e-value'] == min(df2['e-value'])]
-    new_df.append(temp, ignore_index=True)
-new_df
+    evalue_df = evalue_df.append(temp, ignore_index=True)
+evalue_df
 
-df2 = diff_uniprot[uniques[1]]
-df2
-###
+tpm_df = pd.DataFrame()
+
+for i in uniques:
+    df2 = diff_uniprot[i]
+    temp = df2[df2['TPM'] == max(df2['TPM'])]
+    tpm_df = tpm_df.append(temp, ignore_index=True)
+tpm_df
 
 
 new_df = df2[df2['e-value'] == min(df2['e-value'])]
