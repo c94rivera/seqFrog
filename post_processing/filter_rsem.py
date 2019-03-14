@@ -84,19 +84,26 @@ for i in uniques2:
 tpm_df2
 
 #find uniprot ids are not present in both dataframes and create empty entries
-type(uniques)
+##boolean
 np.in1d(uniques, uniques2)
 np.in1d(uniques2, uniques)
 
-np.setdiff1d(uniques, uniques2)
-np.setdiff1d(uniques2, uniques)
+#actual identifiers for ones missing
+s1 = np.setdiff1d(uniques, uniques2)
+s2 = np.setdiff1d(uniques2, uniques)
+s1
+
+#iterate through list of missing values and add to the opposite dictionary
+for i in s1:
+    # {'key': 'value'}
+    diff_uniprot2[i] = None
+diff_uniprot2
+
+for i in s2:
+    diff_uniprot[i] = None
+diff_uniprot
 
 
-
-i_df = pd.DataFrame()
-for i in uniques:
-    if i not in uniques2:
-        i_df = i_df.append(i, ignore_index=True)
-i_df
-
-if not evalue_df['uniprot_id'].isin(evalue_df2[]):
+#find common values between files
+s3 = list(set(uniques) & set(uniques2))
+s3
