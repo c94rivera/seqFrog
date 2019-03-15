@@ -36,13 +36,18 @@ data2['e-value'] = new2[4]
 #input the 6th entry from the split column into new column named blast_match
 data['blast_match'] = new[5]
 data2['blast_match'] = new2[5]
-
 data2
+data
+
 #make array of all unique uniprot ids
 uniques = data.uniprot_id.unique()
 uniques
 uniques2 = data2.uniprot_id.unique()
 uniques2
+
+#find uniprot_ids not present in both dataframes actual
+s1 = np.setdiff1d(uniques, uniques2)
+s2 = np.setdiff1d(uniques2, uniques)
 
 #create separate dataframes for each uniprot id and place all the dataframes into a dictionary
 diff_uniprot = dict(tuple(data.groupby('uniprot_id')))
@@ -83,27 +88,57 @@ for i in uniques2:
     tpm_df2 = tpm_df2.append(temp, ignore_index=True)
 tpm_df2
 
-#find uniprot ids are not present in both dataframes and create empty entries
-##boolean
-np.in1d(uniques, uniques2)
-np.in1d(uniques2, uniques)
+#remove duplicates of same uniprot_id in DataFrame
+evalue_df = evalue_df.drop_duplicates(['uniprot_id'])
+evalue_df
 
-#actual identifiers for ones missing
-s1 = np.setdiff1d(uniques, uniques2)
-s2 = np.setdiff1d(uniques2, uniques)
-s1
+evalue_df2 = evalue_df2.drop_duplicates(['uniprot_id'])
+evalue_df2
 
-#iterate through list of missing values and add to the opposite dictionary
-for i in s1:
-    # {'key': 'value'}
-    diff_uniprot2[i] = None
-diff_uniprot2
+#add missing values from between the two dataframes
+# for i in s2:
+#     diff_uniprot[i] = diff_uniprot.get(i, ['', '', '', '', '', '', '', i, '', ''])
+#
+# for i in s1:
+#     diff_uniprot2[i] = diff_uniprot2.get(i, ['', '', '', '', '', '', '', i, '', ''])
 
-for i in s2:
-    diff_uniprot[i] = None
-diff_uniprot
+#create dataframe with missing uniprot uniprot_ids
+missing_in_2 = np.setdiff1d(uniques, uniques2)
+missing_in_1 = np.setdiff1d(uniques2, uniques)
+
+missing2 = pd.DataFrame(missing_in_2, columns=['uniprot_id'])
+missing1 = pd.DataFrame(missing_in_1, columns=['uniprot_id'])
+
+#add missing uniprot ids to dataframe
+evalue_df = evalue_df.append((missing1), ignore_index=True)
+evalue_df = evalue_df.append((missing2), ignore_index=True) #maybe dont ignore index?
+
+missing2 = pd.concat([pd.DataFrame([i], columns=['uniprot_id']) for i in missing_in_2], ignore_index=True)
+evalue_df = evalue_df.append(missing2, ignore_index=True)
+
+#reorganize the columns
+cols = ['gene_id', 'transcript_id(s)', 'length', 'effective_length', 'expected_count', 'TPM', 'FPKM', 'gene_id', 'uniprot_id', 'e-value', 'blast_match']
+evalue_df = evalue_df[cols]
+evalue_df
+# 'gene_id', 'transcript_id(s)', 'length', 'effective_length', 'expected_count', 'TPM', 'FPKM', 'gene_id', 'uniprot_id', 'e-value', 'blast_match'
 
 
 #find common values between files
 s3 = list(set(uniques) & set(uniques2))
 s3
+#find uniprot_ids not present in both dataframes actual
+merged = pd.merge(evalue_df, evalue_df2, indicator=True, how='outer')
+merged[merged['_merge'] == 'right_only']
+
+#print dataframes to file
+evalue_df.to_csv('~/Documents/evalue_df.csv', sep='\t', index=False)
+
+
+
+
+
+
+
+#trash for testing!!!
+# diff_uniprot['Q9NAX4']
+# list(diff_uniprot.keys())
