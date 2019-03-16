@@ -14,8 +14,8 @@ import pandas as pd
 import numpy as np
 
 #open RSEM file into dataframe
-data1 = pd.read_csv('/home/litoria/Desktop/media/Christopher_thesis/1/rsem_outdir/RSEM.genes.results', sep="\t")
-data2 = pd.read_csv('/home/litoria/Desktop/media/Christopher_thesis/2/rsem_outdir/RSEM.genes.results', sep="\t")
+data1 = pd.read_csv('/home/christopher/Documents/1RSEM.genes.results', sep="\t")
+data2 = pd.read_csv('/home/christopher/Documents/2RSEM.genes.results', sep="\t")
 
 #split 'gene_id' column into contig and uniprot id
 new = data1['gene_id'].str.split('__', 5, expand=True)
@@ -36,6 +36,10 @@ data2['e-value'] = new2[4]
 #input the 6th entry from the split column into new column named blast_match
 data1['blast_match'] = new[5]
 data2['blast_match'] = new2[5]
+
+#remove data with 0 effective effective_length
+data1 = data1[data1.effective_length != 0]
+data2 = data2[data2.effective_length != 0]
 
 #remove uniprot_ids not found in opposite dataframe
 common = data1.merge(data2,on=['uniprot_id'])
@@ -59,10 +63,6 @@ diff_uniprot2 = dict(tuple(data2.groupby('uniprot_id')))
 #make array of all unique uniprot ids
 uniques = data1.uniprot_id.unique()
 uniques2 = data2.uniprot_id.unique()
-
-#find uniprot_ids not present in both dataframes actual
-s1 = np.setdiff1d(uniques, uniques2)
-s2 = np.setdiff1d(uniques2, uniques)
 
 #create empty dataframe
 evalue_df = pd.DataFrame()
