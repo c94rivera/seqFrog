@@ -73,11 +73,17 @@ evalue_df2 = pd.DataFrame()
 for i in uniques:
     data_temp = diff_uniprot[i]
     temp = data_temp[data_temp['e-value'] == min(data_temp['e-value'])]
+    if temp['e-value'].duplicated == True:
+        temp2 = temp[temp['effective_length'] == max(temp['effective_length'])]
+
     evalue_df = evalue_df.append(temp, ignore_index=True)
 
 for i in uniques2:
     data_temp = diff_uniprot2[i]
     temp = data_temp[data_temp['e-value'] == min(data_temp['e-value'])]
+    if temp['e-value'].duplicated == True:
+        temp2 = temp[temp['effective_length'] == max(temp['effective_length'])]
+
     evalue_df2 = evalue_df2.append(temp, ignore_index=True)
 
 #remove duplicates of same uniprot_id in DataFrame
