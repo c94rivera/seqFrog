@@ -123,16 +123,21 @@ for i in uniques2:
 #reorganize the columns
 # 'gene_id', 'transcript_id(s)', 'length', 'effective_length', 'expected_count', 'TPM', 'FPKM', 'gene_id', 'uniprot_id', 'e-value', 'blast_match'
 cols = ['gene_id', 'transcript_id(s)', 'length', 'effective_length', 'expected_count', 'TPM', 'FPKM', 'gene_id', 'uniprot_id', 'e-value', 'blast_match']
+
 evalue_df = evalue_df[cols]
 evalue_df2 = evalue_df2[cols]
+
+evalue_df.rename(index=str, columns={"gene_id": "contigs", "uniprot_id": "gene_id",}, inplace=True)
+evalue_df2.rename(index=str, columns={"gene_id": "contigs", "uniprot_id": "gene_id",}, inplace=True)
 
 #remove duplicated columns
 evalue_df = evalue_df.loc[:,~evalue_df.columns.duplicated()]
 evalue_df2 = evalue_df2.loc[:,~evalue_df2.columns.duplicated()]
 
 #sort Columns
-evalue_df = evalue_df.sort_values(by=['uniprot_id'])
-evalue_df2 = evalue_df2.sort_values(by=['uniprot_id'])
+evalue_df = evalue_df.sort_values(by=['gene_id'])
+evalue_df2 = evalue_df2.sort_values(by=['gene_id'])
+
 #find common values between files
 # s3 = list(set(uniques) & set(uniques2))
 # s3
