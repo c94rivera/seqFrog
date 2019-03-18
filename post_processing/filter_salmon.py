@@ -19,12 +19,17 @@ data2['Name'] = new2[0]
 data1['uniprot_id'] = new[1]
 data2['uniprot_id'] = new2[1]
 
+#input the 5th entry from the split column into new column named blast match
+data1['blast_match'] = new[5]
+data2['blast_match'] = new2[5]
+data1
+
 #copy uniprot id to new column
 data1['transcript_id'] = data1['uniprot_id']
 data2['transcript_id'] = data2['uniprot_id']
 
 #sort columns
-cols = ['Name','uniprot_id', 'transcript_id', 'Length', 'EffectiveLength', 'TPM', 'NumReads']
+cols = ['Name','uniprot_id', 'transcript_id', 'Length', 'EffectiveLength', 'TPM', 'NumReads', 'blast_match']
 
 data1 = data1[cols]
 data2 = data2[cols]
@@ -41,7 +46,7 @@ data1.drop('temp_count', axis=1, inplace=True)
 data2['temp_count'] = data2.groupby(['transcript_id']).cumcount()+1
 data2['transcript_id'] = data2.transcript_id.map(str) + "." + data2.temp_count.map(str)
 data2.drop('temp_count', axis=1, inplace=True)
-data2
+
 
 
 

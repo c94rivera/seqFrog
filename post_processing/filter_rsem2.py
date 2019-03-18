@@ -19,12 +19,17 @@ data2['gene_id'] = new2[0]
 data1['uniprot_id'] = new[1]
 data2['uniprot_id'] = new2[1]
 
+#input the 5th entry from the split column into new column named blast match
+data1['blast_match'] = new[5]
+data2['blast_match'] = new2[5]
+
+
 #copy uniprot id to new column
 data1['transcript_id'] = data1['uniprot_id']
 data2['transcript_id'] = data2['uniprot_id']
 
 #sort columns
-cols = ['gene_id','uniprot_id', 'transcript_id', 'length', 'effective_length', 'expected_count', 'TPM', 'FPKM']
+cols = ['gene_id','uniprot_id', 'transcript_id', 'length', 'effective_length', 'expected_count', 'TPM', 'FPKM', 'blast_match']
 
 data1 = data1[cols]
 data2 = data2[cols]
