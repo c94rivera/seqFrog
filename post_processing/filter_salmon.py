@@ -63,5 +63,5 @@ data2
 # unique_in_2.to_csv('~/Documents/unique_in_2.csv', sep='\t', index=False)
 
 
-data1.to_csv('~/Documents/epithelium1.quants.sf', sep='\t', index=False)
-data2.to_csv('~/Documents/epithelium2.quants.sf', sep='\t', index=False)
+data1.to_csv('~/Documents/epithelium1.quant.sf', sep='\t', index=False)
+data2.to_csv('~/Documents/epithelium2.quant.sf', sep='\t', index=False)
