@@ -15,8 +15,11 @@ from time import sleep
 import sys
 import pipeline_conf
 import ntpath
+import pandas as pd
+import numpy as np
 from pull_seqs_from_assembly import get_seqs
 from multi import compare, get_seqs_fast
+from filter_rsem import filter_rsem
 
 
 
@@ -303,6 +306,7 @@ def rsem():
         os.rename(f"{blast_file}_matches.fasta", "matches.fasta")
 
     subprocess.run(f"{rsem_loc} --transcripts matches.fasta --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
+    filter_rsem("/transrate_results/RSEM.genes.results")
 
 
 ########## End of Functions
