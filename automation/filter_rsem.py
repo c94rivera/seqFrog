@@ -4,40 +4,40 @@ import pandas as pd
 import numpy as np
 
 
-def filter_rsem(expressdata1, expressdata2=[]):
+def filter_rsem(expressdata1, expressdata2=None):
     #open RSEM file into dataframe
     data1 = pd.read_csv(expressdata1, sep="\t")
-    data2 = pd.read_csv(expressdata2, sep="\t")
+
 
     #split 'gene_id' column into contig and uniprot id
     new = data1['gene_id'].str.split('__', 5, expand=True)
-    new2 = data2['gene_id'].str.split('__', 5, expand=True)
+
 
     #input the first entry from the split column into new column named gene_id
     data1['gene_id'] = new[0]
-    data2['gene_id'] = new2[0]
+
 
     #input the second entry from the split column into new column named uniprot_id
     data1['uniprot_id'] = new[1]
-    data2['uniprot_id'] = new2[1]
+
 
     #input the 5th entry from the split column into new column named blast match
     data1['blast_match'] = new[5]
-    data2['blast_match'] = new2[5]
+
 
 
     #copy uniprot id to new column
     data1['transcript_id'] = data1['uniprot_id']
-    data2['transcript_id'] = data2['uniprot_id']
+
 
     #sort columns
     cols = ['gene_id','uniprot_id', 'transcript_id', 'length', 'effective_length', 'expected_count', 'TPM', 'FPKM', 'blast_match']
 
     data1 = data1[cols]
-    data2 = data2[cols]
+
 
     data1.sort_values(by=['transcript_id'])
-    data2.sort_values(by=['transcript_id'])
+
 
 
     #add increments to duplicate uniprot id
@@ -45,9 +45,6 @@ def filter_rsem(expressdata1, expressdata2=[]):
     data1['transcript_id'] = data1.transcript_id.map(str) + "." + data1.temp_count.map(str)
     data1.drop('temp_count', axis=1, inplace=True)
 
-    data2['temp_count'] = data2.groupby(['transcript_id']).cumcount()+1
-    data2['transcript_id'] = data2.transcript_id.map(str) + "." + data2.temp_count.map(str)
-    data2.drop('temp_count', axis=1, inplace=True)
 
 
 
@@ -70,7 +67,35 @@ def filter_rsem(expressdata1, expressdata2=[]):
 
 
     data1.to_csv('data1.genes.results', sep='\t', index=False)
-    data2.to_csv('data2.genes.results', sep='\t', index=False)
+
+    #data2 lines
+    if expressdata2:
+        data2 = pd.read_csv(expressdata2, sep="\t")
+
+        new2 = data2['gene_id'].str.split('__', 5, expand=True)
+
+        data2['gene_id'] = new2[0]
+
+        data2['uniprot_id'] = new2[1]
+
+        data2['blast_match'] = new2[5]
+
+        data2['transcript_id'] = data2['uniprot_id']
+
+        cols = ['gene_id','uniprot_id', 'transcript_id', 'length', 'effective_length', 'expected_count', 'TPM', 'FPKM', 'blast_match']
+
+        data2 = data2[cols]
+
+        data2.sort_values(by=['transcript_id'])
+
+        data2['temp_count'] = data2.groupby(['transcript_id']).cumcount()+1
+
+        data2['transcript_id'] = data2.transcript_id.map(str) + "." + data2.temp_count.map(str)
+
+        data2.drop('temp_count', axis=1, inplace=True)
+
+        data2.to_csv('data2.genes.results', sep='\t', index=False)
+
 
 def main():
     filter_rsem(expressdata1, expressdata2)
