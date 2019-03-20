@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 
-def filter_rsem2(expressdata1, expressdata2=[]):
+def filter_rsem(expressdata1, expressdata2=[]):
     #open RSEM file into dataframe
     data1 = pd.read_csv(expressdata1, sep="\t")
     data2 = pd.read_csv(expressdata2, sep="\t")
@@ -73,7 +73,7 @@ def filter_rsem2(expressdata1, expressdata2=[]):
     data2.to_csv('data2.genes.results', sep='\t', index=False)
 
 def main():
-    filter_rsem2(expressdata1, expressdata2)
+    filter_rsem(expressdata1, expressdata2)
     print ("Output is data1.genes.results/data2.genes.results")
 
 
