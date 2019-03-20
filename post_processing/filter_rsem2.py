@@ -71,3 +71,32 @@ def filter_rsem2(expressdata1, expressdata2=[]):
 
     data1.to_csv('data1.genes.results', sep='\t', index=False)
     data2.to_csv('data2.genes.results', sep='\t', index=False)
+
+def main():
+    filter_rsem2(expressdata1, expressdata2)
+    print ("Output is data1.genes.results/data2.genes.results")
+
+
+
+#grab arguments from console and pass them to python script
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+
+    ####flags for the required inputs
+    req_grp = parser.add_argument_group(title='required arguments')
+    req_grp.add_argument("-1", "--expression1", dest = "expression1", required=True, help="Expression data set 1")
+    req_grp.add_argument("-2", "--expression2", dest = "expression2", required=True, help="Expression data set 2")
+    ####end of flags for the required inputs
+
+    args = parser.parse_args()
+
+    #assign variables from command line arguments
+    expressdata1 = args.expression1
+    expressdata2 = args.expression2
+
+    print(f"Dataset 1: {expressdata1}")
+    print(f"Dataset 2: {expressdata2}")
+
+    #run main program
+    main()
