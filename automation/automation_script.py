@@ -49,6 +49,9 @@ if pipeline_conf.trimmomatic_jar:
 if pipeline_conf.rsem_loc:
     rsem_loc = pipeline_conf.rsem_loc
 
+if pipeline_conf.salmon_bin:
+    salmon_bin = pipeline_conf.salmon_bin
+
 if pipeline_conf.bowtie_bin:
     bowtie_bin = pipeline_conf.bowtie_bin
 
@@ -301,5 +304,16 @@ def rsem():
     rsem_file = (os.getcwd() + "/rsem_results/RSEM.genes.results")
     filter_rsem(rsem_file)
 
+def salmon():
+    with fileinput.FileInput(f"{blast_file}_matches.fasta", inplace=True, backup='.bak') as file:
+        for line in file:
+            print(line.replace(" ", "_").replace("\t", "__"), end='')
+        os.rename(f"{blast_file}_matches.fasta", "matches.fasta")
+
+    index = f"{species_name}{tissue_type}_index"
+    index
+
+    subprocess.run(f"{salmon_bin} index -t matches.fasta -i {index}")
+    subprocess.run(f"{salmon_bin} quant -i {index} -l A -1 {forwreads} -2 {revreads} -p {coreamount} -o quants/{species_name}{tissue_type}")
 
 ########## End of Functions

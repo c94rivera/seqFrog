@@ -13,6 +13,7 @@ transrate_bin = '/home/phyllobates/Assembly_Tools/transrate-1.0.3-linux-x86_64/t
 trimmomatic_jar = '/home/phyllobates/Assembly_Tools/Trimmomatic-0.38/trimmomatic-0.38.jar' #trimmomatic binary
 #rsem_loc should be the location of the "align_and_estimate_abundance.pl" script within your Trinity install
 rsem_loc = '/home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl' #rsem location
+salmon_bin = 'salmon'
 bowtie_bin = "bowtie2" #bowtie2 binary
 #----
 blast_bin = '/home/phyllobates/NCBI_Tools/ncbi-blast-2.7.1+/bin/blastp' #blast binary; use blastn for nucleotide and blastp for protein annotation
