@@ -12,41 +12,30 @@ def filter_rsem(expressdata1, expressdata2=None):
     #split 'gene_id' column into contig and uniprot id
     new = data1['gene_id'].str.split('__', 5, expand=True)
 
-
     #input the first entry from the split column into new column named gene_id
     data1['gene_id'] = new[0]
 
-
     #input the second entry from the split column into new column named uniprot_id
     data1['uniprot_id'] = new[1]
-
 
     #input the 5th entry from the split column into new column named blast match
     data1['blast_match'] = new[5]
 
 
-
     #copy uniprot id to new column
     data1['transcript_id'] = data1['uniprot_id']
-
 
     #sort columns
     cols = ['gene_id','uniprot_id', 'transcript_id', 'length', 'effective_length', 'expected_count', 'TPM', 'FPKM', 'blast_match']
 
     data1 = data1[cols]
 
-
     data1.sort_values(by=['transcript_id'])
-
-
 
     #add increments to duplicate uniprot id
     data1['temp_count'] = data1.groupby(['transcript_id']).cumcount()+1
     data1['transcript_id'] = data1.transcript_id.map(str) + "." + data1.temp_count.map(str)
     data1.drop('temp_count', axis=1, inplace=True)
-
-
-
 
     # #remove uniprot_ids not found in opposite dataframe
     # common = data1.merge(data2,on=['uniprot_id'])
