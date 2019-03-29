@@ -1,12 +1,3 @@
-'''
-Functions to add include:
-    - if foldername.txt file is not present skip makefolders() and fastqdump() and ask for the forward and reverse reads (so script can be run on individual data sets not published to NCBI)
-    - rework subprocess functions
-    - run the pull seq python script within this scripts
-    - seperate out each function of this file into their own files for better modularity???
-'''
-
-
 import os
 import shutil
 import glob
