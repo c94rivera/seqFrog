@@ -23,14 +23,14 @@ blast_name = "uniprot_db" #name of custom blast library; name in db folder
 #change line below to pick which modules to run
 def main():
     manual_input()
-    # trimmomatic()
-    # megahit1()
-    # abyss()
-    # spades()
-    # transrate()
-    # annotation()
-    # pull_matches() #use only if pull_matches_fast doesn't work
-    # pull_matches_fast()
+    trimmomatic()
+    megahit()
+    abyss()
+    spades()
+    transrate()
+    annotation()
+    pull_matches() #use only if pull_matches_fast doesn't work
+    pull_matches_fast()
     rsem()
 
 if __name__ == '__main__':
