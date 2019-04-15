@@ -298,9 +298,8 @@ def rsem():
     with fileinput.FileInput(f"{blast_file}_matches.fasta", inplace=True, backup='.bak') as file:
         for line in file:
             print(line.replace(" ", "_").replace("\t", "__"), end='')
-        os.rename(f"{blast_file}_matches.fasta", "matches.fasta")
 
-    subprocess.run(f"{rsem_loc} --transcripts matches.fasta --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
+    subprocess.run(f"{rsem_loc} --transcripts {blast_file}_matches.fasta --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
     rsem_file = (os.getcwd() + "/rsem_results/RSEM.genes.results")
     filter_rsem(rsem_file)
 
@@ -308,7 +307,6 @@ def salmon():
     with fileinput.FileInput(f"{blast_file}_matches.fasta", inplace=True, backup='.bak') as file:
         for line in file:
             print(line.replace(" ", "_").replace("\t", "__"), end='')
-        os.rename(f"{blast_file}_matches.fasta", "matches.fasta")
 
     index = f"{species_name}{tissue_type}_index"
     index
