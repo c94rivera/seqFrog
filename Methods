@@ -11,7 +11,7 @@
 	b. download Uniprot library
 6. Annotate merged assemblies
 7. Pull out annotation matches
-8. Expression analysis with RSEM
+8. Expression analysis with RSEM/Salmon
 	1.  remove spaces
 	2.  run analysis
 
@@ -54,6 +54,7 @@ def main():
     # pull_matches() #use only if pull_matches_fast doesn't work
     pull_matches_fast()
     rsem()
+		salmon()
 ```
 
 ### Pipeline Initiation
@@ -195,8 +196,8 @@ b. Once spaces are removed RSEM can be called using scripts included with Trinit
 
 # Notes
 add links to all programs at the beginning of their sections!
-output transrate assembly scores at the end so they can verify quality
-
+add salmon to step 8
+renumber steps so they match the figure in the paper
 
 pull_seqs_from_assembly.py
 We pulled blast columns 1, 2, 3, 10, and 13 (counting starts at 0). These correspond to subject acc.ver (protein accession ID), % identity, alignment length, e-value, and subject title (protein name and misc. info) respectively. Each sequence was then printed with the contig ID and blast columns on the same line with the sequence amino acids on the following line. All matches were printed with their respective contig/sequence and duplicates matched to the same contig were removed.

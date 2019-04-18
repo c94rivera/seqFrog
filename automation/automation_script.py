@@ -49,6 +49,9 @@ if pipeline_conf.trimmomatic_jar:
 if pipeline_conf.rsem_loc:
     rsem_loc = pipeline_conf.rsem_loc
 
+if pipeline_conf.salmon_bin:
+    salmon_bin = pipeline_conf.salmon_bin
+
 if pipeline_conf.bowtie_bin:
     bowtie_bin = pipeline_conf.bowtie_bin
 
@@ -133,7 +136,7 @@ Potentially add function here to grab SRX number by grabbing the last section of
 #run fastqdump on specific srx number
 def trimmomatic():
     global forwreads, revreads, trimmomatic_jar
-    subprocess.run(f"java -jar {trimmomatic_jar} PE -threads 10 -phred33 {forwreads} {revreads} forward_paired.fastq.gz forward_unpaired.fastq.gz reverse_paired.fastq.gz reverse_unpaired.fastq.gz ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36", shell=True)
+    subprocess.run(f"java -jar {trimmomatic_jar} PE -threads {coreamount} -phred33 {forwreads} {revreads} forward_paired.fastq.gz forward_unpaired.fastq.gz reverse_paired.fastq.gz reverse_unpaired.fastq.gz ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36", shell=True)
     forwreads = (os.getcwd() +"/forward_paired.fastq.gz")
     revreads = (os.getcwd() + "/reverse_paired.fastq.gz")
 
@@ -145,7 +148,7 @@ def fastqdump(srx):
 
 
 #run megahit in single or paired end mode depending on amount of input files found
-def megahit1():     #use when manually inputing files
+def megahit():     #use when manually inputing files
     global megahit_bin, forwreads, revreads, contig_file
     if len(glob.glob("megahit_assembly")) >= 1:
         print("Megahit assembly folder already present.\nSkipping Megahit Assembly")
@@ -163,7 +166,7 @@ def megahit1():     #use when manually inputing files
         contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
 
-def megahit():      #use when input files need to be automatically detected NOT working
+def megahit1():      #use when input files need to be automatically detected NOT working
     '''
     add section to automatically pick forward and reverse revreads
     -if 1.fasta or 1.fa or 1.fa.gz then forward reads, same for reverse
@@ -190,6 +193,8 @@ def abyss():
         os.chdir(os.getcwd() + "/abyss_assembly")
         subprocess.run(f"{abyss_bin} j={coreamount} k=59 name=abyss_run in='{forwreads} {revreads}'", shell=True)
         os.chdir(cur_dir)
+    contig_file = (os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa")
+
 
 
 def spades():
@@ -200,6 +205,8 @@ def spades():
 
     else:
         subprocess.run(f"{spades_bin} --only-assembler -k 59 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
+    contig_file = (os.getcwd() + "/spades_assembly/contigs.fasta")
+
 
 
 #combine all contig outputs with transrate
@@ -295,11 +302,20 @@ def rsem():
     with fileinput.FileInput(f"{blast_file}_matches.fasta", inplace=True, backup='.bak') as file:
         for line in file:
             print(line.replace(" ", "_").replace("\t", "__"), end='')
-        os.rename(f"{blast_file}_matches.fasta", "matches.fasta")
 
-    subprocess.run(f"{rsem_loc} --transcripts matches.fasta --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
+    subprocess.run(f"{rsem_loc} --transcripts {blast_file}_matches.fasta --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
     rsem_file = (os.getcwd() + "/rsem_results/RSEM.genes.results")
     filter_rsem(rsem_file)
 
+def salmon():
+    with fileinput.FileInput(f"{blast_file}_matches.fasta", inplace=True, backup='.bak') as file:
+        for line in file:
+            print(line.replace(" ", "_").replace("\t", "__"), end='')
+
+    index = f"{species_name}{tissue_type}_index"
+    index
+
+    subprocess.run(f"{salmon_bin} index -t matches.fasta -i {index}")
+    subprocess.run(f"{salmon_bin} quant -i {index} -l A -1 {forwreads} -2 {revreads} -p {coreamount} -o quants/{species_name}{tissue_type}")
 
 ########## End of Functions
