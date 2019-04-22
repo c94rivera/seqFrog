@@ -19,4 +19,5 @@ Download the repository to your computer. The following programs must be install
 * [RSEM](https://deweylab.github.io/RSEM/)
 * [Salmon](https://combine-lab.github.io/salmon/)
 * [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+* [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
 
