@@ -29,6 +29,7 @@ def main():
     spades()
     transrate()
     annotation()
+    blastx()
     pull_matches() #use only if pull_matches_fast doesn't work
     pull_matches_fast()
     rsem()
