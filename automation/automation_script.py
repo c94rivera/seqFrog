@@ -54,6 +54,8 @@ if pipeline_conf.salmon_bin:
 
 if pipeline_conf.bowtie_bin:
     bowtie_bin = pipeline_conf.bowtie_bin
+if pipeline_conf.evalue:
+    evalue = pipeline_conf.evalue
 
 #grab number of cpu cores for later use
 coreamount = int(os.cpu_count())
@@ -275,7 +277,7 @@ def blastn():
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        subprocess.run(f"{blast_bin}/bin/blastn -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
+        subprocess.run(f"{blast_bin}/bin/blastn -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
         blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
         shutil.move(blast_file, wd)
         os.chdir(wd)
@@ -297,7 +299,7 @@ def blastp():
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        subprocess.run(f"{blast_bin}/bin/blastp -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
+        subprocess.run(f"{blast_bin}/bin/blastp -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
         blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
         shutil.move(blast_file, wd)
         os.chdir(wd)
@@ -317,7 +319,7 @@ def blastx():
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 1e-10 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads {coreamount}", shell=True)
+        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads {coreamount}", shell=True)
         blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
         shutil.move(blast_file, wd)
         os.chdir(wd)

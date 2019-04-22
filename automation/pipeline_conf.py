@@ -19,6 +19,7 @@ bowtie_bin = "bowtie2" #bowtie2 binary
 blast_bin = '/home/phyllobates/NCBI_Tools/ncbi-blast-2.7.1+/'
 custom_location = '/home/phyllobates/annotation_libraries/Uniprot_library' #custom blast library location
 blast_name = "uniprot_db" #name of custom blast library; name in db folder
+evalue = "1e-10"
 
 #change line below to pick which modules to run
 def main():
