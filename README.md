@@ -21,6 +21,7 @@ Download the repository to your computer. The following programs must be install
 * [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
 * [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
 
+---
 ## Methods
 1. Assess quality of reads with FastQC (manually)
 2. Clean reads with Trimmomatic
