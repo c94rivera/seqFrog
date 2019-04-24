@@ -21,3 +21,196 @@ Download the repository to your computer. The following programs must be install
 * [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
 * [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
 
+## Methods
+1. Assess quality of reads with FastQC (manually)
+2. Clean reads with Trimmomatic
+3. De novo assembly of contigs:
+	* Megahit
+	* Abyss
+	* Spades
+4. Assess quality and merge transcriptome assemblies with Transrate
+5. Build annotation library
+	a. manually curate
+	b. download Uniprot library
+6. Annotate merged assemblies
+7. Pull out annotation matches
+8. Expression analysis with RSEM/Salmon
+	1.  remove spaces from identifiers
+	2.  run analysis
+
+## Prep-work
+1. Direct to all necessary binaries/libraries
+	* Background on file paths:
+		https://kb.iu.edu/d/acar
+
+2. Define steps that should be taken within seqFrog
+
+# Follow Along Guide
+### Prep-work
+1. Direct to all necessary binaries/libraries
+	* Open `seqFrog_conf.py` in text-editor of choice
+	* Put the full length path to all the required programs next to their similarly named variables in quotes `lines 11-24` (relative paths will not work!)
+		* if your programs are installed into system or $PATH variables you can just use the name used to call it in the terminal in quotes
+	* Put the full length path to the custom blast library being used (relative path will not work!)
+
+```python3
+megahit_bin = "megahit"
+abyss_bin = "abyss-pe"
+spades_bin = "/home/litoria/Assembly_Tools/SPAdes-3.12.0/bin/spades.py" #location of spades binary on system
+```
+
+
+2. Define steps that should be taken within pipeline
+	* Lines 28-40 can be commented out to exclude steps from the pipeline
+		* the pipeline is designed to be run from start to finish, however, individual steps can be run in some instances
+
+```python3
+def main():
+    manual_input() #must always be on
+    trimmomatic()
+    megahit1()
+    abyss()
+    spades()
+    transrate()
+    annotation()
+    # pull_matches() #use only if pull_matches_fast doesn't work
+    pull_matches_fast()
+    rsem()
+    salmon()
+```
+
+### seqFrog Initiation
+1. Open the folder you wish to work within (usually where the reads are located)
+2. Open a terminal window within this folder
+3. Call the `seqFrog_conf.py` file
+	this can be done by typing out the path to the file or dragging and dropping the file into the terminal
+4. Fill in required flags (detailed below)
+5. Fill in optional flags if desired or running only a portion of seqFrog
+6. Wait for output!
+
+#### Flags
+	Required input:
+		"-f" or "--forward-reads" = Forward Reads
+		"-r" or "--reverse-reads" = Reverse Reads
+
+	Optional input:
+		"-c" or "--contigs" = Contig file (used if skipping assemblies/assemblies already done)
+		"-b" or "-blast-file" = Blast file for comparison (used if skipping annotation within seqFrog/annotation already done)
+		"-sp" or "--species" = Species name for organism being analysed (used for naming of final output files)
+		"-t" or "--tissue" = Tissue type for organism being analysed (used for naming of final output files)
+
+	Do not use special symbols in file names or expression analysis will not function properly.
+
+#### Example
+```bash
+seqFrog_conf.py -f fwdreads.fastq -r revreads.fastq -sp Dendrobates_pumilio -t brain
+```
+---
+## Exact commands being run
+### 1. Assess quality of reads with FastQC
+
+In a terminal open an interactive FastQC window and select the transcriptome files (forward and reverse will need their own windows). Assess data for leftover adapters, low quality reads, and short reads.
+
+	~/Assembly_Tools/FastQC/fastqc
+
+### 2. Clean reads with Trimmomatic
+
+	java -jar {trimmomatic_jar} PE \
+	-threads 10 \
+	-phred33 {forwreads} {revreads} forward_paired.fastq.gz forward_unpaired.fastq.gz reverse_paired.fastq.gz reverse_unpaired.fastq.gz \
+	ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+
+
+### 3. Assemble contigs
+
+	a. Megahit
+		{megahit_bin} -1 {forward_reads} -2 {reverse_reads} -o {output_directory}
+
+	b. Abyss
+		{abyss_bin} j={coreamount} k=59 name=abyss_run in='{forwreads} {revreads}'
+
+	d. Spades
+		{spades_bin} --only-assembler -k 59 -1 {forwreads} -2 {revreads} -o spades_assembly"
+
+
+### 4.	Merge transcriptome assemblies
+
+Transrate will merge the transcriptome assemblies into one file for ease of analysis
+	__(confirm the exact method of combining and any quality assessing)__
+
+	{transrate_bin} --assembly {megahit_contig},{abyss_contig},{spades_contig} \
+	--merge-assemblies merged_assemblies
+
+### 5. Build uniprot/other annotation library
+__Paste and rewrite directions for creating custom annotation libraries__
+
+### 6. Annotate merged assemblies with uniprot library using blastp
+Blastn or Blastp will run annotation on the merged contigs file and output a blast file with the species and annotation library tagged to the beginning of the filename.
+
+	{blast_bin} -query {contig_file} \
+	-db {blast_name} \
+	-evalue 0.01 \
+	-max_target_seqs 1 \
+	-outfmt '7 std qseqid stitle sscinames staxids' \
+	-out {one}{two}[{blast_name}]{filename}_blast.table \
+	-num_threads 12"
+
+
+### 7. Pull out annotation matches
+The bundled file `pull_seqs_from_assembly.py` will pull the matches from the blast file and append the sequence from the contig file next to it.
+
+```python3
+	def get_seqs_fast(seqfile, blast_file, outfile, comparecolumn, keepcolumn):
+	    global proteinid, matchlist
+	    records = SeqIO.parse(seqfile, "fasta")
+	    matchlist=[]
+	    proteinid = []
+	    #return list with blast hits
+	    with open(blast_file,"rU") as f:
+	        reader = csv.reader(f,delimiter="\t")
+	        for row in reader:
+	            matchlist.append(row)
+	        print("Blast file successfully read")
+	    print("\nComparing contigs to Blast file...")
+
+	    #start multiprocessing based on number of cores and save output to results variable
+	    p = Pool(os.cpu_count())
+	    results = p.map(compare, records)
+
+	        #remove empty items in results variable
+	    tempResults = results
+	    tempResults[:] = [item for item in tempResults if item]
+
+	    #write final list of matches to file in fasta format
+	    print("Writing annotated contigs")
+	    with open(outfile, "w") as f:
+	        SeqIO.write(tempResults, f, "fasta")
+```
+
+### 8. RSEM
+https://github.com/deweylab/RSEM
+
+https://github.com/trinityrnaseq/trinityrnaseq/wiki
+
+a. The spaces in the annotated contig file must be replaced with a non-empty space in order for RSEM to output the full name in the output file.
+
+```python3
+import fileinput
+import sys
+
+with fileinput.FileInput(sys.argv[1], inplace=True, backup='.bak') as file:
+		for line in file:
+				print(line.replace(" ", "_").replace("\t", "__"), end='')
+```
+
+
+b. Once spaces are removed RSEM can be called using scripts included with Trinity.
+
+	{rsem_loc} --transcripts {full_name} \
+	--seqType fq \
+	--left {forwreads} \
+	--right {revreads} \
+	--est_method RSEM \
+	--aln_method {bowtie_bin} \
+	--prep_reference \
+	--output_dir rsem_results
