@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import sys
-sys.path.insert(0, '/home/phyllobates/Documents/git/transcriptome_assembly/automation')
+import os
+cwd = os.getcwd() + "/automation"
+sys.path.insert(0, cwd)
 from automation_script import *
 forwreads = []
 revreads = []
@@ -35,6 +37,7 @@ def main():
     pull_matches() #use only if pull_matches_fast doesn't work
     pull_matches_fast()
     rsem()
+    salmon()
 
 if __name__ == '__main__':
     main()
