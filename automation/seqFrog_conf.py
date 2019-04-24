@@ -37,6 +37,7 @@ def main():
     pull_matches() #use only if pull_matches_fast doesn't work
     pull_matches_fast()
     rsem()
+    salmon()
 
 if __name__ == '__main__':
     main()
