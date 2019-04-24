@@ -12,13 +12,13 @@ Download the repository to your computer. The following programs must be install
 
 * [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
 * [Megahit](https://github.com/voutcn/megahit)
-* [ABySS](http://www.bcgsc.ca/platform/bioinfo/software/abyss)
+* [ABySS](https://github.com/bcgsc/abyss)
 * [SPAdes](http://cab.spbu.ru/software/spades/)
 * [Transrate](http://hibberdlab.com/transrate/)
 * [BLAST+ command line applications](https://www.ncbi.nlm.nih.gov/books/NBK279671/)
 * [RSEM](https://deweylab.github.io/RSEM/)
 * [Salmon](https://combine-lab.github.io/salmon/)
-* [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+* [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) `sudo apt install bowtie2`
 * [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
 
 ---
