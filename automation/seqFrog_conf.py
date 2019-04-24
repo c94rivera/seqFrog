@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import sys
-sys.path.insert(0, '/home/phyllobates/Documents/git/transcriptome_assembly/automation')
+import os
+cwd = os.getcwd() + "/automation"
+sys.path.insert(0, cwd)
 from automation_script import *
 forwreads = []
 revreads = []

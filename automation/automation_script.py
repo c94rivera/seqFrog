@@ -4,7 +4,7 @@ import glob
 import subprocess
 from time import sleep
 import sys
-import pipeline_conf
+import seqFrog_conf
 import ntpath
 import pandas as pd
 import numpy as np
@@ -16,46 +16,46 @@ from filter_rsem import filter_rsem
 
 
 #change names of all imported variables
-if pipeline_conf.forwreads:
-    forwreads = pipeline_conf.forwreads
+if seqFrog_conf.forwreads:
+    forwreads = seqFrog_conf.forwreads
 
-if pipeline_conf.revreads:
-    revreads = pipeline_conf.revreads
+if seqFrog_conf.revreads:
+    revreads = seqFrog_conf.revreads
 
-if pipeline_conf.megahit_bin:
-    megahit_bin = pipeline_conf.megahit_bin
+if seqFrog_conf.megahit_bin:
+    megahit_bin = seqFrog_conf.megahit_bin
 
-if pipeline_conf.abyss_bin:
-    abyss_bin = pipeline_conf.abyss_bin
+if seqFrog_conf.abyss_bin:
+    abyss_bin = seqFrog_conf.abyss_bin
 
-if pipeline_conf.spades_bin:
-    spades_bin = pipeline_conf.spades_bin
+if seqFrog_conf.spades_bin:
+    spades_bin = seqFrog_conf.spades_bin
 
-if pipeline_conf.transrate_bin:
-    transrate_bin = pipeline_conf.transrate_bin
+if seqFrog_conf.transrate_bin:
+    transrate_bin = seqFrog_conf.transrate_bin
 
-if pipeline_conf.custom_location:
-    custom_location = pipeline_conf.custom_location
+if seqFrog_conf.custom_location:
+    custom_location = seqFrog_conf.custom_location
 
-if pipeline_conf.blast_name:
-    blast_name = pipeline_conf.blast_name
+if seqFrog_conf.blast_name:
+    blast_name = seqFrog_conf.blast_name
 
-if pipeline_conf.blast_bin:
-    blast_bin = pipeline_conf.blast_bin
+if seqFrog_conf.blast_bin:
+    blast_bin = seqFrog_conf.blast_bin
 
-if pipeline_conf.trimmomatic_jar:
-    trimmomatic_jar = pipeline_conf.trimmomatic_jar
+if seqFrog_conf.trimmomatic_jar:
+    trimmomatic_jar = seqFrog_conf.trimmomatic_jar
 
-if pipeline_conf.rsem_loc:
-    rsem_loc = pipeline_conf.rsem_loc
+if seqFrog_conf.rsem_loc:
+    rsem_loc = seqFrog_conf.rsem_loc
 
-if pipeline_conf.salmon_bin:
-    salmon_bin = pipeline_conf.salmon_bin
+if seqFrog_conf.salmon_bin:
+    salmon_bin = seqFrog_conf.salmon_bin
 
-if pipeline_conf.bowtie_bin:
-    bowtie_bin = pipeline_conf.bowtie_bin
-if pipeline_conf.evalue:
-    evalue = pipeline_conf.evalue
+if seqFrog_conf.bowtie_bin:
+    bowtie_bin = seqFrog_conf.bowtie_bin
+if seqFrog_conf.evalue:
+    evalue = seqFrog_conf.evalue
 
 #grab number of cpu cores for later use
 coreamount = int(os.cpu_count())
