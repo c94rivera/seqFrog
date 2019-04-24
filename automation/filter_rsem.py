@@ -55,7 +55,7 @@ def filter_rsem(expressdata1, expressdata2=None):
     # unique_in_2.to_csv('~/Documents/unique_in_2.csv', sep='\t', index=False)
 
 
-    data1.to_csv('data1.genes.results', sep='\t', index=False)
+    data1.to_csv('finaloutput.genes.results', sep='\t', index=False)
 
     #data2 lines
     if expressdata2:
