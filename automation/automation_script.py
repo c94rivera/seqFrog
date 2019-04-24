@@ -54,6 +54,8 @@ if pipeline_conf.salmon_bin:
 
 if pipeline_conf.bowtie_bin:
     bowtie_bin = pipeline_conf.bowtie_bin
+if pipeline_conf.evalue:
+    evalue = pipeline_conf.evalue
 
 #grab number of cpu cores for later use
 coreamount = int(os.cpu_count())
@@ -258,7 +260,7 @@ def transrate():
 
 
 #run annotation with database set in config file
-def annotation():
+def blastn():
     global contig_file, custom_location, blast_name, species_name, tissue_type, blast_file, one, two
     '''
     add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
@@ -275,10 +277,33 @@ def annotation():
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 0.01 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
+        subprocess.run(f"{blast_bin}/bin/blastn -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
         blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
         shutil.move(blast_file, wd)
         os.chdir(wd)
+
+def blastp():
+    global contig_file, custom_location, blast_name, species_name, tissue_type, blast_file, one, two
+    '''
+    add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
+    '''
+
+    if not contig_file:
+        print("No contig file was found.")
+        return #stops program if contig_file is empty/not set
+    else:
+        print(f"Assembly folder found: running annotation on {contig_file} with {blast_name} library")
+
+        wd = os.getcwd()
+        os.chdir(custom_location)
+        filename = ntpath.basename(f"{contig_file}")
+        print(filename)
+
+        subprocess.run(f"{blast_bin}/bin/blastp -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
+        blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
+        shutil.move(blast_file, wd)
+        os.chdir(wd)
+
 
 def blastx():
     global contig_file, custom_location, blast_name, species_name, tissue_type, blast_file, one, two
@@ -294,7 +319,7 @@ def blastx():
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue 1e-10 -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads {coreamount}", shell=True)
+        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads {coreamount}", shell=True)
         blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
         shutil.move(blast_file, wd)
         os.chdir(wd)

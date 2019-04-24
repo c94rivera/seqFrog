@@ -16,9 +16,10 @@ rsem_loc = '/home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align
 salmon_bin = 'salmon'
 bowtie_bin = "bowtie2" #bowtie2 binary
 #----
-blast_bin = '/home/phyllobates/NCBI_Tools/ncbi-blast-2.7.1+/bin/blastp' #blast binary; use blastn for nucleotide and blastp for protein annotation
+blast_bin = '/home/phyllobates/NCBI_Tools/ncbi-blast-2.7.1+/'
 custom_location = '/home/phyllobates/annotation_libraries/Uniprot_library' #custom blast library location
 blast_name = "uniprot_db" #name of custom blast library; name in db folder
+evalue = "1e-10"
 
 #change line below to pick which modules to run
 def main():
@@ -28,7 +29,8 @@ def main():
     abyss()
     spades()
     transrate()
-    annotation()
+    blastn()
+    blastp()
     blastx()
     pull_matches() #use only if pull_matches_fast doesn't work
     pull_matches_fast()
