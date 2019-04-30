@@ -319,7 +319,7 @@ def blastx():
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        subprocess.run(f"{blast_bin} -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads {coreamount}", shell=True)
+        subprocess.run(f"{blast_bin}/bin/blastx -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads {coreamount}", shell=True)
         blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
         shutil.move(blast_file, wd)
         os.chdir(wd)
