@@ -362,8 +362,8 @@ def salmon():
 
     index = f"{species_name}{tissue_type}_index"
 
-    subprocess.run(f"{salmon_bin} index -t matches.fasta -i {index}")
-    subprocess.run(f"{salmon_bin} quant -i {index} -l A -1 {forwreads} -2 {revreads} -p {coreamount} -o quants/{species_name}{tissue_type}")
+    subprocess.run(f"{salmon_bin} index -t matches.fasta -i {index}", shell=True)
+    subprocess.run(f"{salmon_bin} quant -i {index} -l A -1 {forwreads} -2 {revreads} -p {coreamount} -o quants/{species_name}{tissue_type}", shell=True)
     os.rename("matches.fasta", f"{blast_file}_matches.fasta")
 
 ########## End of Functions
