@@ -38,6 +38,7 @@ def main():
     pull_matches_fast()
     rsem()
     salmon()
+    kallisto()
 
 if __name__ == '__main__':
     main()
