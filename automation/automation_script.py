@@ -381,4 +381,6 @@ def kallisto():
     subprocess.run(f"kallisto quant -i transcripts.idx -o output -b 100 {forwreads} {revreads})
 
     os.chdir(cwd)
+    os.rename("matches.fasta", f"{blast_file}_matches.fasta")
+
 ########## End of Functions
