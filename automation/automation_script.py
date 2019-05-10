@@ -377,8 +377,8 @@ def kallisto():
     os.mkdir(os.getcwd() + "/kallisto")
     os.chdir(os.getcwd() + "/kallisto")
 
-    subprocess.run(f"kallisto index -i transcripts.idx matches.fasta")
-    subprocess.run(f"kallisto quant -i transcripts.idx -o output -b 100 {forwreads} {revreads})
+    subprocess.run(f"kallisto index -i transcripts.idx matches.fasta", shell=True)
+    subprocess.run(f"kallisto quant -i transcripts.idx -o output -b 100 {forwreads} {revreads}", shell=True)
 
     os.chdir(cwd)
     os.rename("matches.fasta", f"{blast_file}_matches.fasta")
