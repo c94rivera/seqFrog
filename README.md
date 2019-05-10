@@ -18,6 +18,7 @@ Download the repository to your computer. The following programs must be install
 * [BLAST+ command line applications](https://www.ncbi.nlm.nih.gov/books/NBK279671/)
 * [RSEM](https://deweylab.github.io/RSEM/)
 * [Salmon](https://combine-lab.github.io/salmon/)
+* [Kallisto](https://pachterlab.github.io/kallisto/)
 * [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) `sudo apt install bowtie2`
 * [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
 
@@ -35,7 +36,7 @@ Download the repository to your computer. The following programs must be install
 	b. download Uniprot library
 6. Annotate merged assemblies
 7. Pull out annotation matches
-8. Expression analysis with RSEM/Salmon
+8. Expression analysis with RSEM/Salmon/kallisto
 	1.  remove spaces from identifiers
 	2.  run analysis
 
@@ -188,7 +189,8 @@ The bundled file `pull_seqs_from_assembly.py` will pull the matches from the bla
 	        SeqIO.write(tempResults, f, "fasta")
 ```
 
-### 8. RSEM
+### 8. Expression Analysis
+#### RSEM
 https://github.com/deweylab/RSEM
 
 https://github.com/trinityrnaseq/trinityrnaseq/wiki
@@ -215,3 +217,31 @@ b. Once spaces are removed RSEM can be called using scripts included with Trinit
 	--aln_method {bowtie_bin} \
 	--prep_reference \
 	--output_dir rsem_results
+
+#### Salmon
+```
+{salmon_bin} index
+-t matches.fasta
+-i {index}
+
+{salmon_bin} quant
+-i {index}
+-l A
+-1 {forwreads}
+-2 {revreads}
+-p {coreamount}
+-o quants/{species_name}{tissue_type}
+```
+
+#### kallisto
+```
+kallisto index
+-i transcripts.idx matches.fasta
+
+kallisto quant
+-i transcripts.idx
+-o output
+-b 100
+{forwreads} {revreads})
+
+```
