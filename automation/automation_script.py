@@ -366,4 +366,19 @@ def salmon():
     subprocess.run(f"{salmon_bin} quant -i {index} -l A -1 {forwreads} -2 {revreads} -p {coreamount} -o quants/{species_name}{tissue_type}", shell=True)
     os.rename("matches.fasta", f"{blast_file}_matches.fasta")
 
+
+def kallisto():
+    with fileinput.FileInput(f"{blast_file}_matches.fasta", inplace=True, backup='.bak') as file:
+        for line in file:
+            print(line.replace(" ", "_").replace("\t", "__"), end='')
+    os.rename(f"{blast_file}_matches.fasta", "matches.fasta")
+
+    cwd = os.getcwd()
+    os.mkdir(os.getcwd() + "/kallisto")
+    os.chdir(os.getcwd() + "/kallisto")
+
+    subprocess.run(f"kallisto index -i transcripts.idx matches.fasta")
+    subprocess.run(f"kallisto quant -i transcripts.idx -o output -b 100 {forwreads} {revreads})
+
+    os.chdir(cwd)
 ########## End of Functions
