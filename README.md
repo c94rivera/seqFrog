@@ -22,6 +22,14 @@ Download the repository to your computer. The following programs must be install
 * [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
 * [Kallisto](https://pachterlab.github.io/kallisto/)
 
+The following Python3 modules are necessary for the use of seqFrog:
+
+pandas `pip3 install pandas`
+Biopython `pip3 install biopython`
+tqdm `pip3 install tqdm`
+
+You will also need a working version of Java
+
 ---
 ## Methods
 1. Assess quality of reads with FastQC (manually)
