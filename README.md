@@ -55,9 +55,9 @@ Download the repository to your computer. The following programs must be install
 	* Put the full length path to the custom blast library being used (relative path will not work!)
 
 ```python3
-megahit_bin = "megahit"
-abyss_bin = "abyss-pe"
-spades_bin = "/home/litoria/Assembly_Tools/SPAdes-3.12.0/bin/spades.py" #location of spades binary on system
+megahit_folder = "/megahit" #megahit binary
+abyss_folder = '/home/phyllobates/Assembly_Tools/abyss-2.1.5/ABYSS/abyss.cc' #abyss binary
+spades_folder = '/home/phyllobates/Assembly_Tools/SPAdes-3.13.0-Linux/bin/spades.py' #spades binary
 ```
 
 
