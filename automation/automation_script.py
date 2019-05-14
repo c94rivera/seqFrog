@@ -12,6 +12,7 @@ import fileinput
 from pull_seqs_from_assembly import get_seqs
 from multi import compare, get_seqs_fast
 from filter_rsem import filter_rsem
+from filter_length import filter_length
 
 
 
@@ -57,6 +58,9 @@ if seqFrog_conf.bowtie_bin:
 
 if seqFrog_conf.evalue:
     evalue = seqFrog_conf.evalue
+
+if seqFrog_conf.trim_length:
+    trim_length = seqFrog_conf.trim_length
 
 #grab number of cpu cores for later use
 coreamount = int(os.cpu_count())
@@ -258,6 +262,9 @@ def transrate():
         subprocess.run(f"{transrate_folder}/transrate --assembly {megahit_contig},{abyss_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
 
         contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
+
+def trim_contigs():
+    filter_length(contig_file, trim_length)
 
 
 #run annotation with database set in config file

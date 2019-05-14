@@ -22,6 +22,7 @@ blast_folder = '/home/phyllobates/NCBI_Tools/ncbi-blast-2.7.1+/'
 custom_blast_folder = '/home/phyllobates/annotation_libraries/Uniprot_library' #custom blast library location
 blast_name = "uniprot_db" #name of custom blast library; name in db folder
 evalue = "1e-10"
+trim_length = 300
 
 #change line below to pick which modules to run
 def main():
@@ -31,6 +32,7 @@ def main():
     abyss()
     spades()
     transrate()
+    trim_contigs()
     blastn()
     blastp()
     blastx()
