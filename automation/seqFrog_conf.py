@@ -16,6 +16,7 @@ trimmomatic_folder = '/home/phyllobates/Assembly_Tools/Trimmomatic-0.38/trimmoma
 #rsem_loc should be the location of the "align_and_estimate_abundance.pl" script within your Trinity install
 trinity_folder = '/home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl' #rsem location
 salmon_folder = 'salmon'
+kallisto_folder = "kallisto"
 bowtie_bin = "bowtie2" #bowtie2 binary
 #----
 blast_folder = '/home/phyllobates/NCBI_Tools/ncbi-blast-2.7.1+/'
@@ -40,6 +41,7 @@ def main():
     pull_matches_fast()
     rsem()
     salmon()
+    kallisto()
 
 if __name__ == '__main__':
     main()
