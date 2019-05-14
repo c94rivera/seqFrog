@@ -201,7 +201,7 @@ def abyss():
         cur_dir = os.getcwd()
         os.mkdir(os.getcwd() + "/abyss_assembly")
         os.chdir(os.getcwd() + "/abyss_assembly")
-        subprocess.run(f"{abyss_folder}/ABYSS/abyss.cc j={coreamount} k=59 name=abyss_run in='{forwreads} {revreads}'", shell=True)
+        subprocess.run(f"{abyss_folder}/bin/abyss-pe j={coreamount} k=59 name=abyss_run in='{forwreads} {revreads}'", shell=True)
         os.chdir(cur_dir)
     contig_file = (os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa")
 
