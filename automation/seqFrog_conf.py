@@ -7,19 +7,19 @@ from automation_script import *
 forwreads = []
 revreads = []
 
-#binary locations
-megahit_bin = "megahit" #megahit binary
-abyss_bin = '/home/phyllobates/Assembly_Tools/abyss-2.1.5/ABYSS/abyss.cc' #abyss binary
-spades_bin = '/home/phyllobates/Assembly_Tools/SPAdes-3.13.0-Linux/bin/spades.py' #spades binary
-transrate_bin = '/home/phyllobates/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate' #transrate binary
-trimmomatic_jar = '/home/phyllobates/Assembly_Tools/Trimmomatic-0.38/trimmomatic-0.38.jar' #trimmomatic binary
+#program folder locations
+megahit_folder = "/megahit" #megahit binary
+abyss_folder = '/home/phyllobates/Assembly_Tools/abyss-2.1.5/ABYSS/abyss.cc' #abyss binary
+spades_folder = '/home/phyllobates/Assembly_Tools/SPAdes-3.13.0-Linux/bin/spades.py' #spades binary
+transrate_folder = '/home/phyllobates/Assembly_Tools/transrate-1.0.3-linux-x86_64/transrate' #transrate binary
+trimmomatic_folder = '/home/phyllobates/Assembly_Tools/Trimmomatic-0.38/trimmomatic-0.38.jar' #trimmomatic binary
 #rsem_loc should be the location of the "align_and_estimate_abundance.pl" script within your Trinity install
-rsem_loc = '/home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl' #rsem location
-salmon_bin = 'salmon'
+trinity_folder = '/home/litoria/Assembly_Tools/trinityrnaseq-Trinity-v2.8.4/util/align_and_estimate_abundance.pl' #rsem location
+salmon_folder = 'salmon'
 bowtie_bin = "bowtie2" #bowtie2 binary
 #----
-blast_bin = '/home/phyllobates/NCBI_Tools/ncbi-blast-2.7.1+/'
-custom_location = '/home/phyllobates/annotation_libraries/Uniprot_library' #custom blast library location
+blast_folder = '/home/phyllobates/NCBI_Tools/ncbi-blast-2.7.1+/'
+custom_blast_folder = '/home/phyllobates/annotation_libraries/Uniprot_library' #custom blast library location
 blast_name = "uniprot_db" #name of custom blast library; name in db folder
 evalue = "1e-10"
 

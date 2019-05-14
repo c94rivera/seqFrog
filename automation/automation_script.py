@@ -22,38 +22,39 @@ if seqFrog_conf.forwreads:
 if seqFrog_conf.revreads:
     revreads = seqFrog_conf.revreads
 
-if seqFrog_conf.megahit_bin:
-    megahit_bin = seqFrog_conf.megahit_bin
+if seqFrog_conf.trimmomatic_folder:
+    trimmomatic_folder = seqFrog_conf.trimmomatic_folder
 
-if seqFrog_conf.abyss_bin:
-    abyss_bin = seqFrog_conf.abyss_bin
+if seqFrog_conf.megahit_folder:
+    megahit_folder = seqFrog_conf.megahit_folder
 
-if seqFrog_conf.spades_bin:
-    spades_bin = seqFrog_conf.spades_bin
+if seqFrog_conf.abyss_folder:
+    abyss_folder = seqFrog_conf.abyss_folder
 
-if seqFrog_conf.transrate_bin:
-    transrate_bin = seqFrog_conf.transrate_bin
+if seqFrog_conf.spades_folder:
+    spades_folder = seqFrog_conf.spades_folder
 
-if seqFrog_conf.custom_location:
-    custom_location = seqFrog_conf.custom_location
+if seqFrog_conf.transrate_folder:
+    transrate_folder = seqFrog_conf.transrate_folder
+
+if seqFrog_conf.custom_blast_folder:
+    custom_blast_folder = seqFrog_conf.custom_blast_folder
 
 if seqFrog_conf.blast_name:
     blast_name = seqFrog_conf.blast_name
 
-if seqFrog_conf.blast_bin:
-    blast_bin = seqFrog_conf.blast_bin
+if seqFrog_conf.blast_folder:
+    blast_folder = seqFrog_conf.blast_folder
 
-if seqFrog_conf.trimmomatic_jar:
-    trimmomatic_jar = seqFrog_conf.trimmomatic_jar
+if seqFrog_conf.trinity_folder:
+    trinity_folder = seqFrog_conf.trinity_folder
 
-if seqFrog_conf.rsem_loc:
-    rsem_loc = seqFrog_conf.rsem_loc
-
-if seqFrog_conf.salmon_bin:
-    salmon_bin = seqFrog_conf.salmon_bin
+if seqFrog_conf.salmon_folder:
+    salmon_folder = seqFrog_conf.salmon_folder
 
 if seqFrog_conf.bowtie_bin:
     bowtie_bin = seqFrog_conf.bowtie_bin
+
 if seqFrog_conf.evalue:
     evalue = seqFrog_conf.evalue
 
@@ -137,8 +138,8 @@ Potentially add function here to grab SRX number by grabbing the last section of
 
 #run fastqdump on specific srx number
 def trimmomatic():
-    global forwreads, revreads, trimmomatic_jar
-    subprocess.run(f"java -jar {trimmomatic_jar} PE -threads {coreamount} -phred33 {forwreads} {revreads} forward_paired.fastq.gz forward_unpaired.fastq.gz reverse_paired.fastq.gz reverse_unpaired.fastq.gz ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36", shell=True)
+    global forwreads, revreads, trimmomatic_folder
+    subprocess.run(f"java -jar {trimmomatic_folder}/trimmomatic-0.39.jar PE -threads {coreamount} -phred33 {forwreads} {revreads} forward_paired.fastq.gz forward_unpaired.fastq.gz reverse_paired.fastq.gz reverse_unpaired.fastq.gz ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36", shell=True)
     forwreads = (os.getcwd() +"/forward_paired.fastq.gz")
     revreads = (os.getcwd() + "/reverse_paired.fastq.gz")
 
@@ -151,7 +152,7 @@ def fastqdump(srx):
 
 #run megahit in single or paired end mode depending on amount of input files found
 def megahit():     #use when manually inputing files
-    global megahit_bin, forwreads, revreads, contig_file
+    global megahit_folder, forwreads, revreads, contig_file
     if len(glob.glob("megahit_assembly")) >= 1:
         print("Megahit assembly folder already present.\nSkipping Megahit Assembly")
         sleep(5)
@@ -159,11 +160,11 @@ def megahit():     #use when manually inputing files
         if not revreads:
             print("Running Megahit in single-end mode")
             sleep(5)
-            subprocess.run(f"{megahit_bin} -r {forwreads} -o megahit_assembly", shell=True)
+            subprocess.run(f"{megahit_folder}/megahit -r {forwreads} -o megahit_assembly", shell=True)
         else:
             print("Running Megahit in paired-end mode")
             sleep(5)
-            subprocess.run(f"{megahit_bin} -1 {forwreads} -2 {revreads} -o megahit_assembly", shell=True)
+            subprocess.run(f"{megahit_folder}/megahit -1 {forwreads} -2 {revreads} -o megahit_assembly", shell=True)
 
         contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
@@ -177,15 +178,15 @@ def megahit1():      #use when input files need to be automatically detected NOT
         print("Megahit assembly folder already present")
         sleep(5)
     elif len(glob.glob("*.fastq")) == 2:
-        subprocess.run(f"{megahit_bin} -1 {forwreads} -2 {revreads} -o megahit_assembly", shell=True)
+        subprocess.run(f"{megahit_folder} -1 {forwreads} -2 {revreads} -o megahit_assembly", shell=True)
     elif len(glob.glob("*.fastq")) == 1:
-        subprocess.run(f"{megahit_bin} -r {forwreads} -o megahit_assembly", shell=True)
+        subprocess.run(f"{megahit_folder} -r {forwreads} -o megahit_assembly", shell=True)
     else:
         print("Error: Input files were not found")
 
 
 def abyss():
-    global abyss_bin, forwreads, revreads
+    global abyss_folder, forwreads, revreads
     if len(glob.glob("abyss_assembly")) >= 1:
         print("Abyss assembly folder already present.\nSkipping Abyss assembly")
         sleep(5)
@@ -193,27 +194,27 @@ def abyss():
         cur_dir = os.getcwd()
         os.mkdir(os.getcwd() + "/abyss_assembly")
         os.chdir(os.getcwd() + "/abyss_assembly")
-        subprocess.run(f"{abyss_bin} j={coreamount} k=59 name=abyss_run in='{forwreads} {revreads}'", shell=True)
+        subprocess.run(f"{abyss_folder}/ABYSS/abyss.cc j={coreamount} k=59 name=abyss_run in='{forwreads} {revreads}'", shell=True)
         os.chdir(cur_dir)
     contig_file = (os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa")
 
 
 
 def spades():
-    global spades_bin, forwreads, revreads
+    global spades_folder, forwreads, revreads
     if len(glob.glob("spades_assembly")) >= 1:
         print("Spades assembly folder already present.\nSkipping Spades assembly")
         sleep(5)
 
     else:
-        subprocess.run(f"{spades_bin} --only-assembler -k 59 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
+        subprocess.run(f"{spades_folder}/bin/spades.py --only-assembler -k 59 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
     contig_file = (os.getcwd() + "/spades_assembly/contigs.fasta")
 
 
 
 #combine all contig outputs with transrate
 def transrate():
-    global transrate_bin, contig_file
+    global transrate_folder, contig_file
 
     shutil.copy(os.getcwd() + "/megahit_assembly/final.contigs.fa", os.getcwd() + "/megahit_assembly/[backup]final.contigs.fa")
     with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'r') as f:
@@ -254,14 +255,14 @@ def transrate():
         sleep(5)
     else:
         #run transrate to combine all contig files
-        subprocess.run(f"{transrate_bin} --assembly {megahit_contig},{abyss_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
+        subprocess.run(f"{transrate_folder}/transrate --assembly {megahit_contig},{abyss_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
 
         contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
 
 
 #run annotation with database set in config file
 def blastn():
-    global contig_file, custom_location, blast_name, species_name, tissue_type, blast_file, one, two
+    global contig_file, custom_blast_folder, blast_name, species_name, tissue_type, blast_file, one, two
     '''
     add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
     '''
@@ -273,17 +274,17 @@ def blastn():
         print(f"Assembly folder found: running annotation on {contig_file} with {blast_name} library")
 
         wd = os.getcwd()
-        os.chdir(custom_location)
+        os.chdir(custom_blast_folder)
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        subprocess.run(f"{blast_bin}/bin/blastn -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
+        subprocess.run(f"{blast_folder}/bin/blastn -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
         blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
         shutil.move(blast_file, wd)
         os.chdir(wd)
 
 def blastp():
-    global contig_file, custom_location, blast_name, species_name, tissue_type, blast_file, one, two
+    global contig_file, custom_blast_folder, blast_name, species_name, tissue_type, blast_file, one, two
     '''
     add section to do annotation from individual assemblies if merge was not needed (smaller data sets)
     '''
@@ -295,18 +296,18 @@ def blastp():
         print(f"Assembly folder found: running annotation on {contig_file} with {blast_name} library")
 
         wd = os.getcwd()
-        os.chdir(custom_location)
+        os.chdir(custom_blast_folder)
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        subprocess.run(f"{blast_bin}/bin/blastp -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
+        subprocess.run(f"{blast_folder}/bin/blastp -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads 12", shell=True)
         blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
         shutil.move(blast_file, wd)
         os.chdir(wd)
 
 
 def blastx():
-    global contig_file, custom_location, blast_name, species_name, tissue_type, blast_file, one, two
+    global contig_file, custom_blast_folder, blast_name, species_name, tissue_type, blast_file, one, two
 
     if not contig_file:
         print("No contig file was found.")
@@ -315,11 +316,11 @@ def blastx():
         print(f"Assembly folder found: running BLASTx annotation on {contig_file} with {blast_name} library")
 
         wd = os.getcwd()
-        os.chdir(custom_location)
+        os.chdir(custom_blast_folder)
         filename = ntpath.basename(f"{contig_file}")
         print(filename)
 
-        subprocess.run(f"{blast_bin}/bin/blastx -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads {coreamount}", shell=True)
+        subprocess.run(f"{blast_folder}/bin/blastx -query {contig_file} -db {blast_name} -evalue {evalue} -max_target_seqs 1 -outfmt '7 std qseqid stitle sscinames staxids' -out {one}{two}[{blast_name}]{filename}_blast.table -num_threads {coreamount}", shell=True)
         blast_file = (f"{one}{two}[{blast_name}]{filename}_blast.table")
         shutil.move(blast_file, wd)
         os.chdir(wd)
@@ -348,7 +349,7 @@ def rsem():
             print(line.replace(" ", "_").replace("\t", "__"), end='')
     os.rename(f"{blast_file}_matches.fasta", "matches.fasta")
 
-    subprocess.run(f"{rsem_loc} --transcripts matches.fasta --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
+    subprocess.run(f"{trinity_folder}/util/align_and_estimate_abundance.pl --transcripts matches.fasta --seqType fq --left {forwreads} --right {revreads} --est_method RSEM --aln_method {bowtie_bin} --prep_reference --output_dir rsem_results", shell=True)
     rsem_file = (os.getcwd() + "/rsem_results/RSEM.genes.results")
     filter_rsem(rsem_file)
     os.rename("matches.fasta", f"{blast_file}_matches.fasta")
@@ -362,8 +363,8 @@ def salmon():
 
     index = f"{species_name}{tissue_type}_index"
 
-    subprocess.run(f"{salmon_bin} index -t matches.fasta -i {index}", shell=True)
-    subprocess.run(f"{salmon_bin} quant -i {index} -l A -1 {forwreads} -2 {revreads} -p {coreamount} -o quants/{species_name}{tissue_type}", shell=True)
+    subprocess.run(f"{salmon_folder}/bin/salmon index -t matches.fasta -i {index}", shell=True)
+    subprocess.run(f"{salmon_folder}/bin/salmon quant -i {index} -l A -1 {forwreads} -2 {revreads} -p {coreamount} -o quants/{species_name}{tissue_type}", shell=True)
     os.rename("matches.fasta", f"{blast_file}_matches.fasta")
 
 ########## End of Functions

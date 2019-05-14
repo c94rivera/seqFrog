@@ -40,7 +40,7 @@ Download the repository to your computer. The following programs must be install
 	2.  run analysis
 
 ## Prep-work
-1. Direct to all necessary binaries/libraries
+1. Direct to all necessary program folders
 	* Background on file paths:
 		https://kb.iu.edu/d/acar
 
@@ -48,9 +48,9 @@ Download the repository to your computer. The following programs must be install
 
 # Follow Along Guide
 ### Prep-work
-1. Direct to all necessary binaries/libraries
+1. Direct to all necessary program folders
 	* Open `seqFrog_conf.py` in text-editor of choice
-	* Put the full length path to all the required programs next to their similarly named variables in quotes `lines 11-24` (relative paths will not work!)
+	* Put the full length path to all the required program folders next to their similarly named variables, in quotes `lines 11-24` (relative paths will not work!)
 		* if your programs are installed into system or $PATH variables you can just use the name used to call it in the terminal in quotes
 	* Put the full length path to the custom blast library being used (relative path will not work!)
 
