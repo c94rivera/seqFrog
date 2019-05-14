@@ -53,6 +53,9 @@ if seqFrog_conf.trinity_folder:
 if seqFrog_conf.salmon_folder:
     salmon_folder = seqFrog_conf.salmon_folder
 
+if seqFrog_conf.kallisto_folder:
+    kallisto_folder = seqFrog_conf.kallisto_folder
+
 if seqFrog_conf.bowtie_bin:
     bowtie_bin = seqFrog_conf.bowtie_bin
 
@@ -373,5 +376,23 @@ def salmon():
     subprocess.run(f"{salmon_folder}/bin/salmon index -t matches.fasta -i {index}", shell=True)
     subprocess.run(f"{salmon_folder}/bin/salmon quant -i {index} -l A -1 {forwreads} -2 {revreads} -p {coreamount} -o quants/{species_name}{tissue_type}", shell=True)
     os.rename("matches.fasta", f"{blast_file}_matches.fasta")
+
+
+def kallisto():
+    with fileinput.FileInput(f"{blast_file}_matches.fasta", inplace=True, backup='.bak') as file:
+        for line in file:
+            print(line.replace(" ", "_").replace("\t", "__"), end='')
+    os.rename(f"{blast_file}_matches.fasta", "matches.fasta")
+
+    cwd = os.getcwd()
+    os.mkdir(os.getcwd() + "/kallisto")
+    os.chdir(os.getcwd() + "/kallisto")
+
+    subprocess.run(f"{kallisto_folder}/kallisto index -i transcripts.idx matches.fasta", shell=True)
+    subprocess.run(f"{kallisto_folder}/kallisto quant -i transcripts.idx -o output -b 100 {forwreads} {revreads}", shell=True)
+
+    os.chdir(cwd)
+    os.rename("matches.fasta", f"{blast_file}_matches.fasta")
+
 
 ########## End of Functions

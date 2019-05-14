@@ -20,6 +20,7 @@ Download the repository to your computer. The following programs must be install
 * [Salmon](https://combine-lab.github.io/salmon/)
 * [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) `sudo apt install bowtie2`
 * [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
+* [Kallisto](https://pachterlab.github.io/kallisto/)
 
 ---
 ## Methods
