@@ -267,9 +267,10 @@ def transrate():
         contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
 
 def trim_contigs():
+    global contig_file
     filter_length(contig_file, trim_length)
     os.rename("good.fasta", "good_merged_assemblies")
-    contig_file = (os.getcwd() + "good_merged_assemblies")
+    contig_file = (os.getcwd() + "/good_merged_assemblies")
 
 
 #run annotation with database set in config file
