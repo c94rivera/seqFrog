@@ -8,7 +8,25 @@ If using this pipeline please properly cite this git repository:
 
 
 ### Get Started
-Download the repository to your computer. The following programs must be installed and their PATH setup in pipeline_conf.py file. More details can be found within Methods.
+The following programs need to be installed in your $PATH variable by following their full installation instructions. This should be done FIRST with the installation of the pipeline.
+Run the following commands then proceed with Samtools and Bowtie2 installation instructions
+```
+sudo apt install gcc
+sudo apt install make
+sudo apt install libbz2-dev
+sudo apt install libcurses5-dev
+sudo apt install zlib1g-dev
+sudo apt install libncurses5-dev
+sudo apt install libncursesw5-dev
+sudo apt install liblzma-dev
+sudo apt install libcurl4-openssl-dev
+sudo apt install libssl-dev
+```
+
+* [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+* [Samtools](http://www.htslib.org/)
+
+Download the repository to your computer. The following programs must be installed and their folder PATH setup in seqFrog_conf.py file. More details can be found within Methods.
 
 * [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
 * [Megahit](https://github.com/voutcn/megahit)
@@ -18,9 +36,9 @@ Download the repository to your computer. The following programs must be install
 * [BLAST+ command line applications](https://www.ncbi.nlm.nih.gov/books/NBK279671/)
 * [RSEM](https://deweylab.github.io/RSEM/)
 * [Salmon](https://combine-lab.github.io/salmon/)
-* [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) `sudo apt install bowtie2`
 * [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
 * [Kallisto](https://pachterlab.github.io/kallisto/)
+
 
 The following Python3 modules are necessary for the use of seqFrog:
 
