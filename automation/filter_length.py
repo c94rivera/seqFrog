@@ -4,7 +4,6 @@ def filter_length(input_fasta, trim_length):
     sequences = {}
     good_reads = []
     bad_reads = []
-    print("Does this work??")
     with open(input_fasta, "r") as file:
         for line in file:
             line=line.rstrip()
