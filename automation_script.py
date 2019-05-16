@@ -167,11 +167,11 @@ def megahit():     #use when manually inputing files
         if not revreads:
             print("Running Megahit in single-end mode")
             sleep(5)
-            subprocess.run(f"{megahit_folder}/megahit -r {forwreads} -o megahit_assembly", shell=True)
+            subprocess.run(f"{megahit_folder}/bin/megahit -r {forwreads} -o megahit_assembly", shell=True)
         else:
             print("Running Megahit in paired-end mode")
             sleep(5)
-            subprocess.run(f"{megahit_folder}/megahit -1 {forwreads} -2 {revreads} -o megahit_assembly", shell=True)
+            subprocess.run(f"{megahit_folder}/bin/megahit -1 {forwreads} -2 {revreads} -o megahit_assembly", shell=True)
 
         contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
