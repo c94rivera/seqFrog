@@ -14,9 +14,8 @@ Run the following commands then proceed with Samtools and Bowtie2 installation i
 sudo apt install gcc
 sudo apt install make
 sudo apt install libbz2-dev
-sudo apt install libcurses5-dev
-sudo apt install zlib1g-dev
 sudo apt install libncurses5-dev
+sudo apt install zlib1g-dev
 sudo apt install libncursesw5-dev
 sudo apt install liblzma-dev
 sudo apt install libcurl4-openssl-dev
@@ -49,23 +48,6 @@ tqdm `pip3 install tqdm`
 You will also need a working version of Java
 
 ---
-## Methods
-1. Assess quality of reads with FastQC (manually)
-2. Clean reads with Trimmomatic
-3. De novo assembly of contigs:
-	* Megahit
-	* Abyss
-	* Spades
-4. Assess quality and merge transcriptome assemblies with Transrate
-5. Build annotation library
-	a. manually curate
-	b. download Uniprot library
-6. Annotate merged assemblies
-7. Pull out annotation matches
-8. Expression analysis with RSEM/Salmon
-	1.  remove spaces from identifiers
-	2.  run analysis
-
 ## Prep-work
 1. Direct to all necessary program folders
 	* Background on file paths:
