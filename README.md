@@ -48,13 +48,6 @@ tqdm `pip3 install tqdm`
 You will also need a working version of Java
 
 ---
-## Prep-work
-1. Direct to all necessary program folders
-	* Background on file paths:
-		https://kb.iu.edu/d/acar
-
-2. Define steps that should be taken within seqFrog
-
 # Follow Along Guide
 ### Prep-work
 1. Direct to all necessary program folders
