@@ -52,34 +52,38 @@ You will also need a working version of Java
 ### Prep-work
 1. Direct to all necessary program folders
 	* Open `seqFrog_conf.py` in text-editor of choice
-	* Put the full length path to all the required program folders next to their similarly named variables, in quotes `lines 11-24` (relative paths will not work!)
+	* Put the full length path to all the required program folders next to their similarly named variables, in quotes `lines 11-25` (relative paths will not work!)
 		* if your programs are installed into system or $PATH variables you can just use the name used to call it in the terminal in quotes
 	* Put the full length path to the custom blast library being used (relative path will not work!)
 
 ```python3
 megahit_folder = "/megahit" #megahit binary
-abyss_folder = '/home/phyllobates/Assembly_Tools/abyss-2.1.5/ABYSS/abyss.cc' #abyss binary
-spades_folder = '/home/phyllobates/Assembly_Tools/SPAdes-3.13.0-Linux/bin/spades.py' #spades binary
+abyss_folder = '/home/phyllobates/Assembly_Tools/abyss-2.1.5' #abyss binary
+spades_folder = '/home/phyllobates/Assembly_Tools/SPAdes-3.13.0-Linux' #spades binary
 ```
 
 
 2. Define steps that should be taken within pipeline
-	* Lines 28-40 can be commented out to exclude steps from the pipeline
+	* The functions after `def main():` can be commented out to exclude steps from the pipeline
 		* the pipeline is designed to be run from start to finish, however, individual steps can be run in some instances
 
 ```python3
 def main():
-    manual_input() #must always be on
+    manual_input()
     trimmomatic()
-    megahit1()
+    megahit()
     abyss()
     spades()
     transrate()
-    annotation()
-    # pull_matches() #use only if pull_matches_fast doesn't work
+    trim_contigs()
+    blastn()
+    blastp()
+    blastx()
+    pull_matches() #use only if pull_matches_fast doesn't work
     pull_matches_fast()
     rsem()
     salmon()
+    kallisto()
 ```
 
 ### seqFrog Initiation
