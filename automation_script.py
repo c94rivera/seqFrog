@@ -1,4 +1,5 @@
 import os
+from os import path
 import shutil
 import glob
 import subprocess
@@ -175,6 +176,12 @@ def megahit():     #use when manually inputing files
 
         contig_file = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
+        if len(glob.glob("RECONSTRUCTIONS")) >= 1:
+            shutil.copy((os.getcwd() + "/megahit_assembly/final.contigs.fa"), (os.getcwd() + "/RECONSTRUCTIONS"))
+        else:
+            os.mkdir(os.getcwd() + "/RECONSTRUCTIONS")
+            shutil.copy((os.getcwd() + "/megahit_assembly/final.contigs.fa"), (os.getcwd() + "/RECONSTRUCTIONS"))
+
 
 def megahit1():      #use when input files need to be automatically detected NOT working
     '''
@@ -203,7 +210,13 @@ def abyss():
         os.chdir(os.getcwd() + "/abyss_assembly")
         subprocess.run(f"{abyss_folder}/bin/abyss-pe j={coreamount} k=59 name=abyss_run in='{forwreads} {revreads}'", shell=True)
         os.chdir(cur_dir)
-    contig_file = (os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa")
+        contig_file = (os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa")
+
+        if len(glob.glob("RECONSTRUCTIONS")) >= 1:
+            shutil.copy((os.getcwd() + "/megahit_assembly/final.contigs.fa"), (os.getcwd() + "/RECONSTRUCTIONS"))
+        else:
+            os.mkdir(os.getcwd() + "/RECONSTRUCTIONS")
+            shutil.copy((os.getcwd() + "/megahit_assembly/final.contigs.fa"), (os.getcwd() + "/RECONSTRUCTIONS"))
 
 
 
@@ -215,7 +228,13 @@ def spades():
 
     else:
         subprocess.run(f"{spades_folder}/bin/spades.py --only-assembler -k 59 -1 {forwreads} -2 {revreads} -o spades_assembly", shell=True)
-    contig_file = (os.getcwd() + "/spades_assembly/contigs.fasta")
+        contig_file = (os.getcwd() + "/spades_assembly/contigs.fasta")
+
+        if len(glob.glob("RECONSTRUCTIONS")) >= 1:
+            shutil.copy((os.getcwd() + "/megahit_assembly/final.contigs.fa"), (os.getcwd() + "/RECONSTRUCTIONS"))
+        else:
+            os.mkdir(os.getcwd() + "/RECONSTRUCTIONS")
+            shutil.copy((os.getcwd() + "/megahit_assembly/final.contigs.fa"), (os.getcwd() + "/RECONSTRUCTIONS"))
 
 
 
@@ -223,48 +242,54 @@ def spades():
 def transrate():
     global transrate_folder, contig_file
 
-    shutil.copy(os.getcwd() + "/megahit_assembly/final.contigs.fa", os.getcwd() + "/megahit_assembly/[backup]final.contigs.fa")
-    with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'r') as f:
-        data = f.read()
-    data = data.replace(" ","_")
-    data = data.replace(",","_")
-    with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'w') as g:
-        g.write(data)
+    if path.exists(os.getcwd() + "/megahit_assembly/final.contigs.fa"):
+        shutil.copy(os.getcwd() + "/megahit_assembly/final.contigs.fa", os.getcwd() + "/megahit_assembly/[backup]final.contigs.fa")
+        with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'r') as f:
+            data = f.read()
+        data = data.replace(" ","_")
+        data = data.replace(",","_")
+        with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'w') as g:
+            g.write(data)
+        megahit_contig = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
-    shutil.copy(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", os.getcwd() + "/abyss_assembly/[backup]abyss_run-contigs.fa")
-    with open(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", 'r') as f:
-        data = f.read()
-    data = data.replace(" ","_")
-    data = data.replace(",","_")
-    with open(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", 'w') as g:
-        g.write(data)
 
-    shutil.copy(os.getcwd() + "/spades_assembly/contigs.fasta", os.getcwd() + "/spades_assembly/[backup]contigs.fasta")
-    with open(os.getcwd() + "/spades_assembly/contigs.fasta", 'r') as f:
-        data = f.read()
-    data = data.replace(" ","_")
-    data = data.replace(",","_")
-    with open(os.getcwd() + "/spades_assembly/contigs.fasta", 'w') as g:
-        g.write(data)
+    if path.exists(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa"):
+        shutil.copy(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", os.getcwd() + "/abyss_assembly/[backup]abyss_run-contigs.fa")
+        with open(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", 'r') as f:
+            data = f.read()
+        data = data.replace(" ","_")
+        data = data.replace(",","_")
+        with open(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa", 'w') as g:
+            g.write(data)
+        abyss_contig = (os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa")
 
-    #find megahit contig file
-    megahit_contig = (os.getcwd() + "/megahit_assembly/final.contigs.fa")
 
-    #find abyss contig file
-    abyss_contig = (os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa")
+    if path.exists(os.getcwd() + "/abyss_assembly/abyss_run-contigs.fa"):
+        shutil.copy(os.getcwd() + "/spades_assembly/contigs.fasta", os.getcwd() + "/spades_assembly/[backup]contigs.fasta")
+        with open(os.getcwd() + "/spades_assembly/contigs.fasta", 'r') as f:
+            data = f.read()
+        data = data.replace(" ","_")
+        data = data.replace(",","_")
+        with open(os.getcwd() + "/spades_assembly/contigs.fasta", 'w') as g:
+            g.write(data)
+        spades_contig = (os.getcwd() + "/spades_assembly/contigs.fasta")
 
-    #find spades contig file
-    spades_contig = (os.getcwd() + "/spades_assembly/contigs.fasta")
 
     if len(glob.glob("transrate_results")) >= 1:
         print("Transrate folder already present.\nSkipping Transrate")
-        contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
         sleep(5)
-    else:
+    elif path.exists(megahit_contig) and path.exists(abyss_contig) and path.exists(spades_contig):
         #run transrate to combine all contig files
         subprocess.run(f"{transrate_folder}/transrate --assembly {megahit_contig},{abyss_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
+    elif path.exists(megahit_contig) and path.exists(abyss_contig):
+        subprocess.run(f"{transrate_folder}/transrate --assembly {megahit_contig},{abyss_contig}, --merge-assemblies merged_assemblies", shell=True)
+    elif path.exists(megahit_contig) and path.exists(spades_contig):
+        subprocess.run(f"{transrate_folder}/transrate --assembly {megahit_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
+    elif path.exists(abyss_contig) and path.exists(spades_contig):
+        subprocess.run(f"{transrate_folder}/transrate --assembly {abyss_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
 
-        contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
+    contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
+
 
 def trim_contigs():
     global contig_file
