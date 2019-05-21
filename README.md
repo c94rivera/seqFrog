@@ -96,7 +96,7 @@ spades_folder = '/home/phyllobates/Assembly_Tools/SPAdes-3.13.0-Linux' #spades b
 	* The functions after `def main():` can be commented out () to exclude steps from the pipeline
 		* the pipeline is designed to be run from start to finish, however, individual steps can be run in some instances
 
-#### Function Descriptions
+### Function Descriptions
 	manual_input() -> takes the input from the terminal, CANNOT BE TURNED OFF
 	trimmomatic() -> runs Trimmomatic to clean reads
 	megahit() -> runs Megahit for de novo reconstruction
