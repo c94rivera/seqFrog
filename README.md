@@ -69,7 +69,8 @@ Click on binaries, on the github page download the binaries for version 0.13.1
 Follow links for download and download the source code for version 2.8.4
 Right click in the Trinity-RNAseq folder and open a new terminal. Do the following commands in the terminal to install Trinity
 ```
-make install
+make
+sudo make install
 ```
 
 * [Kallisto](https://pachterlab.github.io/kallisto/)  
