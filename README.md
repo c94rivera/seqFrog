@@ -72,8 +72,11 @@ The following Python3 modules are necessary for the use of seqFrog:
 pandas `pip3 install pandas`  
 Biopython `pip3 install biopython`  
 tqdm `pip3 install tqdm`  
+Remove any older versions of these modules
 
 You will also need a working version of Java
+
+### It is recommended that you restart the computer after installing all the programs.
 
 ---
 # Follow Along Guide
