@@ -8,8 +8,7 @@ If using this pipeline please properly cite this git repository:
 
 
 ### Get Started
-The following programs need to be installed in your $PATH variable by following their full installation instructions. This should be done FIRST with the installation of the pipeline.
-Run the following commands then proceed with Samtools and Bowtie2 installation instructions
+The following dependecies need to be installed on your computer. This should be done FIRST, before the installation of the pipeline.
 ```
 sudo apt install gcc
 sudo apt install make
@@ -21,7 +20,7 @@ sudo apt install liblzma-dev
 sudo apt install libcurl4-openssl-dev
 sudo apt install libssl-dev
 ```
-
+Install bowite2 and samtools using the following commands (recommended) or the instructions on their website.
 * [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) `sudo apt install bowtie2`
 * [Samtools](http://www.htslib.org/) `sudo apt install samtools`
 
