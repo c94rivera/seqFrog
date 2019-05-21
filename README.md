@@ -28,50 +28,50 @@ Install bowite2 and samtools using the following commands (recommended) or the i
 The following program binary files must be installed and their folder PATH setup in seqFrog_conf.py file.
 It is recommended that all these programs be downloaded and extracted into the same folder for easy setup and maintenance.
 
-[Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
-download binary for version 0.39 (not source code)
+[Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)  
+Download binary for version 0.39 (not source code)
 
-[Megahit](https://github.com/voutcn/megahit)
-click on releases and download latest stable version (not source code)
+[Megahit](https://github.com/voutcn/megahit)  
+Click on releases and download latest stable version (not source code)
 
-[ABySS](https://github.com/bcgsc/abyss)
-click releases and download latest stable version 2.1.5 (not source code)
+[ABySS](https://github.com/bcgsc/abyss)  
+Click releases and download latest stable version 2.1.5 (not source code)
 
-[SPAdes](http://cab.spbu.ru/software/spades/)
-download binary for linux version 3.13.0
+[SPAdes](http://cab.spbu.ru/software/spades/)  
+Download binary for linux version 3.13.0
 
-[Transrate](http://hibberdlab.com/transrate/)
-click on installation and download linux version 1.0.3
+[Transrate](http://hibberdlab.com/transrate/)  
+Click on installation and download linux version 1.0.3
 
-[BLAST+ command line applications](https://www.ncbi.nlm.nih.gov/books/NBK279671/)
-click on the FTP link, click LATEST and download the XXX_linux.tar.gz
+[BLAST+ command line applications](https://www.ncbi.nlm.nih.gov/books/NBK279671/)  
+Click on the FTP link, click LATEST and download the XXX_linux.tar.gz
 
-[RSEM](https://deweylab.github.io/RSEM/)
-click 'latest version' to download the source code
+[RSEM](https://deweylab.github.io/RSEM/)  
+Click 'latest version' to download the source code
 Right click in the RSEM folder and open a new terminal. Do the following commands in the terminal to install RSEM
 ```
 make
 sudo make install
 ```
 
-[Salmon](https://combine-lab.github.io/salmon/)
-click on binaries, on the github page download the binaries for version 0.13.1
+[Salmon](https://combine-lab.github.io/salmon/)  
+Click on binaries, on the github page download the binaries for version 0.13.1
 
-[Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
+[Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)  
 Follow links for download and download the source code for version 2.8.4
 Right click in the Trinity-RNAseq folder and open a new terminal. Do the following commands in the terminal to install Trinity
 ```
 make install
 ```
 
-* [Kallisto](https://pachterlab.github.io/kallisto/)
+* [Kallisto](https://pachterlab.github.io/kallisto/)  
 Click on downloads link, scroll to releases and download Linux version 0.45.0
 
 The following Python3 modules are necessary for the use of seqFrog:
 
-pandas `pip3 install pandas`
-Biopython `pip3 install biopython`
-tqdm `pip3 install tqdm`
+pandas `pip3 install pandas`  
+Biopython `pip3 install biopython`  
+tqdm `pip3 install tqdm`  
 
 You will also need a working version of Java
 
