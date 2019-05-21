@@ -20,6 +20,7 @@ sudo apt install libncursesw5-dev
 sudo apt install liblzma-dev
 sudo apt install libcurl4-openssl-dev
 sudo apt install libssl-dev
+sudo apt install libsparsehash-dev
 ```
 Install bowite2 and samtools using the following commands (recommended) or the instructions on their website.
 * [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) `sudo apt install bowtie2`
@@ -35,7 +36,14 @@ Download binary for version 0.39 (not source code)
 Click on releases and download latest stable version (not source code)
 
 [ABySS](https://github.com/bcgsc/abyss)  
-Click releases and download latest stable version 2.1.5 (not source code)
+Click releases and download latest stable version 2.1.5 source code  
+Right click in the ABySS folder and open a new terminal. Do the following commands in the terminal to install ABySS  
+```
+./configure
+make
+sudo make install
+```
+
 
 [SPAdes](http://cab.spbu.ru/software/spades/)  
 Download binary for linux version 3.13.0
