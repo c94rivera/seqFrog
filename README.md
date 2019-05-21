@@ -37,14 +37,13 @@ Download binary for version 0.39 (not source code)
 Click on releases and download latest stable version (not source code)
 
 [ABySS](https://github.com/bcgsc/abyss)  
-Click releases and download latest stable version 2.1.5 source code  
+Click releases and download latest stable version 2.1.5 (not source code)  
 Right click in the ABySS folder and open a new terminal. Do the following commands in the terminal to install ABySS  
 ```
 ./configure
 make
 sudo make install
 ```
-
 
 [SPAdes](http://cab.spbu.ru/software/spades/)  
 Download binary for linux version 3.13.0
