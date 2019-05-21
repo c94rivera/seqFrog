@@ -241,7 +241,9 @@ def spades():
 #combine all contig outputs with transrate
 def transrate():
     global transrate_folder, contig_file
-
+    megahit_contig = ''
+    abyss_contig = ''
+    spades_contig = ''
     if path.exists(os.getcwd() + "/megahit_assembly/final.contigs.fa"):
         shutil.copy(os.getcwd() + "/megahit_assembly/final.contigs.fa", os.getcwd() + "/megahit_assembly/[backup]final.contigs.fa")
         with open(os.getcwd() + "/megahit_assembly/final.contigs.fa", 'r') as f:
