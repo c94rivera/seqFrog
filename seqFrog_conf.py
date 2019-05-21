@@ -8,11 +8,11 @@ forwreads = []
 revreads = []
 
 #program folder locations
-megahit_folder = '' #megahit binary
-abyss_folder = '' #abyss binary
-spades_folder = '' #spades binary
-transrate_folder = '' #transrate binary
-trimmomatic_folder = '' #trimmomatic binary
+megahit_folder = '' #megahit folder
+abyss_folder = '' #abyss folder
+spades_folder = '' #spades folder
+transrate_folder = '' #transrate folder
+trimmomatic_folder = '' #trimmomatic folder
 trinity_folder = '' #trinity location
 salmon_folder = '' #salmon location
 kallisto_folder = '' #kallisto location
@@ -21,8 +21,8 @@ blast_folder = '' #ncbi blast location
 #---
 custom_blast_folder = '' #custom blast library location
 blast_name = '' #name of custom blast library; name in db folder
-evalue = "1e-10"
-trim_length = 300
+evalue = "1e-10" #blast e-value
+trim_length = 300 #base pair length used in trim_contigs()
 
 #change line below to pick which modules to run
 def main():

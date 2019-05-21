@@ -8,10 +8,11 @@ If using this pipeline please properly cite this git repository:
 
 
 ### Get Started
+Download the repository to your computer by click 'clone or download' button on the top right
 The following dependecies need to be installed on your computer. This should be done FIRST, before the installation of the pipeline.
 ```
 sudo apt install gcc
-sudo apt install make
+sudo apt install cmake
 sudo apt install libbz2-dev
 sudo apt install libncurses5-dev
 sudo apt install zlib1g-dev
@@ -24,19 +25,47 @@ Install bowite2 and samtools using the following commands (recommended) or the i
 * [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) `sudo apt install bowtie2`
 * [Samtools](http://www.htslib.org/) `sudo apt install samtools`
 
-Download the repository to your computer. The following programs must be installed and their folder PATH setup in seqFrog_conf.py file. More details can be found within Methods.
+The following program binary files must be installed and their folder PATH setup in seqFrog_conf.py file.
+It is recommended that all these programs be downloaded and extracted into the same folder for easy setup and maintenance.
 
-* [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
-* [Megahit](https://github.com/voutcn/megahit)
-* [ABySS](https://github.com/bcgsc/abyss)
-* [SPAdes](http://cab.spbu.ru/software/spades/)
-* [Transrate](http://hibberdlab.com/transrate/)
-* [BLAST+ command line applications](https://www.ncbi.nlm.nih.gov/books/NBK279671/)
-* [RSEM](https://deweylab.github.io/RSEM/)
-* [Salmon](https://combine-lab.github.io/salmon/)
-* [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
+[Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
+download binary for version 0.39 (not source code)
+
+[Megahit](https://github.com/voutcn/megahit)
+click on releases and download latest stable version (not source code)
+
+[ABySS](https://github.com/bcgsc/abyss)
+click releases and download latest stable version 2.1.5 (not source code)
+
+[SPAdes](http://cab.spbu.ru/software/spades/)
+download binary for linux version 3.13.0
+
+[Transrate](http://hibberdlab.com/transrate/)
+click on installation and download linux version 1.0.3
+
+[BLAST+ command line applications](https://www.ncbi.nlm.nih.gov/books/NBK279671/)
+click on the FTP link, click LATEST and download the XXX_linux.tar.gz
+
+[RSEM](https://deweylab.github.io/RSEM/)
+click 'latest version' to download the source code
+Right click in the RSEM folder and open a new terminal. Do the following commands in the terminal to install RSEM
+```
+make
+sudo make install
+```
+
+[Salmon](https://combine-lab.github.io/salmon/)
+click on binaries, on the github page download the binaries for version 0.13.1
+
+[Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki)
+Follow links for download and download the source code for version 2.8.4
+Right click in the Trinity-RNAseq folder and open a new terminal. Do the following commands in the terminal to install Trinity
+```
+make install
+```
+
 * [Kallisto](https://pachterlab.github.io/kallisto/)
-
+Click on downloads link, scroll to releases and download Linux version 0.45.0
 
 The following Python3 modules are necessary for the use of seqFrog:
 
@@ -52,20 +81,39 @@ You will also need a working version of Java
 1. Direct to all necessary program folders
 	* Open `seqFrog_conf.py` in text-editor of choice
 	* Put the full length path to all the required program folders next to their similarly named variables, in quotes `lines 11-25` (relative paths will not work!)
-		* if your programs are installed into system or $PATH variables you can just use the name used to call it in the terminal in quotes
-	* Put the full length path to the custom blast library being used (relative path will not work!)
+		* The easiest way to get the full length path on linux is to drag the folder into a terminal window and the full length path will be inserted into the terminal window. Copy and past this into the appropriate part of `seqFrog_conf.py`
+		* if bowtie2 was installed as root then use 'bowtie', otherwise, direct to the folder.
+	* Put the full length path to the custom blast library being used
 
 ```python3
-megahit_folder = "/megahit" #megahit binary
+megahit_folder = '' #megahit binary
 abyss_folder = '/home/phyllobates/Assembly_Tools/abyss-2.1.5' #abyss binary
 spades_folder = '/home/phyllobates/Assembly_Tools/SPAdes-3.13.0-Linux' #spades binary
 ```
 
 
 2. Define steps that should be taken within pipeline
-	* The functions after `def main():` can be commented out to exclude steps from the pipeline
+	* The functions after `def main():` can be commented out () to exclude steps from the pipeline
 		* the pipeline is designed to be run from start to finish, however, individual steps can be run in some instances
 
+####Function Descriptions
+	manual_input() -> takes the input from the terminal, CANNOT BE TURNED OFF
+	trimmomatic() -> runs Trimmomatic to clean reads
+	megahit() -> runs Megahit for de novo reconstruction
+	abyss() -> runs ABySS for de novo reconstruction
+	spades() -> runs SPAdes for de novo reconstruction
+	transrate() -> runs Transrate to combine reconstructions and give statistics
+	trim_contigs() -> removes contigs below a certain base pair length
+	blastn() -> runs BlastN search against custom library
+	blastp() -> runs BlastP search against custom library
+	blastx() -> runs BlastX search against custom library
+	pull_matches() -> annotates reconstructions with Blast data
+	pull_matches_fast() -> annotates reconstructions with Blast data using all available cores on computer
+	rsem() -> runs RSEM for expression analysis
+	salmon() -> runs Salmon for expression analysis
+	kallisto() -> runs Kallisto for expression analysis
+
+For example the following code skips blastn(), blastp(), pull_matches().
 ```python3
 def main():
     manual_input()
@@ -75,8 +123,8 @@ def main():
     spades()
     transrate()
     trim_contigs()
-    blastn()
-    blastp()
+    # blastn()
+    # blastp()
     blastx()
     pull_matches() #use only if pull_matches_fast doesn't work
     pull_matches_fast()
