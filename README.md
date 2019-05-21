@@ -22,8 +22,8 @@ sudo apt install libcurl4-openssl-dev
 sudo apt install libssl-dev
 ```
 
-* [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
-* [Samtools](http://www.htslib.org/)
+* [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) `sudo apt install bowtie2`
+* [Samtools](http://www.htslib.org/) `sudo apt install samtools`
 
 Download the repository to your computer. The following programs must be installed and their folder PATH setup in seqFrog_conf.py file. More details can be found within Methods.
 
