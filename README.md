@@ -105,7 +105,7 @@ spades_folder = '/home/phyllobates/Assembly_Tools/SPAdes-3.13.0-Linux' #spades b
 
 
 2. Define steps that should be taken within pipeline
-	* The functions after `def main():` can be commented out () to exclude steps from the pipeline
+	* The functions after `def main():` can be commented out (using '#') to exclude steps from the pipeline
 		* the pipeline is designed to be run from start to finish, however, individual steps can be run in some instances
 
 ### Function Descriptions
