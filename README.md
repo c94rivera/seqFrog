@@ -94,7 +94,7 @@ You will also need a working version of Java
 	* Open `seqFrog_conf.py` in text-editor of choice
 	* Put the full length path to all the required program folders next to their similarly named variables, in quotes `lines 11-25` (relative paths will not work!)
 		* The easiest way to get the full length path on linux is to drag the folder into a terminal window and the full length path will be inserted into the terminal window. Copy and past this into the appropriate part of `seqFrog_conf.py`
-		* if bowtie2 was installed as root then use 'bowtie', otherwise, direct to the folder.
+		* if bowtie2 was installed as root then use 'bowtie2', otherwise, direct to the folder.
 	* Put the full length path to the custom blast library being used
 
 ```python3
