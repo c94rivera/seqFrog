@@ -289,6 +289,14 @@ def transrate():
         subprocess.run(f"{transrate_folder}/transrate --assembly {megahit_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
     elif path.exists(abyss_contig) and path.exists(spades_contig):
         subprocess.run(f"{transrate_folder}/transrate --assembly {abyss_contig},{spades_contig} --merge-assemblies merged_assemblies", shell=True)
+    elif path.exists(megahit_contig):
+        subprocess.run(f"{transrate_folder}/transrate --assembly {megahit_contig} --merge-assemblies merged_assemblies", shell=True)
+    elif path.exists(abyss_contig):
+        subprocess.run(f"{transrate_folder}/transrate --assembly {abyss_contig} --merge-assemblies merged_assemblies", shell=True)
+    elif path.exists(spades_contig):
+        subprocess.run(f"{transrate_folder}/transrate --assembly {spades_contig} --merge-assemblies merged_assemblies", shell=True)
+
+
 
     contig_file = (os.getcwd() + "/transrate_results/merged_assemblies")
 
