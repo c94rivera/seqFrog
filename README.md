@@ -12,6 +12,7 @@ Download the repository to your computer by click 'clone or download' button on 
 The following dependecies need to be installed on your computer. This should be done FIRST, before the installation of the pipeline.
 ```
 sudo apt install gcc
+sudo apt install make
 sudo apt install cmake
 sudo apt install libbz2-dev
 sudo apt install libncurses5-dev
