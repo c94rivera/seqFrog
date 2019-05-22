@@ -173,4 +173,80 @@ seqFrog_conf.py -f fwdreads.fastq -r revreads.fastq -sp Dendrobates_pumilio -t b
 ```
 ---
 ### How to make a custom blast library
-coming soon...
+#### Custom database of nucleotide sequences
+The following binaries are located within your BLAST+ installation
+
+1) Select your reference nucleotide sequences in FASTA format, create a FASTA file as follows:
+
+caecilians_mt_ref.fasta
+
+```>ND1_Typhlonectes_natans_NC_002471
+atttgacttacaagccttgtcatccctctcgccataattatcccagtattactagcagtagcattccttaccttagcaaaacaaaaagtactaggctacatacaggtacaaaaaggaccaaacatcgtagggccaacgggccttctacagcccgtggcaaatggagtaaaactatttaccaaagagccggtacggccagtaacatcctcacaaacaatattcctaatcgcaccaattttagcactggccctatcactaacgctatgggccccgatacctattcccagccccgtcctagacataaacctaggagtattatttgtattagccctatcaagcctggccgtatactcaatcctgggctccggatgggcatccaactcaaaatatgctctaataggggccctacgatcagttgcacaaacaatctcctatgaagtgacactaggactaatcctactatgcacaatctttttatcaggcacatttacactaagcaacttcctatacacccaagagacaacttgacttttactaccgtcctggcccatggcaataatatgatatatctcaaccctagcagagactaaccgatccccattcgaccttactgagggggagtcagagctcgtctcgggctttaacgtagaatatgccggaggaccattcgcactttttttcctagcggaatactccaacatcttactaataaacacgctctcaactatcatttttatttcccccagcctccacctgcaggcagaactctccacatccaatattataattaaaacaatggccctctcatctctcttcctatgagtccgagcatcatacccacgcttccgctatgaccagctaatacacctagtttgaaaaaacttcctcccactagtcctagccataacccttatttacatcaccaccccaacctcaatggccggactgcccccacaaatat
+>ND2_Typhlonectes_natans_NC_002471
+atgagcccctacccaaccatagttatactaactagcctcctactaggaaccaccttggtacttacaagcaaccactggctaatagtatgagttggcctagaaatcaacaccctcgccattatacccctcctaatccaacaccaccacccccgagcagcagaagcaaccataaagtacttcctcacccaggcagcagcagccactctcatcctatttgcagccctaataaatgcctgacagtccggacaatgggccactacagccttgtcccatatcccatccaacctaaccacaattgcacttataataaaactaggccttgccccagtacacttctggctcccagaagtccttcaaggggcacccctgaccacaggacttattttatcaacctgacaaaaaattgccccaatgtccttaataataacaatccatgcctccctaaacccctatctcttaacaacacttggacttacctcaatccttattggcggctgagcaggaattaatcagacacaactacgtaagatcctagcctactcatcagtagcacacataggctggacaataataatcctcccactaataccagcacttgcactactaaactttgcaatatacttaacacttactaccccaatatttttaaccataaaatttatcaacaccaccaatatcccatccataaccaccgcctgaacaaaagctccagccaccgctgccctaaccatattggtcctgctctcccttggtggactccccccaacctcaggcttcatgccaaaatgaataatccttcacgaactggctaaacaaagcctccctgccattgcaacaacagccgccatctcggcactacttagcctatttttctacctacgactctgctacacttttacactcacccaatccccaaatagcacaaactccactccaacatgacgacacaaatcacaaagtacccctaaactactgccggccacaatggtcacagcactcatactacttccaatagcaccaaccctactctag
+```
+
+2) Create folder with the reference FASTA file and copy the makeblastdb binary from ncbi-blast-2.7.1+
+
+3) Create library by runing in that folder
+```
+./makeblastdb -in caecilians_mt_ref.fasta -dbtype nucl -parse_seqids -out caecilians_mt_db
+```
+
+4) A series of library files will be created:
+
+caecilians_mt_db.nhr
+caecilians_mt_db.nin
+caecilians_mt_db.nog
+caecilians_mt_db.nsd
+caecilians_mt_db.nsi
+caecilians_mt_db.nsq
+
+These need to be present when running blastn for annotation
+
+5) Copy library files to the non-annotated FASTA repository to run manually, or point to full path for use with the seqFrog pipeline
+```
+./blastn -query final.contigs.fa -db caecilians_mt_db -evalue 0.01 -max_target_seqs 1 -outfmt "7 std qseqid stitle " -out Typhlonectes_compressicauda_SRX2426787.megahit.table
+```
+
+#### Custom database of protein sequences
+
+1) Select your reference protein sequences in FASTA format, create a FASTA file as follows:
+
+clocks_hb_saxi_prot_ref.fasta
+```
+>CLOCK_protein AAF34772.1 Clock [Xenopus laevis]
+MSSTADRDDGSIFDGLVEEDDKDKAKRVSRNKSEKRRRDQFNILIKELGSMLPGNARRIDKSTVLQKSID
+FLQKHKEISAQSDASEIRQDWKPTFLSNEEFTQLMLEALDGFFLAVMTDGNIIYVSESVTSLLEHLPSDL
+VDQSIFNFVPEGEHSEVYKILSTRMLESGSLSSEYLKTKNELEFCCHMLRGTADPKEPSTYEFVKFIGNF
+KSLNNVPNSTHNGFDGALQRSLRPPYEERVCFVATVRLATPQFIKEMCTVEESNEEFTSRHSLEWKFLFL
+DHRAPPIIGYLPFEVLGTSGYDYYHVDDLENLAKCHEHLMQYGKGKSCYYRFLTKGQQWIWLQTRYYITY
+HQWNSRPEFIVCTHTVVSYAEVGAERRRERGNEDSPPAITAEKNQDSVSDNHMNTVSLKEALERFDDSRT
+PSPSSKSSIKSSSHTAVSDPSSTPTKIPTDTSTPPRQALTGLDKRRSSISSQSMSSQSVSQPLSQSVMKQ
+TASIQLQQGMTQPMFQFTAQFGAMKHLKDQLEQRTRIIEENIQRQQEELRKIQDQLQMVHGQGIQMYLQQ
+PAPGLNFGPVQYSSGNSPSIQQLPQFTMQGQVVQTNQLQGVMNTGHVGAQHIMQQQQLHNTSQQGQQNIH
+GGHNQQTSLSSQTSGTLTSPLYNTMVISQPPSGSMVQMPSNIQQSNQGASVTTFPQDRQIRFSQAQQIVT
+KLVTTPMACGTVMVPSTMFMGPVVTAYPTFTTQQQQPQTLSFTQHQQNQQDQQTVPTIQQPAHAQLAQQP
+QQFLQTSRLVHGNQSTQLILSPFPVQQNTFAPSHQQQLSHHRTDTMSDPSKVQQQ
+```
+
+2) create folder with the reference FASTA file and copy the makeblastdb binary from ncbi-blast-2.7.1+
+
+3) create protein library by running the following in that folder
+```
+./makeblastdb -in clocks_hb_saxi_prot_ref.fasta -dbtype prot -parse_seqids -out ClockHBSAX_db
+```
+
+4) a series of library files will be created:
+
+ClockHBSAX_db.phr
+ClockHBSAX_db.pin
+ClockHBSAX_db.pog
+ClockHBSAX_db.psd
+ClockHBSAX_db.psi
+ClockHBSAX_db.psq
+
+5) Copy library files to the non-annotated FASTA repository to run manually, or point to full path for use with the seqFrog pipeline
+```
+./blastx -query final.contigs.fa -db ClockHBSAX_db -evalue 0.001 -max_target_seqs 1 -outfmt "7 std qseqid stitle" -out  ClockHBSAX_Typhlonectes_compressicauda_SRX2426787_blastx.table
+```
